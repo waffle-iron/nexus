@@ -1,0 +1,447 @@
+//out: nexus.min.css
+/*
+    https://www.materialpalette.com/indigo/blue-grey
+    http://materializecss.com/buttons.html
+*/
+
+$amber:#FFC107;
+$amour:#FEFCFD;
+$bali_hai:#7A93AC;
+$black_pearl:#031927;
+$burnt_sienna:#E87352;
+$comet:#5D5D81;
+$cornflower:#92BCEA;
+$dove_gray:#727272;
+$eastern_blue:#1D8A99;
+$ebony_clay:#272E3F;
+$emerald:#5FCE9B;
+$fruit_salad:#4CAF50;
+$lynch:#607D8B;
+$mercury:#E8E8E8;
+$nepal:#7EA0B7;
+$nevada:#617073;
+$nobel:#B6B6B6;
+$oxford_blue:#39435C;
+$perano:#AFB3F7;
+$periwinkle_gray:#C5CAE9;
+$pomegranate:#F44336;
+$robins_egg_blue:#0BC9CD;
+$ronchi:#EECA5A;
+$san_marino:#3F51B5;
+$saphire:#303F9F;
+$silver:silver;
+$swamp:#000505;
+$titan_white:#FCFCFF;
+$viking:#66B5D6;
+$violent_violet:#221166;
+$white:white;
+$woodsmoke:#171A21;
+$ziggurat:#BFCDE0;
+
+
+$primary_color:         $oxford_blue;
+$primary_color_dark:    $ebony_clay;
+$primary_color_light:   $titan_white;
+
+$primary_text_color:    $white;
+$secondary_text_color:  $dove_gray;
+
+$accent_color:          $lynch;
+$divider_color:         $nobel;
+
+$default_padding: 6px 4px;
+
+@mixin border-radius($radius){
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin box-sizing($box-sizing){
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+@mixin box-shadow($box-shadow){
+  -o-box-shadow: $box-shadow;
+  -ms-box-shadow: $box-shadow;
+  -moz-box-shadow: $box-shadow;
+  -khtml-box-shadow: $box-shadow;
+  -webkit-box-shadow: $box-shadow;
+  box-shadow: $box-shadow;
+}
+
+@mixin transition($transition){
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+*{
+  @include box-sizing(border-box);
+}
+
+html{
+    min-height:100vh;
+}
+
+body{
+    min-height:100vh;
+    font: 12px Tahoma, Arial normal;
+    background-color:$primary_color_light;
+    position:relative;
+    width:100%;
+    padding:40px 10px 35px 10px;
+    margin:0;
+    transition:padding-left 0.3s ease;
+}
+
+img{
+    border:none; /*ie 10 and below fix*/
+}
+
+button,
+input[type=button],
+a[href]{
+    cursor:pointer;
+}
+
+table{
+    width: 100%;
+    margin: 10px auto;
+    border-collapse: collapse;
+    counter-reset: table_row_counter;
+
+    thead{
+        background-color:$primary_color;
+        color:white;
+        font-size:1.2em;
+    }
+
+    tr:nth-child(even){
+        background-color:$primary_color_light;
+    }
+
+    th,td{
+        border:1px solid $primary_color_dark;
+        padding: $default_padding;
+        vertical-align: middle;
+    }
+
+    td{
+        height: 20px;
+    }
+
+    td.row_number{
+        text-align:center;
+    }
+
+    td.row_number:before{
+        counter-increment: table_row_counter;
+        content:counter(table_row_counter);
+    }
+}
+
+
+button.plain {
+    background: none;
+    color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    font-size:inherit;
+}
+
+button.plain:focus{
+    outline:none;
+}
+
+
+.fa{
+    margin-right:5px;
+    position:relative;
+    top:-1px;
+}
+
+.pull_left{
+    display:block;
+    float:left;
+}
+
+.pull_right{
+    display:block;
+    float:right;
+}
+
+/*REF: https://css-tricks.com/using-flexbox/*/
+.flexbox{
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -webkit-flexbox;
+    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+
+    display: -moz-box;
+    display: -webkit-flexbox;
+
+    -webkit-box-align: start;
+    -moz-box-align: start;
+    -webkit-flex-align: start;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:$primary_color_dark;
+    height:30px;
+    color:$primary_color_light;
+    padding: $default_padding;
+    font-size: 1.2em;
+    z-index:100;
+    @include box-shadow(0 0 10px 0 $primary_color_dark);
+
+    .fa-bars{
+        width:20px;
+    }
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+    border-top:1px solid $accent_color;
+    background-color: $primary_color_light;
+    color:black;
+    padding:$default_padding;
+    transition: padding-left 0.3s ease;
+    z-index:0;
+}
+
+#menu{
+    height:110%;
+    min-width:30px;
+    max-width:200px;
+    background-color:$primary_color;
+    position:fixed;
+    padding-top:30px;
+    left:0;
+    top:0;
+    transition:width 0.3s ease;
+    color:$primary_color_light;
+    @include box-shadow(0 0 10px 0 $primary_color_dark);
+    border-right:1px solid $primary_color_dark;
+    z-index:1;
+
+    header, .item{
+        border-bottom:1px solid $divider_color;
+    }
+
+    header{
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        padding: 10px;
+
+
+        .company.logo{
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            background-position: 50% 50%;
+            @include border-radius(100%);
+            background-repeat: no-repeat;
+            border: 3px inset $primary_color_light;
+            margin: 0 auto 10px;
+            background-color: white;
+            @include box-shadow(0 0 5px 0 $primary_color_dark inset);
+        }
+
+        .field.search {
+            position: relative;
+
+            input {
+                width: 100%;
+                border: none;
+                padding: 6px 20px $default_padding;
+                background-color:$primary_color_dark;
+                color:inherit;
+            }
+
+            input:focus{
+                outline-color:$accent_color;
+            }
+
+            .fa-search {
+                position: absolute;
+                right: 0px;
+                top: 1px;
+            }
+        }
+    }
+
+
+    .item{
+        text-decoration: none;
+        width: 100%;
+        display: block;
+        font-size: 1.2em;
+        padding: $default_padding;
+        color:inherit;
+    }
+}
+html.show_menu{
+    body,footer{
+        padding-left:210px;
+    }
+
+    #menu{
+        width:100%;
+    }
+}
+
+html.hide_menu {
+    body,#footer{
+        padding-left:40px;
+    }
+
+    #menu{
+        width:0;
+
+        header{
+            display:none;
+        }
+
+        .item{
+            .text {
+                display: none;
+            }
+
+            .fa {
+                margin: 0;
+                text-align: center;
+                width: 100%;
+            }
+        }
+
+    }
+}
+
+.page{
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e6e6e6+0,ffffff+100 */
+    background: rgb(230,230,230); /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(230,230,230,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+    background: radial-gradient(ellipse at center,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    border:1px solid #CCCCCC;
+    @include box-shadow(2px 2px 10px 0 #CCCCCC);
+    display:block;
+    margin:auto;
+    position:relative;
+
+    header.letterhead{
+        position:absolute;
+        top:0;
+        left:0;
+        background-color: $primary_color_dark;
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+        font-size: 1.8em;
+        padding: 10px;
+        width: 100%;
+        border-bottom: 3px solid $accent_color;
+        max-height:50px;
+
+        .fa-bars{
+            color:white;
+            text-decoration:none;
+        }
+    }
+}
+
+.page.a4{
+    padding:60px 1cm 1cm 1cm;
+}
+
+.page.a4.portrait{
+    padding:1cm;
+    height:29.7cm;
+    width:21cm;
+}
+
+.page.a4.landscape{
+    width:25cm;
+    height:20cm;
+}
+
+.button{
+    text-decoration:none;
+    color: rgb(255, 255, 255);
+    padding: $default_padding;
+    margin:0 2px;
+    @include border-radius(2px);
+    //@include box-shadow:(-1px 1px 2px 1px rgba(0, 0, 0, 0.2));
+    display:inline-block;
+    text-align: center;
+}
+
+.error{
+    display:block;
+    margin:10px auto;
+}
+
+.dashboard{
+  body{
+    text-align: center;
+
+    .button{
+        color: rgb(255, 255, 255);
+        @include border-radius(2px);
+        //@include box-shadow:(-1px 1px 2px 1px rgba(0, 0, 0, 0.2));
+        font-size:4em;
+        padding:30px;
+        min-width:120px;
+        margin-bottom:10px;
+        opacity:0.8;
+        @include transition(0.2s all ease);
+    }
+
+    .button:hover{
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        opacity: 1;
+    }
+
+    .button.viewlist{
+        background-color:$san_marino;
+        display:block;
+    }
+
+    .button.view{
+        background-color:$robins_egg_blue;
+    }
+
+    .button.create{
+        background-color:$fruit_salad;
+    }
+
+    .button.edit{
+        background-color:$amber;
+    }
+
+    .button.remove{
+        background-color:$pomegranate;
+    }
+  }
+}

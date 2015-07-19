@@ -1,0 +1,5 @@
+<div class="page a4 landscape (#module_name#)">
+    <header class="letterhead">
+        <a class="fa fa-bars menu" href="#page_menu"></a><span class="title">New (#name_singular#)</span>
+    </header>
+</div>

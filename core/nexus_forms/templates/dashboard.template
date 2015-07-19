@@ -1,0 +1,5 @@
+<a href="/(#module_name_lowercase#)/viewlist" class="button viewlist fa fa-table"></a>
+<a href="/(#module_name_lowercase#)/create" class="button create fa fa-plus"></a>
+<a href="/(#module_name_lowercase#)/view" class="button view fa fa-search"></a>
+<a href="/(#module_name_lowercase#)/edit" class="button edit fa fa-pencil"></a>
+<a href="/(#module_name_lowercase#)/remove" class="button remove fa fa-remove"></a>

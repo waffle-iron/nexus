@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html class="show_menu">
+<html class="nexus (#module_class#) (#module_method#) (#show_menu_flag#)">
 <head>
     (#head#)
 </head>
-<body>
+<body class="(#body_class#)">
     <header id="header">
-        <div class="left">
-            <button class="plain" onclick="$('html').toggleClass('show_menu hide_menu');"><span class="fa fa-bars"></span>Nexus</button>
+        <div class="pull_left">
+            <button class="plain" onclick="$('html').toggleClass('show_menu hide_menu');"><span class="fa fa-bars"></span>(#module_name#)</button>
         </div>
-        <div class="right">
-            <label><span class="fa fa-envelope"></span></label>
-            <label><span class="fa fa-bell"></span></label>
+        <div class="pull_right">
+            <span class="fa fa-envelope"></span>
+            <span class="fa fa-bell"></span>
             <img class="" src="(#user_profile_image#)">
-            <div class="user firstname">(#user_firstname#)</div>
+            <span>(#user_firstname#)</span>
         </div>
     </header>
-    
-    
+
+
     <aside id="menu">
         <header>
-            <div class="company logo" style="background-image:url('(#company_logo#)')"></div>
+            <div class="company logo" style="background-image:url('(#company_logo_url#)')"></div>
             <label class="field search"><input type="text" placeholder="Search..."><span class="fa fa-search"></span></label>
         </header>
         <a class="item" href="/" title="Dashboard"><span class="fa fa-dashboard"></span><span class="text">Dashboard</span></a>
         <a class="item" href="/tripsheets" title="Trip Sheets"><span class="fa fa-truck"></span><span class="text">Trip Sheets</span></a>
     </aside>
-
-        (#content#)
+    (#content#)
     <div id="footer">&copy; Nexus (#year#)</div>
 </body>
 </html>

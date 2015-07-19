@@ -1,14 +1,47 @@
 application: nexus-ga
-version: 1
+version: alpha
 runtime: php55
 api_version: 1
+threadsafe: yes
+default_expiration: 1h
 
 handlers:
+-   url: /core/(.*)/stylesheets/(.*).css$
+    static_files: core/\1/stylesheets/\2.css
+    upload: core/(.*)/stylesheets/(.*).css$
+    application_readable: true
+
+-   url: /core/(.*)/fonts/(.*)$
+    static_files: core/\1/fonts/\2
+    upload: core/(.*)/fonts/(.*)$
+    application_readable: true
+
+-   url: /core/(.*)/scripts/(.*).js$
+    static_files: core/\1/scripts/\2.js
+    upload: core/(.*)/scripts/(.*).js$
+    application_readable: true
+
+
+-   url: /plugins/(.*)/stylesheets/(.*).css$
+    static_files: plugins/\1/stylesheets/\2.css
+    upload: plugins/(.*)/stylesheets/(.*).css$
+    application_readable: true
+
+-   url: /plugins/(.*)/fonts/(.*)$
+    static_files: plugins/\1/fonts/\2
+    upload: plugins/(.*)/fonts/(.*)$
+    application_readable: true
+
+-   url: /plugins/(.*)/scripts/(.*).js$
+    static_files: plugins/\1/scripts/\2.js
+    upload: plugins/(.*)/scripts/(.*).js$
+    application_readable: true
+
+-   url: /fonts/*
+    static_dir: fonts/
+
 -   url: /images/*
     static_dir: images/
-
--   url: /stylesheets/*
-    static_dir: stylesheets/
 
 -   url: /fonts/*
     static_dir: fonts/
@@ -16,5 +49,8 @@ handlers:
 -   url: /scripts/*
     static_dir: scripts/
 
--   url: /.*
-    script: /modules/nexus/nexus.php 
+-   url: .*
+    script: index.php
+
+skip_files:
+- ^(.*/)?\.DS_Store$
