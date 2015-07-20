@@ -1,12 +1,25 @@
 //out:nexus_print.min.css
+
+@import "nexus_mixin.scss";
+
 @media print{
+    body{
+        margin:0;
+        padding:0;
+    }
+
+    select{
+      @include appearance(none);
+      border:none;
+    }
+
     .no_print,#header,#footer,#menu{
         display:none;
     }
 
-    body{
-        margin:0;
-        padding:0;
+    .page{
+      background:none;
+      @include box-shadow(none);
     }
 }
 

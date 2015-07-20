@@ -1,5 +1,5 @@
-<a href="/(#module_name_lowercase#)/viewlist" class="button viewlist fa fa-table"></a>
-<a href="/(#module_name_lowercase#)/create" class="button create fa fa-plus"></a>
-<a href="/(#module_name_lowercase#)/view" class="button view fa fa-search"></a>
-<a href="/(#module_name_lowercase#)/edit" class="button edit fa fa-pencil"></a>
-<a href="/(#module_name_lowercase#)/remove" class="button remove fa fa-remove"></a>
+<a href="/(#module_name_lowercase#)/viewlist" class="button viewlist">Viewlist <span class="fa fa-table"></span></a>
+<a href="/(#module_name_lowercase#)/create" class="button create">Create <span class="fa fa-plus"></span></a>
+<a href="/(#module_name_lowercase#)/view" class="button view">View <span class="fa fa-search"><span></a>
+<a href="/(#module_name_lowercase#)/edit" class="button edit">Edit <span class="fa fa-pencil"></span></a>
+<a href="/(#module_name_lowercase#)/remove" class="button remove">Remove <span class="fa fa-remove"></span></a>

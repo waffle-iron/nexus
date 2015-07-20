@@ -1,19 +1,21 @@
-<div class="page a4 landscape (#module_name#) flexbox">
+<div class="page a4 landscape (#module_name#) flexbox animate popup">
     <header class="letterhead">
-        <a class="fa fa-bars menu" href="#page_menu"></a><span class="title">New (#name_singular#)</span>
+        <a class="no_print fa fa-bars menu" href="#page_menu"></a><span class="title"><span class="no_print">New</span> (#module_name_singular#)</span>
     </header>
     <div class="field">
         <label class="label">Date</label><input type="date" class="value"/>
     </div>
-    
-    
+
+
     <div class="field">
         <label>Day</label><span class='value'></span>
     </div>
-    
+
     <table>
         <thead>
-            <tr><th>#</th><th>Customer</th><th>Area</th><th>Description</th><th>Time In</th><th>Time Out</th><th>Sign</th><th>Travel Time</th><th>Work Time</th>
+            <tr>
+              <th>#</th><th>Customer</th><th>Area</th><th>Description</th><th>Time In</th><th>Time Out</th><th>Sign</th><th>Travel Time</th><th>Work Time</th>
+            </tr>
         </thead>
         <tbody>
             <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -26,32 +28,53 @@
             <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         </tbody>
     </table>
-    
+
     <div class="field">
         <label>Team</label><select><option>Select Team...</option></select>
     </div>
-    
+
     <div class="field">
         <label>Manager</label><select><option>Select Manager...</option></select>
     </div>
-    
+
     <div class="field">
         <label>Driver</label><select><option>Select Driver...</option></select>
     </div>
-    
+
     <div class="field">
-        <label>Managers Signature</label><span class='value'></span>
+        <label class="label">Managers Signature</label>
+        <span class="value"></span>
     </div>
-    
+
     <div class="field">
         <label>Vehicle</label><select><option>Select Vehicle...</option></select>
     </div>
-    
+
     <div class="field">
         <label>SkyTrack Check</label><span class='value'></span>
     </div>
-    
+
+    <ul>
+      <li>Total Work time</li>
+      <li>Total Travel Time</li>
+      <li>descriptions:</li>
+      <li>inspection</li>
+      <li>call out fee</li>
+      <li>repair</li>
+      <li>replacement</li>
+      <li>delay</li>
+      <li>stuck in traffic</li>
+      <li>incorrect address</li>
+      <li>no 1 home</li>
+      <li>break in table</li>
+      <li>sort the table</li>
+      <li>tripsheets will be per team</li>
+      <li>same driver can be across different</li>
+      <li>dont duplicate times for driver across teams</li>
+      <li>skytrack validation</li>
+      <li>next step is wages</li>
+    </ul>
+
 </div>

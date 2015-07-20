@@ -7,5 +7,6 @@
 <script src="/core/nexus/scripts/jquery/jquery-2.1.4.min.js"></script>
 
 <link rel="stylesheet" href="/core/nexus/stylesheets/nexus_print.min.css" media="print" />
+<link rel="stylesheet" href="/core/nexus/stylesheets/nexus_animation.min.css" />
 (#stylesheets#)
 (#scripts#)
