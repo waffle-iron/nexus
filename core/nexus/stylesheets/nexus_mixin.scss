@@ -27,10 +27,12 @@
   transition: $transition;
 }
 
-@mixin transform($transform){
-  -webkit-transform: $transform; /* Ch <36, Saf 5.1+, iOS, An =<4.4.4 */
-  -ms-transform: $transform; /* IE 9 */
-  transform: $transform; /* IE 10, Fx 16+, Op 12.1+ */
+@mixin transform($transform) {
+    -webkit-transform: $transform; /* Ch <36, Saf 5.1+, iOS, An =<4.4.4 */
+    -ms-transform: $transform; /* IE 9 */
+    -moz-transform: $transform;
+    -o-transform: $transform;
+    transform: $transform; /* IE 10, Fx 16+, Op 12.1+ */
 }
 
 @mixin appearance($appearance){
