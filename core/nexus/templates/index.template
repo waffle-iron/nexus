@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="nexus (#module_class#) (#module_method#) (#show_menu_flag#)">
+<html class="nexus (#module_class#) (#module_method#) (#show_menu_flag#) (#admin_user_flag#)">
 <head>
     (#head#)
 </head>
@@ -8,12 +8,22 @@
         <div class="pull_left">
             <button class="plain" onclick="$('html').toggleClass('show_menu hide_menu');"><span class="fa fa-bars"></span>(#module_name#)</button>
         </div>
-        <div class="pull_right">
-            <span class="fa fa-envelope"></span>
-            <span class="fa fa-bell"></span>
+        <nav class="pull_right user area menu horizontal">
+
+            <a class="fa fa-envelope item" title='Unread Emails' href='http://mail.google.com' target='_blank'></a>
+
+            <span class="fa fa-bell item" title='Unread Notifications'></span>
+
             <img class="" src="(#user_profile_image#)">
-            <span>(#user_firstname#)</span>
-        </div>
+
+            <span class='user nickname item'>(#user_nickname#)
+              <div class='menu dropdown'>
+                <a href=''>Admin Area</a>
+                <a class='item fa fa-sign-out' href='(#logout_url#)'>Logout</a>
+                <a class='item' href='(#account_settings_url#)' target='_blank'>My Account</a>
+              </div>
+            </span>
+        </nav>
     </header>
 
 
@@ -27,5 +37,6 @@
     </aside>
     (#content#)
     <div id="footer">&copy; Nexus (#year#)</div>
+    <div class='mask'></div>
 </body>
 </html>

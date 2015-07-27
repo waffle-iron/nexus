@@ -21,6 +21,11 @@ handlers:
     upload: core/(.*)/scripts/(.*).js$
     application_readable: true
 
+-   url: /core/(.*)/scripts/(.*).css$
+    static_files: core/\1/scripts/\2.css
+    upload: core/(.*)/scripts/(.*).css$
+    application_readable: true
+
 
 -   url: /plugins/(.*)/stylesheets/(.*).css$
     static_files: plugins/\1/stylesheets/\2.css

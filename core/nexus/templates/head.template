@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="/core/nexus/fonts/font-awesome-4.3.0/css/font-awesome.min.css">
 <script src="/core/nexus/scripts/jquery/jquery-2.1.4.min.js"></script>
 
+<script src="/core/nexus/scripts/jonthornton-jquery-timepicker/jquery.timepicker.min.js"></script>
+<link rel=stylesheet href="/core/nexus/scripts/jonthornton-jquery-timepicker/jquery.timepicker.css" />
+
 <link rel="stylesheet" href="/core/nexus/stylesheets/nexus_print.min.css" media="print" />
 <link rel="stylesheet" href="/core/nexus/stylesheets/nexus_animation.min.css" />
 (#stylesheets#)

@@ -11,25 +11,7 @@
         <label>Day</label><span class='value'></span>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-              <th>#</th><th>Customer</th><th>Area</th><th>Description</th><th>Time In</th><th>Time Out</th><th>Sign</th><th>Travel Time</th><th>Work Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td class="row_number"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        </tbody>
-    </table>
+    (#table#)
 
     <div class="field">
         <label>Team</label><select><option>Select Team...</option></select>
@@ -57,24 +39,17 @@
     </div>
 
     <ul>
-      <li>Total Work time</li>
-      <li>Total Travel Time</li>
-      <li>descriptions:</li>
-      <li>inspection</li>
-      <li>call out fee</li>
-      <li>repair</li>
-      <li>replacement</li>
-      <li>delay</li>
-      <li>stuck in traffic</li>
-      <li>incorrect address</li>
-      <li>no 1 home</li>
+      <li>Total Work time (calc)</li>
+      <li>Total Travel Time (calc)</li>
       <li>break in table</li>
       <li>sort the table</li>
-      <li>tripsheets will be per team</li>
+      <li>tripsheets will be per team (column - fk)</li>
       <li>same driver can be across different</li>
       <li>dont duplicate times for driver across teams</li>
       <li>skytrack validation</li>
       <li>next step is wages</li>
+      <li>must attach original docet (fk) and sky trax document (fk)</li>
+      <li>tripsheet must be validated by senior management (column)</li>
     </ul>
 
 </div>

@@ -1,31 +1,14 @@
 <?php
-//use google\appengine\api\users\User;
-//use google\appengine\api\users\UserService;
+use google\appengine\api\users\User;
+use google\appengine\api\users\UserService;
 
-//$user = UserService::getCurrentUser();
-//if (!$user){
-  //  header("Location: https://accounts.google.com/Login#identifier");
-
-//}
-
+//set_include_path('my_additional_path' . PATH_SEPARATOR . get_include_path()); //todo auto load here
 class nexus{
 
     public $name = '';
+    public $user = null;
 
-    function debug($object){
-
-        $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
-
-        if(is_array($object) && func_num_args() == 1){
-            $title = "Debugging Array(".sizeof($object).")";
-        }
-        print "<details class='debug' open>";
-        print "<summary>".$title."</summary>";
-        print "<pre>";
-        print_r($object);
-        print "</pre>";
-        print "</details>";
-    }
+    //http://stackoverflow.com/questions/173400/how-to-check-if-php-array-is-associative-or-sequential
 
     function error($title = 'Error', $message = ''){
         return $this->parse_template("error.template",['title'=>$title, 'message'=>$message]);
@@ -81,8 +64,22 @@ class nexus{
     }
 
     function get_scripts(){
+      $scripts = '';
 
-        return file_exists($this->get_path().'/scripts/'.get_class($this).'.js') ? "<script type='text/javascript' src='".$this->get_path(['relative'])."/scripts/".get_class($this).".js'></script>" : null;
+      $location = $this->get_file_location(get_class($this).'.min.js');
+      $scripts .= '<script type="text/javascript" src="'.$location.'" ></script>';
+
+      //todo get parent stylesheets
+      $parents = $this->get_parents();
+      foreach($parents as $name=>$data){
+          if(file_exists($data['absolute_path'].'/scripts/'.$name.'.min.js')){
+              $scripts .= '<script type="text/javascript" src="'.$data['relative_path'].'/scripts/'.$name.'.min.js" ></script>';
+          }
+      }
+
+      return $scripts;
+
+      //return file_exists($this->get_path().'/scripts/'.get_class($this).'.js') ? "<script type='text/javascript' src='".$this->get_path(['relative'])."/scripts/".get_class($this).".js'></script>" : null;
     }
 
     function get_extension($filename = ''){
@@ -90,6 +87,28 @@ class nexus{
         if(strpos($filename,".") < 0 ){return null;}
         $parts = explode('.',$filename);
         return $parts[count($parts)-1];
+    }
+
+    function get_user_info(){
+
+      /*
+      if (isset($user)) {
+          echo sprintf('Welcome, %s! (<a href="%s">sign out</a>)',
+                       $user->getNickname(),
+                       UserService::createLogoutUrl('/'));
+        } else {
+          echo sprintf('<a href="%s">Sign in or register</a>',
+                       UserService::createLoginUrl('/'));
+        }
+      */
+
+      if($this->user){
+        $info = [
+          'user_nickname' => $this->user->getNickname()
+        ];
+      }
+
+      return $info;
     }
 
     function get_file_location($filename = null){
@@ -143,7 +162,11 @@ class nexus{
 			//these values must get fetched from the setup file\module
 
             //$template = file_get_contents(getcwd()."/core/templates/".$template);
-            $template = $this->get_template($template);
+      $template = $this->get_template($template);
+
+      //$data['logout_url']                         = UserService::createLogoutUrl('/');
+
+      $data['account_settings_url']               = 'https://myaccount.google.com/';
 
       $data['module_name']                        = $this->name;
       $data['module_name_lowercase']              = strtolower($this->name);
@@ -151,12 +174,12 @@ class nexus{
       $data["module_class"]                       = get_class($this);
       $data['company_name']                       = "Domestic"; //settings //company settings
       $data['company_logo_url']                   = "/images/company_logo.png";
-			$data['year']                               = date('Y');
+
+      $data['year']                               = date('Y');
 			$data['month']                              = intval(getdate()['mon']) < 10 ? ('0'.getdate()['mon']) : getdate()['mon'];
 			$data['day']                                = getdate()['mday'];
 			$data['weekday']                            = getdate()['weekday'];
 			$data['today']                              = $data['year'].'-'.$data['month'].'-'.$data['day'];
-			$data['class']                              = get_class($this);
 
 			while(preg_match("/\(#(.*?)#\)/", $template)){
 				if (preg_match_all("/\(#(.*?)#\)/", $template, $variables)){
@@ -178,11 +201,13 @@ class nexus{
     function __construct($method = null){
 
         $this->name = $this->get_name();
+        $this->user = UserService::getCurrentUser();
 
         if(strlen($_SERVER['REQUEST_URI']) > 1){
             $request = explode("/",$_SERVER['REQUEST_URI']);
             array_shift($request);
             $class_name   = 'nexus_'.$request[0];
+            $class_name   = str_replace('%20','_',$class_name);
             $method = count($request) == 2 ? $request[1] : 'dashboard';
             $_SERVER['REQUEST_URI'] = null;
             //todo check if that class exists, if not, redirect to the error page
@@ -190,21 +215,47 @@ class nexus{
             $class = new $class_name($method);
         }
         else{
+          $logout_url = '';
+          if (!$this->user) {
+            header('Location: ' . UserService::createLoginURL($_SERVER['REQUEST_URI']));
+          }
+          else{
+            $logout_url = UserService::createLogoutUrl('/');
+          }
+
+          //$sql = new mysqli('172.194.229.73:3306','craig.wayne','RockSteady2015!','');
+
+            /*$conn = mysqli_connect(":/cloudsql/nexus-ga:sample-demo","craig.wayne","RockSteady2015!","");
+            if (mysqli_connect_errno())
+            {
+              echo "Failed to connect to MySQL: " . mysqli_connect_error();
+            }
+            else{
+              echo 'connection successful';
+            }*/
+
+
             $content = '';
             if(!method_exists($this,$method)){
                 $content .= $method ? $this->error('Method: "'.$method.'" not found') : '';
                 $method = 'dashboard';
             }
+
             $content .= $this->$method();
 
-            echo $this->parse_template("index.template",[
+            $template_data = [
+                'logout_url'        => $logout_url,
                 'module_method'     => $method,
                 "stylesheets"       => $this->get_stylesheets(),
                 "scripts"           => $this->get_scripts(),
                 "head"              => $this->get_template("head.template"),
-                "show_menu_flag"    => $_SERVER["REQUEST_URI"] == "/" ? "show_menu" : "hide_menu",
+                'show_menu_flag'    => $_SERVER['REQUEST_URI'] == '/'    ? 'show_menu' : 'hide_menu',
+                'admin_user_flag'   => UserService::isCurrentUserAdmin() ? 'admin' : '',
                 "content"           => $content
-            ]);
+            ];
+
+            $template_data = array_merge($this->get_user_info(), $template_data);
+            echo $this->parse_template("index.template",$template_data);
         }
     }
 }

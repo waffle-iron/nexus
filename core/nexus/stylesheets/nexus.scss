@@ -54,6 +54,7 @@ $default_padding: 6px 4px;
 
 *{
   @include box-sizing(border-box);
+  font-size:inherit;
 }
 
 html{
@@ -81,20 +82,61 @@ a[href]{
     cursor:pointer;
 }
 
-table{
+table.nexus{
     width: 100%;
     margin: 10px auto;
     border-collapse: collapse;
     counter-reset: table_row_counter;
 
-    thead{
+    *{
+      background-color:inherit;
+    }
+
+    thead,tfoot{
         background-color:$primary_color;
         color:white;
         font-size:1.2em;
     }
 
-    tr:nth-child(even){
-        background-color:$primary_color_light;
+    thead{
+
+      th{
+        .menu{
+          
+          .fa-bars{
+            width:100%;
+          }
+
+          .menu{
+            position:absolute;
+            top:100%;
+            left:0;
+            text-align:left;
+          }
+        }
+
+        .fa-sort{
+          margin:0 0 0 5px;
+        }
+      }
+    }
+
+
+    tbody{
+
+      tr:nth-child(even){
+          background-color:$primary_color_light;
+      }
+
+      tr:hover{
+        background-color:$accent_color;
+        color:white;
+      }
+
+      td{
+          height: 20px;
+      }
+
     }
 
     th,td{
@@ -103,11 +145,7 @@ table{
         vertical-align: middle;
     }
 
-    td{
-        height: 20px;
-    }
-
-    td.row_number{
+    .row_number{
         text-align:center;
     }
 
@@ -134,8 +172,10 @@ button.plain:focus{
 
 .fa{
     margin-right:5px;
-    position:relative;
-    top:-1px;
+}
+
+.fa:first-child:last-child{
+  margin-right:0;
 }
 
 .pull_left{
@@ -322,6 +362,7 @@ html.hide_menu {
     display:block;
     margin:auto;
     position:relative;
+    overflow:auto;
 
     header.letterhead{
         position:absolute;
@@ -424,4 +465,49 @@ html.dashboard{
 
 .field{
   display: inline;
+}
+
+.debug{
+  text-align:left;
+}
+
+.menu{
+  position:relative;
+
+  *{
+    color:inherit;
+  }
+
+  .item{
+    position:relative;
+    white-space:nowrap;
+
+    .menu{
+      display:none;
+    }
+  }
+
+  .item:hover>.menu{
+    display:block;
+  }
+}
+
+.blur{
+  @include blur(2px);
+}
+
+.mask{
+  display:none;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:100;
+  bakcground-color:black;
+  background-color:rgba(0,0,0,0.5);
+}
+
+.user.nickname{
+  text-transform:capitalize;
 }
