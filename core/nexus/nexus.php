@@ -151,7 +151,7 @@ class nexus{
 
     function get_template($template_name = null){
         $location = $this->get_file_location($template_name);
-        $template = $location ? file_get_contents($location) : null;
+        $template = $location ? file_get_contents($location) : $template_name;
         return $template;
     }
 

@@ -1,9 +1,9 @@
 <?php
 use google\appengine\api\users\User;
 use google\appengine\api\users\UserService;
-        
+
 class nexus{
-    
+
     function debug($object){
 
         $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
@@ -18,7 +18,7 @@ class nexus{
         print "</pre>";
         print "</details>";
     }
-    
+
     function get_name(){
         $name = get_class($this);
         $name = "nexus";
@@ -27,7 +27,7 @@ class nexus{
         $name = ucwords($name);
         return $name;
     }
-    
+
     function get_module_path($param=[]){
 
         $param['relative'] = array_key_exists('relative',$param) ? $param['relative'] : true;
@@ -40,11 +40,11 @@ class nexus{
 
         return $path;
     }
-    
+
     function get_template($filename){
-        
+
         $template = file_get_contents("../../templates/".$filename);
-        
+
         /*
 			if(file_exists($param['filename'])){
 				$param['filename'] = $param['filename'];
@@ -79,15 +79,15 @@ class nexus{
             */
             return $template;
     }
-    
+
     function parse_template($template,$data){
-            
+
             //these are gonna be the global variables
 			//these values must get fetched from the setup file\module
 
             //$template = file_get_contents(getcwd()."/core/templates/".$template);
             $template = $this->get_template($template);
-            
+
             $data['company_name']                        = "Domestic"; //settings //company settings
             $data['company_logo']                        = "/images/company_logo.png";
 			$data['year']                                = date('Y');
@@ -97,7 +97,7 @@ class nexus{
 			$data['today']                               = $data['year'].'-'.$data['month'].'-'.$data['day'];
 
 			$data['class']															= get_class($this);
-			
+
 			while(preg_match("/\(#(.*?)#\)/", $template)){
 				if (preg_match_all("/\(#(.*?)#\)/", $template, $variables)){
 
@@ -112,9 +112,9 @@ class nexus{
 			return $template;
 		}
 
-        
+
     function __construct($param=array()){
-        
+
         $user = UserService::getCurrentUser();
         if (!$user){
             header("Location: https://accounts.google.com/Login#identifier");
@@ -138,9 +138,9 @@ class nexus{
         }
         */
         $content    = $this->get_template('dashboard.template');
-        
+
         $name       = $this->get_name();
-        
+
         echo $this->parse_template("index.template",[
             "title"     => $name,
             "head"      => $this->get_template("head.template"),

@@ -6,6 +6,7 @@ function set_active_links(){
     $("a[href]").each(function(){
         if(document.location.href == this.href){
             $(this).addClass("active");
+            //TODO THIS MUST GET DONE ON THE SERVER SIDE IF POSSIBLE
         }
     });
 }
@@ -30,23 +31,42 @@ var nexus = {
     };
   },
   init_tables: function(){
-    $('table.nexus').each(function(i){
-        var current_table = this;
+
+    $('table.sortable').each(function(i){
         $(this).find('thead th .fa-sort').each(function(j){
             $(this).click(function(){
-              console.debug(current_table);
+              //todo sort here
             })
         });
-      }
-    );
+    });
+
+    $('table').each(function(i){
+      this.add_row = function(){
+        var template = nexus.find_template(this.id)
+        if(template){
+          console.debug(template)
+          var new_row = $(this).find('tbody').append($(template).find('tr'));
+        }
+      };
+    });
   },
   init_timepickers: function(){
-
     $('input[type=time].nexus').each(function(i){
         $(this).attr('type','text');
         $(this).timepicker();
     });
 
+  },
+  find_template: function(id){
+    id = id || null;
+
+    var template = null;
+
+    if(id){
+        template = $('#template_'+id) || $('#'+id) || $(id);
+    }
+
+    return template;
   }
 };
 

@@ -33,11 +33,22 @@
           foreach($table_data['columns'] as $key=>$value){
             $cell_class_name = str_replace(' ', '_',strtolower($value));
 
-            $cells .= '<th class="'.$cell_class_name.'">'.$value.'<button type=button class="plain fa fa-sort"></button</th>';
+            $cells .= '<th class="'.$cell_class_name.'"><span class="single_line">'.$value.'<button type=button class="plain fa fa-sort"></button></span></th>';
           }
-          $table_menu  = generate_menu([
-            '<span class="fa fa-bars"></span>'  =>['Add another row','Sort table by']
-          ]);
+
+          $table_menu = '
+            <nav class="menu">
+              <div class=item>
+                <span class="fa fa-bars"></span>
+                <div class="menu">
+                  <button class="item plain" onclick="$(\'#(#table_id#)\')[0].add_row();">Add New Row</button>
+                </div>
+              </div>
+            </nav>
+          ';
+
+
+          $table_menu  = $this->parse_template($table_menu,$table_data);
           $header_data = $this->parse_template('html_table_head_row.template',['cells'=>$cells,'menu'=>$table_menu]);
           $footer_data = $this->parse_template('html_table_foot_row.template',['cells'=>$cells]);
 

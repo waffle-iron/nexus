@@ -1,4 +1,4 @@
-<table class='nexus' id='(#table_id#)'>
+<table class='sortable' id='(#table_id#)'>
   <thead>
     (#header_data#)
   </thead>

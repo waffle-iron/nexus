@@ -5,7 +5,7 @@
     http://shouldiprefix.com/
 */
 
-@import "nexus_mixin.scss";
+@import "_nexus_mixin.scss";
 
 $amber:#FFC107;
 $amour:#FEFCFD;
@@ -82,7 +82,7 @@ a[href]{
     cursor:pointer;
 }
 
-table.nexus{
+table{
     width: 100%;
     margin: 10px auto;
     border-collapse: collapse;
@@ -99,44 +99,59 @@ table.nexus{
     }
 
     thead{
-
       th{
-        .menu{
-          
-          .fa-bars{
-            width:100%;
-          }
+        &.row_number{
+          padding:0;
+          position:relative;
 
-          .menu{
-            position:absolute;
-            top:100%;
-            left:0;
-            text-align:left;
-          }
-        }
 
-        .fa-sort{
-          margin:0 0 0 5px;
+          >.menu{
+
+            &,
+            >.item{
+              position:absolute;
+              top:0;
+              left:0;
+              height:100%;
+              width:100%;
+              line-height:29px;
+            }
+
+            .item{
+              .menu{
+                top:100%;
+                .item{
+                  padding:4px 10px;
+                  background-color:lighten($primary_color,10%);
+                }
+              }
+            }
+          }
         }
       }
     }
 
-
     tbody{
+      tr{
 
-      tr:nth-child(even){
+        &:nth-child(even){
           background-color:$primary_color_light;
-      }
+        }
 
-      tr:hover{
-        background-color:$accent_color;
-        color:white;
-      }
+        &:hover{
+          background-color:$accent_color;
+          color:white;
+        }
 
-      td{
-          height: 20px;
-      }
+        td{
+            height: 20px;
 
+            &.row_number:before{
+              counter-increment: table_row_counter;
+              content:counter(table_row_counter);
+            }
+        }
+      }
     }
 
     th,td{
@@ -147,11 +162,6 @@ table.nexus{
 
     .row_number{
         text-align:center;
-    }
-
-    td.row_number:before{
-        counter-increment: table_row_counter;
-        content:counter(table_row_counter);
     }
 }
 
@@ -171,11 +181,15 @@ button.plain:focus{
 
 
 .fa{
-    margin-right:5px;
-}
+    margin:0 5px;
 
-.fa:first-child:last-child{
-  margin-right:0;
+    &:first-child{
+      margin-left:0;
+    }
+
+    &:last-child{
+      margin-right:0;
+    }
 }
 
 .pull_left{
@@ -487,8 +501,9 @@ html.dashboard{
     }
   }
 
-  .item:hover>.menu{
+  .item:hover .menu{
     display:block;
+    position:absolute;
   }
 }
 
@@ -510,4 +525,11 @@ html.dashboard{
 
 .user.nickname{
   text-transform:capitalize;
+}
+
+.single_line{
+  text-overflow:ellipsis;;
+  overflow:hidden;
+  white-space:nowrap;
+  max-width:100%;
 }

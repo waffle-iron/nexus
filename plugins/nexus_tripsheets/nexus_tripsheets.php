@@ -8,7 +8,7 @@ class nexus_tripsheets extends nexus_forms{
 
       $table_data = [
         'columns' => [
-            'Customer','Area','Description','Time In','Time Out','Sign','Travel Time','Work Time'
+            'Customer','Area','Description','Time In','Time Out','Travel Time','Work Time'
           ],
         'row_template' => '
         <td contenteditable></td>
@@ -28,7 +28,6 @@ class nexus_tripsheets extends nexus_forms{
         </td>
         <td><input type=time class=nexus></td>
         <td><input type=time class=nexus></td>
-        <td></td>
         <td></td>
         <td></td>'
       ];
