@@ -49,3 +49,11 @@
   filter: url(#blur); /* Firefox needs SVG */
   filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=selector-replace($blur,'px',''));
 }
+
+
+@mixin animation($animation) {
+    -moz-animation: $animation;
+    -o-animation: $animation;
+    -webkit-animation: $animation;
+    animation: $animation;
+}
