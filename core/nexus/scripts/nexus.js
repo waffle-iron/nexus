@@ -42,10 +42,14 @@ var nexus = {
 
     $('table').each(function(i){
       this.add_row = function(){
-        var template = nexus.find_template(this.id)
+        var template = nexus.find_template(this.id);
         if(template){
-          console.debug(template)
-          var new_row = $(this).find('tbody').append($(template).find('tr'));
+          //window.cw = template;
+          //console.debug($(template));
+          //console.debug($(template).find('tr')[0]);
+          var new_row = this.tBodies[0].appendChild(document.createElement("tr"));
+          $(new_row).replaceWith(template);
+
         }
       };
     });
@@ -57,6 +61,21 @@ var nexus = {
     });
 
   },
+  parse_template: function(template,data){
+    template = template || '';
+    data = data || {};
+
+    /*todod
+    var check = mixed_input.split(" ");
+    var template = null;
+    if(check.length > 1){
+      template = mixed_input;
+    }
+    else{
+      template = nexus.find_template(mixed_input) || '';
+    }*/
+
+  },
   find_template: function(id){
     id = id || null;
 
@@ -64,6 +83,10 @@ var nexus = {
 
     if(id){
         template = $('#template_'+id) || $('#'+id) || $(id);
+    }
+
+    if(template){
+      template = template[0].innerHTML;
     }
 
     return template;
