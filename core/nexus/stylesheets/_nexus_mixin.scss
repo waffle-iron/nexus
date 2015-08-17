@@ -57,3 +57,10 @@
     -webkit-animation: $animation;
     animation: $animation;
 }
+
+@mixin text-overflow($text-overflow){
+  -ms-text-overflow: $text-overflow;
+  -o-text-overflow: $text-overflow;
+  text-overflow: $text-overflow;
+  
+}
