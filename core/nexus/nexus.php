@@ -7,11 +7,60 @@ class nexus{
 
     public $name = '';
     public $user = null;
+    var $default_method = 'dashboard';
 
     //http://stackoverflow.com/questions/173400/how-to-check-if-php-array-is-associative-or-sequential
+    function readable_string($string = ""){
+
+      $string = str_replace("-"," ",$string);
+      $string = str_replace("_"," ",$string);
+
+      return $string;
+    }
+
+    function debug($object){
+
+        $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
+
+        if(is_array($object) && func_num_args() == 1){
+            $title = "Debugging Array(".sizeof($object).")";
+        }
+
+        print "<details class='debug' open>";
+        print "<summary>".$title."</summary>";
+        print "<pre>";
+        print_r($object);
+        print "</pre>";
+        print "</details>";
+    }
 
     function error($title = 'Error', $message = ''){
         return $this->parse_template("error.template",['title'=>$title, 'message'=>$message]);
+    }
+
+    function generate_html_table($data){
+
+      $html_table = '
+        <table>
+          <thead>
+            <tr>';
+
+      foreach($data as $column){
+        $html_table .= '<th>';
+        $html_table .= $column;
+        $html_table .= '</th>';
+      }
+
+      $html_table .= '</tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot>
+          </tfoot>
+        </table>
+      ';
+
+      return $html_table;
     }
 
     function get_path($relative = false){
@@ -208,7 +257,7 @@ class nexus{
             array_shift($request);
             $class_name   = 'nexus_'.$request[0];
             $class_name   = str_replace('%20','_',$class_name);
-            $method = count($request) == 2 ? $request[1] : 'dashboard';
+            $method = count($request) == 2 ? $request[1] : $this->default_method;
             $_SERVER['REQUEST_URI'] = null;
             //todo check if that class exists, if not, redirect to the error page
             require_once("plugins/".$class_name."/".$class_name.".php");
@@ -238,7 +287,7 @@ class nexus{
             $content = '';
             if(!method_exists($this,$method)){
                 $content .= $method ? $this->error('Method: "'.$method.'" not found') : '';
-                $method = 'dashboard';
+                $method = $this->default_method;
             }
 
             $content .= $this->$method();

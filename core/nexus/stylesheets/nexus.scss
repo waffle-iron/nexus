@@ -42,13 +42,17 @@ $woodsmoke:#171A21;
 $ziggurat:#BFCDE0;
 
 
+/*palette defaults*/
+$gap:10px;
+
 $primary_color:         $oxford_blue;
 $primary_color_dark:    $ebony_clay;
 $primary_color_light:   $titan_white;
 $primary_text_color:    $white;
 $secondary_text_color:  $dove_gray;
 $accent_color:          $lynch;
-$divider_color:         $nobel;
+$border_color:          $nobel;
+$divider_color:         $border_color;
 
 $default_padding: 6px 4px;
 
@@ -74,6 +78,8 @@ body{
 
 img{
     border:none; /*ie 10 and below fix*/
+    max-height:100%;
+    max-width:100%;
 }
 
 button,
@@ -82,11 +88,16 @@ a[href]{
     cursor:pointer;
 }
 
+input:focus{
+  outline-color:$primary_color;
+}
+
 table{
     width: 100%;
     margin: 10px auto;
     border-collapse: collapse;
     counter-reset: table_row_counter;
+    table-layout: fixed;
 
     *{
       background-color:inherit;
@@ -100,33 +111,11 @@ table{
 
     thead{
       th{
+        text-transform:capitalize;
+
         &.row_number{
           padding:0;
-          position:relative;
-
-
-          >.menu{
-
-            &,
-            >.item{
-              position:absolute;
-              top:0;
-              left:0;
-              height:100%;
-              width:100%;
-              line-height:29px;
-            }
-
-            .item{
-              .menu{
-                top:100%;
-                .item{
-                  padding:4px 10px;
-                  background-color:lighten($primary_color,10%);
-                }
-              }
-            }
-          }
+          position:relative;;
         }
       }
     }
@@ -139,7 +128,7 @@ table{
         }
 
         &:hover{
-          background-color:$accent_color;
+          background-color:lighten($primary_color,50%);
           color:white;
         }
 
@@ -150,6 +139,10 @@ table{
               counter-increment: table_row_counter;
               content:counter(table_row_counter);
             }
+
+            input{
+              width:100%;
+            }
         }
       }
     }
@@ -158,10 +151,11 @@ table{
         border:1px solid $primary_color_dark;
         padding: $default_padding;
         vertical-align: middle;
-    }
 
-    .row_number{
-        text-align:center;
+        &.row_number{
+            text-align:center;
+            width:30px;
+        }
     }
 }
 
@@ -377,40 +371,43 @@ html.hide_menu {
     margin:auto;
     position:relative;
     overflow:auto;
+    padding:60px 1cm;
 
-    header.letterhead{
+    &.a4{
+      &.portrait{
+        height:29.7cm;
+        width:21cm;
+      }
+      &.landscape{
+        width:25cm;
+        height:17.5cm;
+      }
+    }
+
+    >header.letterhead{
         position:absolute;
         top:0;
         left:0;
         background-color: $primary_color;
-        color: rgb(255, 255, 255);
+        color: white;
         font-weight: bold;
         font-size: 1.8em;
         padding: 10px;
         width: 100%;
         border-bottom: 3px solid $accent_color;
-        max-height:50px;
+        height:50px;
 
         .fa-bars{
             color:white;
             text-decoration:none;
         }
     }
-}
 
-.page.a4{
-    padding:60px 1cm 1cm 1cm;
-}
-
-.page.a4.portrait{
-    padding:1cm;
-    height:29.7cm;
-    width:21cm;
-}
-
-.page.a4.landscape{
-    width:25cm;
-    height:17.5cm;
+    > .content{
+      height: 100%;
+      width: 100%;
+      overflow: auto;
+    }
 }
 
 .button{
@@ -482,7 +479,18 @@ html.dashboard{
 }
 
 .debug{
-  text-align:left;
+    text-align:left;
+    background-color: rgb(50,50,50);
+    color: white;
+    font-family: monospace;
+    padding: 10px;
+    margin: 10px auto;
+    border: 2px solid black;
+
+    * {
+        font-family: monospace;
+    }
+
 }
 
 .menu{
@@ -525,6 +533,7 @@ html.dashboard{
 
 .user.nickname{
   text-transform:capitalize;
+  float:right;
 }
 
 .single_line{

@@ -115,19 +115,4 @@ function is_assoc(array $array){
   return (bool)count(array_filter(array_keys($array), 'is_string'));
 }
 
-function debug($object){
-
-    $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
-
-    if(is_array($object) && func_num_args() == 1){
-        $title = "Debugging Array(".sizeof($object).")";
-    }
-
-    print "<details class='debug' open>";
-    print "<summary>".$title."</summary>";
-    print "<pre>";
-    print_r($object);
-    print "</pre>";
-    print "</details>";
-}
 ?>
