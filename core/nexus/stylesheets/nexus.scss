@@ -54,6 +54,14 @@ $accent_color:          $lynch;
 $border_color:          $nobel;
 $divider_color:         $border_color;
 
+$font_fallback:null;
+$font_default:null;
+$font_heavy:null;
+$font_light:null;
+
+$foreground_color:null;
+$foreground_color_dark:null;
+$foreground_color_light:null;
 $default_padding: 6px 4px;
 
 *{
