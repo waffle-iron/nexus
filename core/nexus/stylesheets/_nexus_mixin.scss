@@ -72,13 +72,20 @@
     user-select: $user-select;
 }
 
-@mixin word-break($word-break){
-  -ms-word-break: $word-break;
-  word-break: $word-break;
-}
-
 @mixin hyphens($hyphens){
   -webkit-hyphens: $hyphens;
   -moz-hyphens: $hyphens;
   hyphens: $hyphens;
 }
+
+@mixin word-break($word-break){
+  /*ref: https://css-tricks.com/almanac/properties/h/hyphenate/*/
+  -ms-word-break: $word-break;
+  word-break: $word-break;
+  @if($word-break == break-all){
+    word-break: break-word;
+    @include hyphens(auto);
+  }
+}
+
+
