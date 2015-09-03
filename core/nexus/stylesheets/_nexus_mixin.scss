@@ -71,3 +71,8 @@
     -ms-user-select: $user-select;
     user-select: $user-select;
 }
+
+@mixin word-break($word-break){
+  -ms-word-break: $word-break;
+  word-break: $word-break;
+}
