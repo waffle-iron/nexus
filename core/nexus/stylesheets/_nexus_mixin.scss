@@ -76,3 +76,9 @@
   -ms-word-break: $word-break;
   word-break: $word-break;
 }
+
+@mixin hyphens($hyphens){
+  -webkit-hyphens: $hyphens;
+  -moz-hyphens: $hyphens;
+  hyphens: $hyphens;
+}
