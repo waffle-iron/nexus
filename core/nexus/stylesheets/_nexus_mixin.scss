@@ -89,4 +89,8 @@
   }
 }
 
-
+@mixin ie8only($property,$value){
+    @media \0screen\,screen\9 {
+        $property:$value;
+    }
+}
