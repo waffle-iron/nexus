@@ -1,0 +1,31 @@
+
+/*brand colors*/
+$brand_color:white;
+$brand_color_primary:$brand_color;
+$brand_color_secondary: $mulberry;
+$brand_color_3:$bay_of_many;
+$brand_color_4:black;
+$brand_color_5:$deluge;
+
+$foreground_color:white;
+$shadow_color:transparentize(black,40%);
+$accent_color:darken($foreground_color,20%);
+$border_color:darken($foreground_color,10%);
+$divider_color:$border_color;
+
+/*text colors*/
+$text_color_primary:$brand_color_4;
+$secondary_text_color:$boulder;
+$link_color:$brand_color_4;
+$link_color_active:darken($brand_color_3,50%);
+$heading_color:null;
+
+/*forms*/
+$success_color: #41cb83;
+$error_color: #ff5548;
+$active_border_color:null;
+$disabled:null;
+
+$brand_font:normal 14px Tahoma, Arial;
+$brand_font_primary:$brand_font;
+$brand_font_secondary:normal 'regan_slab_heavy' ; //todo import font file

@@ -5,6 +5,11 @@
   border-radius: $border-radius;
 }
 
+@mixin word-break($word-break){
+  -ms-word-break:$word-break;
+  word-break:$word-break;
+}
+
 @mixin box-sizing($box-sizing){
   -webkit-box-sizing:$box-sizing;
   -moz-box-sizing:$box-sizing;
