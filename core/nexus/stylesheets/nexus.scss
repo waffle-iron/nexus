@@ -6,67 +6,11 @@
 */
 
 @import "_nexus_mixin.scss";
+@import "_nexus_palette.scss";
 
-$amber:#FFC107;
-$amour:#FEFCFD;
-$bali_hai:#7A93AC;
-$black_pearl:#031927;
-$burnt_sienna:#E87352;
-$comet:#5D5D81;
-$cornflower:#92BCEA;
-$dove_gray:#727272;
-$eastern_blue:#1D8A99;
-$ebony_clay:#272E3F;
-$emerald:#5FCE9B;
-$fruit_salad:#4CAF50;
-$lynch:#607D8B;
-$mercury:#E8E8E8;
-$nepal:#7EA0B7;
-$nevada:#617073;
-$nobel:#B6B6B6;
-$oxford_blue:#39435C;
-$perano:#AFB3F7;
-$periwinkle_gray:#C5CAE9;
-$pomegranate:#F44336;
-$robins_egg_blue:#0BC9CD;
-$ronchi:#EECA5A;
-$san_marino:#3F51B5;
-$saphire:#303F9F;
-$silver:silver;
-$swamp:#000505;
-$titan_white:#FCFCFF;
-$viking:#66B5D6;
-$violent_violet:#221166;
-$white:white;
-$woodsmoke:#171A21;
-$ziggurat:#BFCDE0;
-
-
-/*palette defaults*/
-$gap:10px;
-
-$primary_color:         $oxford_blue;
-$primary_color_dark:    $ebony_clay;
-$primary_color_light:   $titan_white;
-$primary_text_color:    $white;
-$secondary_text_color:  $dove_gray;
-$accent_color:          $lynch;
-$border_color:          $nobel;
-$divider_color:         $border_color;
-
-$font_fallback:null;
-$font_default:null;
-$font_heavy:null;
-$font_light:null;
-
-$foreground_color:null;
-$foreground_color_dark:null;
-$foreground_color_light:null;
-$default_padding: 6px 4px;
 
 *{
   @include box-sizing(border-box);
-  font-size:inherit;
 }
 
 html{
@@ -76,7 +20,7 @@ html{
 body{
     min-height:100vh;
     font: 12px Tahoma, Arial normal;
-    background-color:$primary_color_light;
+    background-color:$foreground_color;
     position:relative;
     width:100%;
     padding:40px 10px 35px 10px;
@@ -91,9 +35,18 @@ img{
 }
 
 button,
-input[type=button],
-a[href]{
-    cursor:pointer;
+input[type=button]
+input,
+a[href],
+.button,
+select{
+    &:not([disabled]){
+      cursor:pointer;
+    }
+
+    &[disabled]{
+      cursor:not-allowed;
+    }
 }
 
 input:focus{
@@ -102,10 +55,11 @@ input:focus{
 
 table{
     width: 100%;
-    margin: 10px auto;
+    margin: $gap auto;
     border-collapse: collapse;
     counter-reset: table_row_counter;
     table-layout: fixed;
+    background-color:white;
 
     *{
       background-color:inherit;
@@ -136,8 +90,8 @@ table{
         }
 
         &:hover{
-          background-color:lighten($primary_color,50%);
-          color:white;
+          background-color:$foreground_color_light;
+          color:$foreground_color_dark;
         }
 
         td{
@@ -247,9 +201,9 @@ button.plain:focus{
     text-align: center;
     font-size: 0.9em;
     border-top:1px solid $accent_color;
-    background-color: $primary_color_light;
-    color:black;
-    padding:$default_padding;
+    background-color: $foreground_color_dark;
+    color:$foreground_color_light;
+    padding:$gap;
     transition: padding-left 0.3s ease;
     z-index:0;
 }

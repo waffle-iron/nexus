@@ -1,31 +1,88 @@
+$amber:#FFC107;
+$amour:#FEFCFD;
+$bali_hai:#7A93AC;
+$black_pearl:#031927;
+$burnt_sienna:#E87352;
+$comet:#5D5D81;
+$cornflower:#92BCEA;
+$dove_gray:#727272;
+$eastern_blue:#1D8A99;
+$ebony_clay:#272E3F;
+$emerald:#5FCE9B;
+$fruit_salad:#4CAF50;
+$gallery:#EFEFEF;
+$lynch:#607D8B;
+$mercury:#E8E8E8;
+$nepal:#7EA0B7;
+$nevada:#617073;
+$nobel:#B6B6B6;
+$oxford_blue:#39435C;
+$perano:#AFB3F7;
+$periwinkle_gray:#C5CAE9;
+$pomegranate:#F44336;
+$robins_egg_blue:#0BC9CD;
+$ronchi:#EECA5A;
+$san_marino:#3F51B5;
+$saphire:#303F9F;
+$silver:silver;
+$swamp:#000505;
+$titan_white:#FCFCFF;
+$viking:#66B5D6;
+$violent_violet:#221166;
+$white:white;
+$woodsmoke:#171A21;
+$ziggurat:#BFCDE0;
 
 /*brand colors*/
-$brand_color:white;
-$brand_color_primary:$brand_color;
-$brand_color_secondary: $mulberry;
-$brand_color_3:$bay_of_many;
-$brand_color_4:black;
-$brand_color_5:$deluge;
+$brand_color:null;
+$brand_color_primary:null;
+$brand_color_secondary:null;
+$brand_color_3:null;
+$brand_color_4:null;
+$brand_color_5:null;
 
-$foreground_color:white;
-$shadow_color:transparentize(black,40%);
-$accent_color:darken($foreground_color,20%);
-$border_color:darken($foreground_color,10%);
-$divider_color:$border_color;
 
 /*text colors*/
-$text_color_primary:$brand_color_4;
-$secondary_text_color:$boulder;
-$link_color:$brand_color_4;
-$link_color_active:darken($brand_color_3,50%);
+$text_color_primary:null;
+$text_color_secondary:null;
+
+$link_color:null;
+$link_color_active:null;
 $heading_color:null;
 
 /*forms*/
 $success_color: #41cb83;
 $error_color: #ff5548;
-$active_border_color:null;
 $disabled:null;
 
-$brand_font:normal 14px Tahoma, Arial;
-$brand_font_primary:$brand_font;
+$font_fallback:Tahoma, Arial;
+$brand_font_primary:normal 14px $font_fallback;
 $brand_font_secondary:normal 'regan_slab_heavy' ; //todo import font file
+
+/*palette defaults*/
+$gap:10px;
+
+$primary_color:         $oxford_blue;
+$primary_color_dark:    $ebony_clay;
+$primary_color_light:   lighten($primary_color,60%);
+$primary_text_color:    $white;
+$secondary_text_color:  $dove_gray;
+$accent_color:          $lynch;
+$border_color:          $nobel;
+$divider_color:         $border_color;
+
+$font_fallback:null;
+$font_default:null;
+$font_heavy:null;
+$font_light:null;
+
+$foreground_color_light:white;
+$foreground_color:$gallery;
+$foreground_color_dark:#0C0C0C;
+
+$shadow_color:transparentize(black,0.4);
+$accent_color:darken($foreground_color,20%);
+$border_color:darken($foreground_color,10%);
+$divider_color:$gallery;
+
+$default_padding: 6px 4px;

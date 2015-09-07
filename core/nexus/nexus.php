@@ -18,6 +18,11 @@ class nexus{
       return $string;
     }
 
+    function alert($message = null){
+      if($message != null)
+      print '<script>alert("'.$message.'")</script>';
+    }
+
     function debug($object){
 
         $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
