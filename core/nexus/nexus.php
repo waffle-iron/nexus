@@ -68,14 +68,6 @@ class nexus{
       return $html_table;
     }
 
-    function get_path($relative = false){
-        $reflector = new ReflectionClass(get_class($this));
-        $fn = $reflector->getFileName();
-        $filepath = dirname($fn);
-        $filepath = $relative == true ? str_replace($_SERVER["DOCUMENT_ROOT"],"",$filepath) : $filepath;
-        return $filepath;
-    }
-
     function get_name(){
         $name = get_class($this);
         $name = str_replace('nexus_','',$name);
@@ -163,6 +155,17 @@ class nexus{
       }
 
       return $info;
+    }
+
+    function get_path($relative = false){
+        $reflector = new ReflectionClass(get_class($this));
+        $fn = $reflector->getFileName();
+        $filepath = dirname($fn);
+
+        $filepath = ($relative == true)  ? str_replace($_SERVER["DOCUMENT_ROOT"],"",$filepath) : $filepath;
+        $this->debug($filepath,'filepath');
+        $this->debug($_SERVER['DOCUMENT_ROOT'],'doc root');
+        return $filepath;
     }
 
     function get_file_location($filename = null){
