@@ -59,8 +59,6 @@ $font_fallback:Tahoma, Arial;
 $brand_font_primary:normal 14px $font_fallback;
 $brand_font_secondary:normal 'regan_slab_heavy' ; //todo import font file
 
-/*palette defaults*/
-$gap:10px;
 
 $primary_color:         $oxford_blue;
 $primary_color_dark:    $ebony_clay;
@@ -85,4 +83,6 @@ $accent_color:darken($foreground_color,20%);
 $border_color:darken($foreground_color,10%);
 $divider_color:$gallery;
 
+$gap:10px;
+$gap_big:2*$gap;
 $default_padding: 6px 4px;

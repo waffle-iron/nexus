@@ -61,6 +61,7 @@ table{
     counter-reset: table_row_counter;
     table-layout: fixed;
     background-color:white;
+    font-size:1em;
 
     *{
       background-color:inherit;
@@ -69,7 +70,6 @@ table{
     thead,tfoot{
         background-color:$primary_color;
         color:white;
-        font-size:1.2em;
     }
 
     thead{
@@ -97,13 +97,14 @@ table{
 
         td{
             height: 20px;
-
             &.row_number:before{
               counter-increment: table_row_counter;
               content:counter(table_row_counter);
             }
 
-            input{
+            input, select, .btn{
+              border:none;
+              background:none;
               width:100%;
             }
         }
@@ -117,7 +118,7 @@ table{
 
         &.row_number{
             text-align:center;
-            width:30px;
+            width:25px;
         }
     }
 }
@@ -320,21 +321,14 @@ html.hide_menu {
 
 .page{
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e6e6e6+0,ffffff+100 */
-    background: rgb(230,230,230); /* Old browsers */
-    background: -moz-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(230,230,230,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    //todo make this background-gradient a mixin
+    @include gradient(radial, center, rgba(230,230,230,1), 0%, rgba(255,255,255,1), 100%);
     border:1px solid #CCCCCC;
     @include box-shadow(2px 2px 10px 0 #CCCCCC);
     display:block;
     margin:auto;
     position:relative;
     overflow:auto;
-    padding:60px 1cm;
 
     &.a4{
       &.portrait{
@@ -347,29 +341,27 @@ html.hide_menu {
       }
     }
 
-    >header.letterhead{
-        position:absolute;
-        top:0;
-        left:0;
+    >.letterhead:first-child{
         background-color: $primary_color;
         color: white;
         font-weight: bold;
-        font-size: 1.8em;
-        padding: 10px;
+        font-size: 1.5em;
+        padding: $gap;
         width: 100%;
         border-bottom: 3px solid $accent_color;
-        height:50px;
 
-        .fa-bars{
+        > .fa-bars{
             color:white;
             text-decoration:none;
         }
     }
 
     > .content{
+      padding:$gap_big;
       height: 100%;
       width: 100%;
       overflow: auto;
+      font-size:1em;
     }
 }
 
@@ -490,7 +482,7 @@ html.dashboard{
   width:100%;
   height:100%;
   z-index:100;
-  bakcground-color:black;
+  background-color:$foreground_color_dark;
   background-color:rgba(0,0,0,0.5);
 }
 
