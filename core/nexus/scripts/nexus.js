@@ -42,7 +42,7 @@ var nexus = {
 
     $('table').each(function(i){
       this.add_row = function(){
-        var template = nexus.find_template(this.id);
+        var template = nexus.get_template(this.id);
         if(template){
           //window.cw = template;
           //console.debug($(template));
@@ -64,7 +64,6 @@ var nexus = {
   parse_template: function(template,data){
     template = template || '';
     data = data || {};
-
     /*todod
     var check = mixed_input.split(" ");
     var template = null;
@@ -74,19 +73,41 @@ var nexus = {
     else{
       template = nexus.find_template(mixed_input) || '';
     }*/
+    //
+    // var re = /\(#(.*?)#\)/g;
+    // var str = 'hello (#world#) (#city#)';
+    // var subst = 'test';
+    //
+    // var result = str.replace(re, subst);
+
+    var re = /\(#(.*?)#\)/g;
+    var str = template;
+
+    var m;
+
+    while ((m = re.exec(str)) !== null) {
+
+        if (m.index === re.lastIndex) { re.lastIndex++; }
+
+        var variable_name = m[0].replace("(#","").replace("#)","");
+        if(data[variable_name]){
+          template = template.replace(m[0],data[variable_name].toString());
+        }
+    }
+    return template;
 
   },
-  find_template: function(id){
-    id = id || null;
+
+  get_template: function(id){
 
     var template = null;
 
     if(id){
-        template = $('#template_'+id) || $('#'+id) || $(id);
+        template = $(id) || $('#'+id) || $('#template_'+id);
     }
 
     if(template){
-      template = template[0].innerHTML;
+      template = $(template).text();
     }
 
     return template;

@@ -10,44 +10,10 @@
 @import "nexus_base.scss";
 
 
-*{
-  @include box-sizing(border-box);
-}
-
-html{
-    min-height:100vh;
-}
-
 body{
     min-height:100vh;
-    font: 12px Tahoma, Arial normal;
-    background-color:$foreground_color;
-    position:relative;
     width:100%;
-    padding:40px 10px 35px 10px;
     margin:0;
-    transition:padding-left 0.3s ease;
-}
-
-img{
-    border:none; /*ie 10 and below fix*/
-    max-height:100%;
-    max-width:100%;
-}
-
-button,
-input[type=button]
-input,
-a[href],
-.button,
-select{
-    &:not([disabled]){
-      cursor:pointer;
-    }
-
-    &[disabled]{
-      cursor:not-allowed;
-    }
 }
 
 input:focus{
@@ -322,7 +288,7 @@ html.hide_menu {
 .page{
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e6e6e6+0,ffffff+100 */
     //todo make this background-gradient a mixin
-    @include gradient(radial, center, rgba(230,230,230,1), 0%, rgba(255,255,255,1), 100%);
+    // @include gradient(radial, center, rgba(230,230,230,1), 0%, rgba(255,255,255,1), 100%);
     border:1px solid #CCCCCC;
     @include box-shadow(2px 2px 10px 0 #CCCCCC);
     display:block;

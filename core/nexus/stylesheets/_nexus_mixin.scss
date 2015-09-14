@@ -1,14 +1,16 @@
 //ref: @mixin css3-prefix($property, $value)
 @mixin vendor_prefix($property, $value){
-   -webkit-#{$property}: #{$value}
-    -khtml-#{$property}: #{$value}
-      -moz-#{$property}: #{$value}
-       -ms-#{$property}: #{$value}
-        -o-#{$property}: #{$value}
-           #{$property}: #{$value}
+   -webkit-#{$property}: #{$value};
+    -khtml-#{$property}: #{$value};
+      -moz-#{$property}: #{$value};
+       -ms-#{$property}: #{$value};
+        -o-#{$property}: #{$value};
+           #{$property}: #{$value};
 }
+
 @mixin border-radius($radius){
   @include vendor_prefix(border-radius,$radius);
+}
 
 @mixin word-break($word-break){
   -ms-word-break:$word-break;
@@ -105,24 +107,24 @@
     }
 }
 
-@mixin gradient($style: linear, $origin, $color_1, $color_1_ratio, $color_2, $color_2_ratio){
-  //fallback
-  background: $color_1;//inbetween color $color_1 and $color_2; /* Old browsers */
-  @if $style == radial{
-
-  }
-  @else{
-    $style: linea
-  }
-
-  background: -moz-radial-gradient($origin, ellipse cover,  rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(230,230,230,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-  background: -webkit-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-  background: radial-gradient(ellipse at center,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-
-
-}
+// @mixin gradient($style, $origin, $color_1, $color_1_ratio, $color_2, $color_2_ratio){
+//   // //fallback
+//   // background: $color_1; //inbetween color $color_1 and $color_2; /* Old browsers */
+//   // @if $style == radial{
+//   //
+//   // }
+//   // @else{
+//   //   $style: linear;
+//   // }
+//   //
+//   // background: -moz-radial-gradient($origin, ellipse cover,  rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+//   // background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(230,230,230,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+//   // background: -webkit-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+//   // background: -o-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* Opera 12+ */
+//   // background: -ms-radial-gradient(center, ellipse cover,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+//   // background: radial-gradient(ellipse at center,  rgba(230,230,230,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+//   // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+//
+//
+//
+// }

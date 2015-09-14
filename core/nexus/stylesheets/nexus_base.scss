@@ -1,1 +1,33 @@
-//out: nexus_base.css
+//out: nexus_base.min.css
+@import "_nexus_mixin.scss";
+
+*{
+  @include box-sizing(border-box);
+}
+
+html, body{
+    min-height:100%;
+    min-height:100vh;
+}
+
+
+img{
+    border:none;
+    max-height:100%;
+    max-width:100%;
+}
+
+button,
+input[type=button]
+input,
+a[href],
+.button,
+select{
+    &:not([disabled]){
+      cursor:pointer;
+    }
+
+    &[disabled]{
+      cursor:not-allowed;
+    }
+}
