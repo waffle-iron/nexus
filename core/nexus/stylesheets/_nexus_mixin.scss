@@ -58,7 +58,7 @@
   -moz-filter: blur($blur);
   -o-filter: blur($blur);
   -ms-filter: blur($blur);
-  filter: url(#blur); /* Firefox needs SVG */
+  /*filter: url(#blur); Firefox needs SVG */
   filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=selector-replace($blur,'px',''));
 }
 
