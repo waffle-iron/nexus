@@ -248,7 +248,7 @@ class nexus{
 				}
 			}
 
-			return $template;
+			return html_entity_decode($template);
 		}
 
     function dashboard(){
