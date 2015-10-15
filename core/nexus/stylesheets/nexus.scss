@@ -103,7 +103,6 @@ button.plain:focus{
     outline:none;
 }
 
-
 .fa{
     margin:0 5px;
 
@@ -462,4 +461,62 @@ html.dashboard{
   overflow:hidden;
   white-space:nowrap;
   max-width:100%;
+}
+
+
+input[type=radio].material{
+    position:relative;
+    z-index:2;
+    opacity:0;
+    cursor:pointer;
+    margin: 0;
+    height: 17px;
+    width: 17px;
+    top: 4px;
+    left: 1px;
+
+    & + label:hover:before,
+    &:hover + label:before{
+      border-color: $brand_color;
+      background-color: $brand_color;
+      @include box-shadow(0 0 0 5px white inset);
+    }
+
+    &:checked{
+      & + label{
+        &:before{
+          border-color: $brand_color;
+          background-color: $brand_color;
+          @include box-shadow(0 0 0 3px white inset);
+        }
+      }
+    }
+
+    & + label{
+      position:relative;
+      padding-left:40px;
+      line-height:20px;
+      display:inline-block;
+      margin-left:-20px;
+      z-index:1;
+
+      &:before{
+        content: "";
+        position:absolute;
+        width: 20px;
+        height: 20px;
+        @include border-radius(100%);
+        border: 2px solid $border_color;
+        background-color: white;
+        left: 0;
+        top: -1px;
+        z-index:1;
+        @include box-shadow(0 0 0 10px white inset);
+        @include transition(all 0.2s linear);
+
+        @media \0screen\,screen\9 {
+            content:none;
+        }
+      }
+    }
 }
