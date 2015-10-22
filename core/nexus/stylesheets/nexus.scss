@@ -1,14 +1,13 @@
-//out: nexus.min.css
 /*
     https://www.materialpalette.com/indigo/blue-grey
     http://materializecss.com/buttons.html
     http://shouldiprefix.com/
 */
 
+@import "_nexus_base.scss";
 @import "_nexus_mixin.scss";
+@import "_nexus_animations.scss";
 @import "_nexus_palette.scss";
-@import "nexus_base.scss";
-
 
 body{
     min-height:100vh;
