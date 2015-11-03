@@ -15,6 +15,10 @@ body{
     margin:0;
 }
 
+a{
+  color:$color_link;
+}
+
 input:focus{
   outline-color:$primary_color;
 }
@@ -87,7 +91,6 @@ table{
         }
     }
 }
-
 
 button.plain {
     background: none;
@@ -476,16 +479,16 @@ input[type=radio].material{
 
     & + label:hover:before,
     &:hover + label:before{
-      border-color: $brand_color;
-      background-color: $brand_color;
+      border-color: $color_primary;
+      background-color: $color_primary;
       @include box-shadow(0 0 0 5px white inset);
     }
 
     &:checked{
       & + label{
         &:before{
-          border-color: $brand_color;
-          background-color: $brand_color;
+          border-color: $color_primary;
+          background-color: $color_primary;
           @include box-shadow(0 0 0 3px white inset);
         }
       }
