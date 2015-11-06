@@ -15,7 +15,7 @@ img{
     max-width:100%;
 }
 
-button,input,a:link,.button,select{
+button,input[type=button], input[type=submit], input[type=reset],a:link,.button,select{
     &:not([disabled]){
       cursor:pointer;
     }
