@@ -101,11 +101,6 @@
   }
 }
 
-@mixin ie8only($property,$value){
-    @media \0screen\,screen\9 {
-        $property:$value;
-    }
-}
 
 // @mixin gradient($style, $origin, $color_1, $color_1_ratio, $color_2, $color_2_ratio){
 //   // //fallback
@@ -128,3 +123,15 @@
 //
 //
 // }
+
+@mixin ie6-only {
+  * html {
+    @content;
+  }
+}
+
+@mixin ie8_only{
+   @media \0screen\,screen\9 {
+      @content;
+   }
+}
