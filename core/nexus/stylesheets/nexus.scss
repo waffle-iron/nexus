@@ -522,3 +522,32 @@ input[type=radio].material{
       }
     }
 }
+
+.button.raised{
+  @include border-radius(3px);
+  overflow:hidden;
+  cursor:pointer;
+  color:white;
+  background-color:$color_primary;
+  display:inline-block;
+  margin:$gap;
+  padding:$gap;
+  font-size:18px;
+  font-weight:bold;
+  @include transition(top 0.2s ease);
+  position:relative;
+  @include box-shadow(0 2px 1px darken($color_primary,20%));
+  font-family:$font_family_brand;
+  text-align:center;
+
+  &.bar{
+      width:100%;
+      display:block;
+      margin:$gap 0 ($gap/2) 0;
+  }
+
+  &:active{
+     @include box-shadow(none);
+     top:2px;
+  }
+}
