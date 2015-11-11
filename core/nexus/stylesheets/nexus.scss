@@ -92,6 +92,48 @@ table{
     }
 }
 
+.button{
+    font-family:$font_family_brand;
+    font-size: 18px;
+    text-align:center;
+    text-decoration:none;
+    cursor:pointer;
+    position:relative;
+    border:none;
+
+    &.raised{
+        @include border-radius(3px);
+        overflow:hidden;
+        color:white;
+        background-color:$color_primary;
+        display:inline-block;
+        margin:$gap;
+        padding:$gap;
+        font-weight:bold;
+        @include transition(top 0.2s ease);
+        @include box-shadow(0 2px 1px darken($color_primary,20%));
+
+        &:active{
+            @include box-shadow(none);
+            top:2px;
+        }
+    }
+
+    &.flat{
+        color:$color_primary;
+    }
+
+    &.bar{
+        width:100%;
+        display:block;
+        margin:$gap 0 ($gap/2) 0;
+    }
+
+    &:hover{
+        text-decoration:none;
+    }
+}
+
 button.plain {
     background: none;
     color: inherit;
