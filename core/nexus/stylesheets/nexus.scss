@@ -88,7 +88,6 @@ table{
     }
 }
 
-
 button.plain {
     background: none;
     color: inherit;
@@ -432,10 +431,6 @@ html.dashboard{
     display:block;
     position:absolute;
   }
-}
-
-.blur{
-  @include blur(2px);
 }
 
 .mask{

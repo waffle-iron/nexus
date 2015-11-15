@@ -1,13 +1,24 @@
 @import "_nexus_mixin.scss";
+@import "_nexus_palette.scss";
+@import "_nexus_animations.scss";
 
 *{
   @include box-sizing(border-box);
 }
 
+
+body{
+  color:$color_text;
+  @include word-break(break-word);
+  font-size:$font_size;
+}
+
 html, body{
     min-height:100%;
-    min-height:100vh;
+    font-family:$font_family, $font_family_fallback;
+    -webkit-font-smoothing:antialiased;
 }
+
 
 img{
     border:none;
@@ -15,10 +26,14 @@ img{
     max-width:100%;
 }
 
+a{
+  color:$color_link;
+}
+
 button,
-input[type=button]
+input[type=button],
 input,
-a[href],
+a:link,
 .button,
 select{
     &:not([disabled]){
@@ -28,4 +43,12 @@ select{
     &[disabled]{
       cursor:not-allowed;
     }
+}
+
+.blur{
+  @include blur(2px);
+}
+
+a[href]:not([href=""]):empty:after{
+	content:attr(href);
 }
