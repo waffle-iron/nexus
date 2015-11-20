@@ -86,14 +86,25 @@ $border_color:darken($foreground_color,10%);
 $divider_color:$gallery;
 
 $gap:10px;
-$gap_big:2*$gap;
 $default_padding: 6px 4px;
 
 
 //new variables
 $font_family_fallback:Tahoma, Arial !default;
+<<<<<<< HEAD
+$font_family:$font_family_fallback !default;
+$font_size:12px !default;
+
+=======
 $font_size:16px !default;
+>>>>>>> origin/master
 $color_foreground:white !default;
 
+$color_border:null !default;
+
 $color_text:black !default;
+<<<<<<< HEAD
+$color_link:blue !default;
+=======
 $color_link:null !default;
+>>>>>>> origin/master

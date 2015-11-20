@@ -92,6 +92,8 @@ table{
     }
 }
 
+<<<<<<< HEAD
+=======
 .button{
     font-family:$font_family_brand;
     font-size: 18px;
@@ -134,6 +136,7 @@ table{
     }
 }
 
+>>>>>>> origin/master
 button.plain {
     background: none;
     color: inherit;
@@ -477,10 +480,6 @@ html.dashboard{
     display:block;
     position:absolute;
   }
-}
-
-.blur{
-  @include blur(2px);
 }
 
 .mask{
