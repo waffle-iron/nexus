@@ -26,6 +26,7 @@ img{
     max-width:100%;
 }
 
+<<<<<<< HEAD
 a{
   color:$color_link;
 }
@@ -36,6 +37,9 @@ input,
 a:link,
 .button,
 select{
+=======
+button,input[type=button], input[type=submit], input[type=reset],a:link,.button,select{
+>>>>>>> origin/master
     &:not([disabled]){
       cursor:pointer;
     }
@@ -45,10 +49,33 @@ select{
     }
 }
 
+<<<<<<< HEAD
 .blur{
   @include blur(2px);
 }
 
 a[href]:not([href=""]):empty:after{
 	content:attr(href);
+=======
+a{
+  color:$color_link;
+  text-decoration:none;
+  
+  &:hover{
+    text-decoration:underline;
+  }
+}
+
+.pull_left{
+    float:left;
+}
+
+.pull_right{
+    float:right;
+}
+
+.clear{
+    clear:both;
+    float:none;
+>>>>>>> origin/master
 }
