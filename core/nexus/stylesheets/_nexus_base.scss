@@ -1,19 +1,10 @@
 @import "_nexus_mixin.scss";
 @import "_nexus_palette.scss";
-<<<<<<< HEAD
-=======
 @import "_nexus_animations.scss";
->>>>>>> origin/master
+
 
 *{
   @include box-sizing(border-box);
-}
-
-
-body{
-  color:$color_text;
-  @include word-break(break-word);
-  font-size:$font_size;
 }
 
 html, body{
@@ -23,26 +14,40 @@ html, body{
 }
 
 
+body{
+  color:$color_text;
+  @include word-break(break-word);
+  font-size:$font_size;
+}
+
 img{
     border:none;
     max-height:100%;
     max-width:100%;
 }
 
-<<<<<<< HEAD
 a{
   color:$color_link;
+  text-decoration:none;
+
+  &:hover{
+    text-decoration:underline;
+  }
+
 }
 
 button,
 input[type=button],
 input,
 a:link,
+button,
+input[type=button],
+input[type=submit],
+input[type=reset],
+a:link,
 .button,
 select{
-=======
-button,input[type=button], input[type=submit], input[type=reset],a:link,.button,select{
->>>>>>> origin/master
+
     &:not([disabled]){
       cursor:pointer;
     }
@@ -52,33 +57,15 @@ button,input[type=button], input[type=submit], input[type=reset],a:link,.button,
     }
 }
 
-<<<<<<< HEAD
 .blur{
   @include blur(2px);
 }
 
 a[href]:not([href=""]):empty:after{
 	content:attr(href);
-=======
-a{
-  color:$color_link;
-  text-decoration:none;
-
-  &:hover{
-    text-decoration:underline;
-  }
-}
-
-.pull_left{
-    float:left;
-}
-
-.pull_right{
-    float:right;
 }
 
 .clear{
     clear:both;
     float:none;
->>>>>>> origin/master
 }
