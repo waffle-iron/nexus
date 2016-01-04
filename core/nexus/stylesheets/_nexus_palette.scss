@@ -1,110 +1,42 @@
-$amber:#FFC107;
-$amour:#FEFCFD;
-$bali_hai:#7A93AC;
-$black_pearl:#031927;
-$burnt_sienna:#E87352;
-$cod_gray:#0C0C0C;
-$comet:#5D5D81;
-$cornflower:#92BCEA;
-$dove_gray:#727272;
-$eastern_blue:#1D8A99;
-$ebony_clay:#272E3F;
-$emerald:#5FCE9B;
-$fruit_salad:#4CAF50;
-$gallery:#EFEFEF;
-$lynch:#607D8B;
-$mercury:#E8E8E8;
-$nepal:#7EA0B7;
-$nevada:#617073;
-$nobel:#B6B6B6;
-$oxford_blue:#39435C;
-$perano:#AFB3F7;
-$periwinkle_gray:#C5CAE9;
-$pomegranate:#F44336;
-$robins_egg_blue:#0BC9CD;
-$ronchi:#EECA5A;
-$san_marino:#3F51B5;
-$saphire:#303F9F;
-$silver:silver;
-$swamp:#000505;
-$titan_white:#FCFCFF;
-$viking:#66B5D6;
-$violent_violet:#221166;
-$white:white;
-
-
-
 /*brand colors*/
-$color_primary:null;
-$color_primary_dark:null;
-$color_primary_light:null;
+$color_primary:#3838C3;
+$color_primary_dark:#000065 !default;
+$color_primary_light:null !default;
 
-$color_secondary:null;
-$color_secondary_dark:null;
-$color_secondary_light:null;
+$color_secondary:null !default;
+$color_secondary_dark:null !default;
+$color_secondary_light:null !default;
 
 
 /*text colors*/
 $color_text_primary:null;
 $color_text_secondary:null;
 
-$color_link:null;
 $color_link_primary:null;
 $color_link_secondary:null;
-$heading_color:null;
 
-/*forms*/
-$success_color: #41cb83;
-$error_color: #ff5548;
-$disabled:null;
+$color_heading:$color_secondary !default;
 
-$font_fallback:Tahoma, Arial;
-$brand_font_primary:normal 14px $font_fallback;
-$brand_font_secondary:normal 'regan_slab_heavy' ; //todo import font file
+$color_link:$color_secondary !default;
+$color_link:null !default;
 
-
-$primary_color:         $oxford_blue;
-$primary_color_dark:    $ebony_clay;
-$primary_color_light:   lighten($primary_color,60%);
-$primary_text_color:    $white;
-$secondary_text_color:  $dove_gray;
-$accent_color:          $lynch;
-$border_color:          $nobel;
-$divider_color:         $border_color;
-
-$font_family_fallback:Arial,sans-serif !default;
-$font_family_brand:'bebas' !default;
-$font_brand:12px $font_family_brand,$font_family_fallback !default;
-
-$foreground_color_light:white;
-$foreground_color:$gallery;
-$foreground_color_dark:#0C0C0C;
-
-$shadow_color:transparentize(black,0.4);
-$accent_color:darken($foreground_color,20%);
-$border_color:darken($foreground_color,10%);
-$divider_color:$gallery;
-
-$gap:10px;
-$default_padding: 6px 4px;
-
-
-//new variables
-$font_family_fallback:Tahoma, Arial !default;
-<<<<<<< HEAD
-$font_family:$font_family_fallback !default;
-$font_size:12px !default;
-
-=======
-$font_size:16px !default;
->>>>>>> origin/master
-$color_foreground:white !default;
+$color_foreground:#efefef !default;
+$color_shadow:#0c0c0c !default;
+$color_accent:grey;
 
 $color_border:null !default;
-
 $color_text:black !default;
-<<<<<<< HEAD
-$color_link:blue !default;
-=======
-$color_link:null !default;
->>>>>>> origin/master
+
+$color_success: #41cb83;
+$color_error: #ff5548;
+$color_disabled:null;
+
+$font_family_fallback:Helvetica,Arial !default;
+$font_family_primary:'Open Sans' !default;
+$font_family_secondar:null !default;
+$font_family:$font_family_primary, $font_family_fallback !default;
+$font_size:16px !default;
+$font:$font_size normal $font_family;
+
+$gap:1em;
+$space:1em;

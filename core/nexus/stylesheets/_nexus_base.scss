@@ -9,15 +9,17 @@
 
 html, body{
     min-height:100%;
-    font-family:$font_family, $font_family_fallback;
+    width:100%;
     -webkit-font-smoothing:antialiased;
+    margin:0;
 }
 
 
 body{
   color:$color_text;
   @include word-break(break-word);
-  font-size:$font_size;
+  font:$font;
+  background-color:$color_foreground;
 }
 
 img{
@@ -55,6 +57,24 @@ select{
     &[disabled]{
       cursor:not-allowed;
     }
+}
+
+a{
+  color:$color_link;
+}
+
+h1,h2,h3,h4,h5,h6{
+  display: block;
+  font-weight: bold;
+  margin:0;
+}
+
+h4{
+  font-size:1em;
+}
+
+input:focus{
+  outline-color:$color_primary;
 }
 
 .blur{

@@ -1,594 +1,66 @@
+//compressed:true
+
 /*
     https://www.materialpalette.com/indigo/blue-grey
     http://materializecss.com/buttons.html
     http://shouldiprefix.com/
 */
 
-@import "_nexus_base.scss";
-@import "_nexus_mixin.scss";
-@import "_nexus_animations.scss";
 @import "_nexus_palette.scss";
+@import "_nexus_mixin.scss";
+@import "_nexus_base.scss";
+@import "_nexus_animations.scss";
 
-body{
-    min-height:100vh;
-    width:100%;
-    margin:0;
-}
-
-a{
-  color:$color_link;
-}
-
-input:focus{
-  outline-color:$primary_color;
-}
-
-table{
-    width: 100%;
-    margin: $gap auto;
-    border-collapse: collapse;
-    counter-reset: table_row_counter;
-    table-layout: fixed;
-    background-color:white;
-    font-size:1em;
-
-    *{
-      background-color:inherit;
-    }
-
-    thead,tfoot{
-        background-color:$primary_color;
-        color:white;
-    }
-
-    thead{
-      th{
-        text-transform:capitalize;
-
-        &.row_number{
-          padding:0;
-          position:relative;;
-        }
-      }
-    }
-
-    tbody{
-      tr{
-
-        &:nth-child(even){
-          background-color:$primary_color_light;
-        }
-
-        &:hover{
-          background-color:$foreground_color_light;
-          color:$foreground_color_dark;
-        }
-
-        td{
-            height: 20px;
-            &.row_number:before{
-              counter-increment: table_row_counter;
-              content:counter(table_row_counter);
-            }
-
-            input, select, .btn{
-              border:none;
-              background:none;
-              width:100%;
-            }
-        }
-      }
-    }
-
-    th,td{
-        border:1px solid $primary_color_dark;
-        padding: $default_padding;
-        vertical-align: middle;
-
-        &.row_number{
-            text-align:center;
-            width:25px;
-        }
-    }
-}
-
-<<<<<<< HEAD
-=======
-.button{
-    font-family:$font_family_brand;
-    font-size: 18px;
-    text-align:center;
-    text-decoration:none;
-    cursor:pointer;
-    position:relative;
-    border:none;
-
-    &.raised{
-        @include border-radius(3px);
-        overflow:hidden;
-        color:white;
-        background-color:$color_primary;
-        display:inline-block;
-        margin:$gap;
-        padding:$gap;
-        font-weight:bold;
-        @include transition(top 0.2s ease);
-        @include box-shadow(0 2px 1px darken($color_primary,20%));
-
-        &:active{
-            @include box-shadow(none);
-            top:2px;
-        }
-    }
-
-    &.flat{
-        color:$color_primary;
-    }
-
-    &.bar{
-        width:100%;
-        display:block;
-        margin:$gap 0 ($gap/2) 0;
-    }
-
-    &:hover{
-        text-decoration:none;
-    }
-}
-
->>>>>>> origin/master
-button.plain {
-    background: none;
-    color: inherit;
-    border: none;
-    margin: 0;
-    padding: 0;
-    font-size:inherit;
-}
-
-button.plain:focus{
-    outline:none;
-}
-
-.fa{
-    margin:0 5px;
-
-    &:first-child{
-      margin-left:0;
-    }
-
-    &:last-child{
-      margin-right:0;
-    }
-}
-
-.pull_left{
-    display:block;
-    float:left;
-}
-
-.pull_right{
-    display:block;
-    float:right;
-}
 
 /*REF: https://css-tricks.com/using-flexbox/*/
-.flexbox{
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flexbox;
-    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-flex;     /* NEW - Chrome */
-    display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
-
-    display: -moz-box;
-    display: -webkit-flexbox;
-
-    -webkit-box-align: start;
-    -moz-box-align: start;
-    -webkit-flex-align: start;
-}
+// .flexbox{
+//     display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+//     display: -webkit-flexbox;
+//     display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+//     display: -ms-flexbox;      /* TWEENER - IE 10 */
+//     display: -webkit-flex;     /* NEW - Chrome */
+//     display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+//
+//     display: -moz-box;
+//     display: -webkit-flexbox;
+//
+//     -webkit-box-align: start;
+//     -moz-box-align: start;
+//     -webkit-flex-align: start;
+// }
 
 #header {
-    position: fixed;
+    padding:0.6em 1em;
     top: 0;
     left: 0;
     width: 100%;
-    background-color:$primary_color_dark;
-    height:30px;
-    color:$primary_color_light;
-    padding: $default_padding;
-    font-size: 1.2em;
+    background-color:$color_primary;
+    color:$color_primary_light;
     z-index:100;
-    @include box-shadow(0 0 10px 0 $primary_color_dark);
+    @include box-shadow(0 0 1em 0 $color_primary_dark);
+    color:white; /*use background text alternating color TODO*/
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:100;
 
-    .fa-bars{
-        width:20px;
+    >*{
+      display:inline-block;
+      vertical-align:baseline;
+      margin-right:0.5em;
     }
-}
-
-#footer{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 0.9em;
-    border-top:1px solid $accent_color;
-    background-color: $foreground_color_dark;
-    color:$foreground_color_light;
-    padding:$gap;
-    transition: padding-left 0.3s ease;
-    z-index:0;
 }
 
 #menu{
-    height:110%;
-    min-width:30px;
-    max-width:200px;
-    background-color:$primary_color;
-    position:fixed;
-    padding-top:30px;
-    left:0;
-    top:0;
-    transition:width 0.3s ease;
-    color:$primary_color_light;
-    @include box-shadow(0 0 10px 0 $primary_color_dark);
-    border-right:1px solid $primary_color_dark;
-    z-index:2;
-
-    header, .item{
-        border-bottom:1px solid $divider_color;
-    }
-
-    header{
-        width: 100%;
-        text-align: center;
-        margin: 0;
-        padding: 10px;
-
-
-        .company.logo{
-            width: 60px;
-            height: 60px;
-            background-size: contain;
-            background-position: 50% 50%;
-            @include border-radius(100%);
-            background-repeat: no-repeat;
-            border: 3px inset $primary_color_light;
-            margin: 0 auto 10px;
-            background-color: white;
-            @include box-shadow(0 0 5px 0 $primary_color_dark inset);
-        }
-
-        .field.search {
-            position: relative;
-
-            input {
-                width: 100%;
-                border: none;
-                padding: 6px 20px $default_padding;
-                background-color:$primary_color_dark;
-                color:inherit;
-            }
-
-            input:focus{
-                outline-color:$accent_color;
-            }
-
-            .fa-search {
-                position: absolute;
-                right: 0px;
-                top: 1px;
-            }
-        }
-    }
-
-
-    .item{
-        text-decoration: none;
-        width: 100%;
-        display: block;
-        font-size: 1.2em;
-        padding: $default_padding;
-        color:inherit;
-    }
-}
-html.show_menu{
-    body,footer{
-        padding-left:210px;
-    }
-
-    #menu{
-        width:100%;
-    }
-}
-
-html.hide_menu {
-    body,#footer{
-        padding-left:40px;
-    }
-
-    #menu{
-        width:0;
-
-        header{
-            display:none;
-        }
-
-        .item{
-            .text {
-                display: none;
-            }
-
-            .fa {
-                margin: 0;
-                text-align: center;
-                width: 100%;
-            }
-        }
-
-    }
-}
-
-.page{
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e6e6e6+0,ffffff+100 */
-    //todo make this background-gradient a mixin
-    // @include gradient(radial, center, rgba(230,230,230,1), 0%, rgba(255,255,255,1), 100%);
-    border:1px solid #CCCCCC;
-    @include box-shadow(2px 2px 10px 0 #CCCCCC);
-    display:block;
-    margin:auto;
-    position:relative;
-    overflow:auto;
-
-    &.a4{
-      &.portrait{
-        height:29.7cm;
-        width:21cm;
-      }
-      &.landscape{
-        width:25cm;
-        height:17.5cm;
-      }
-    }
-
-    >.letterhead:first-child{
-        background-color: $primary_color;
-        color: white;
-        font-weight: bold;
-        font-size: 1.5em;
-        padding: $gap;
-        width: 100%;
-        border-bottom: 3px solid $accent_color;
-
-        > .fa-bars{
-            color:white;
-            text-decoration:none;
-        }
-    }
-
-    > .content{
-      padding:$gap_big;
-      height: 100%;
-      width: 100%;
-      overflow: auto;
-      font-size:1em;
-    }
-}
-
-.button{
-    text-decoration:none;
-    color: rgb(255, 255, 255);
-    padding: $default_padding;
-    margin:0 2px;
-    @include border-radius(2px);
-    //@include box-shadow:(-1px 1px 2px 1px rgba(0, 0, 0, 0.2));
-    display:inline-block;
-    text-align: center;
-}
-
-.error{
-    display:block;
-    margin:10px auto;
-}
-
-html.dashboard{
-  body{
-    text-align: center;
-
-    .button{
-        color: rgb(255, 255, 255);
-        @include border-radius(2px);
-        //@include box-shadow:(-1px 1px 2px 1px rgba(0, 0, 0, 0.2));
-        font-size:4em;
-        padding:30px;
-        min-width:120px;
-        margin-bottom:10px;
-        opacity:0.8;
-        @include transition(0.2s all ease);
-    }
-
-    .button:hover{
-        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-        opacity: 1;
-        @include transform(scale(1.05));
-        @include box-shadow(0 0 10px 5px rgba(0, 0, 0, 0.2));
-        position:relative;
-        z-index:1;
-    }
-
-    .button.viewlist{
-        background-color:$san_marino;
-        display:block;
-    }
-
-    .button.view{
-        background-color:$robins_egg_blue;
-    }
-
-    .button.create{
-        background-color:$fruit_salad;
-    }
-
-    .button.edit{
-        background-color:$amber;
-    }
-
-    .button.remove{
-        background-color:$pomegranate;
-    }
-  }
-}
-
-.field{
-  display: inline;
-}
-
-.debug{
-    text-align:left;
-    background-color: rgb(50,50,50);
-    color: white;
-    font-family: monospace;
-    padding: 10px;
-    margin: 10px auto;
-    border: 2px solid black;
-
-    * {
-        font-family: monospace;
-    }
-
-}
-
-.menu{
-  position:relative;
-
-  *{
-    color:inherit;
-  }
-
-  .item{
-    position:relative;
-    white-space:nowrap;
-
-    .menu{
-      display:none;
-    }
-  }
-
-  .item:hover .menu{
-    display:block;
-    position:absolute;
-  }
-}
-
-.mask{
-  display:none;
-  position:absolute;
+  position:fixed;
   top:0;
   left:0;
-  width:100%;
-  height:100%;
-  z-index:100;
-  background-color:$foreground_color_dark;
-  background-color:rgba(0,0,0,0.5);
-}
-
-.user.nickname{
-  text-transform:capitalize;
-  float:right;
-}
-
-.single_line{
-  text-overflow:ellipsis;;
-  overflow:hidden;
-  white-space:nowrap;
+  margin:0;
+  padding:1em;
+  width:auto;
   max-width:100%;
-}
-
-
-input[type=radio].material{
-    position:relative;
-    z-index:2;
-    opacity:0;
-    cursor:pointer;
-    margin: 0;
-    height: 17px;
-    width: 17px;
-    top: 4px;
-    left: 1px;
-
-    & + label:hover:before,
-    &:hover + label:before{
-      border-color: $color_primary;
-      background-color: $color_primary;
-      @include box-shadow(0 0 0 5px white inset);
-    }
-
-    &:checked{
-      & + label{
-        &:before{
-          border-color: $color_primary;
-          background-color: $color_primary;
-          @include box-shadow(0 0 0 3px white inset);
-        }
-      }
-    }
-
-    & + label{
-      position:relative;
-      padding-left:40px;
-      line-height:20px;
-      display:inline-block;
-      margin-left:-20px;
-      z-index:1;
-
-      &:before{
-        content: "";
-        position:absolute;
-        width: 20px;
-        height: 20px;
-        @include border-radius(100%);
-        border: 2px solid $border_color;
-        background-color: white;
-        left: 0;
-        top: -1px;
-        z-index:1;
-        @include box-shadow(0 0 0 10px white inset);
-        @include transition(all 0.2s linear);
-
-        @media \0screen\,screen\9 {
-            content:none;
-        }
-      }
-    }
-}
-
-.button.raised{
-  @include border-radius(3px);
-  overflow:hidden;
-  cursor:pointer;
-  color:white;
-  background-color:$color_primary;
-  display:inline-block;
-  margin:$gap;
-  padding:$gap;
-  font-size:18px;
-  font-weight:bold;
-  @include transition(top 0.2s ease);
-  position:relative;
-  @include box-shadow(0 2px 1px darken($color_primary,20%));
-  font-family:$font_family_brand;
-  text-align:center;
-
-  &.bar{
-      width:100%;
-      display:block;
-      margin:$gap 0 ($gap/2) 0;
-  }
-
-  &:active{
-     @include box-shadow(none);
-     top:2px;
-  }
+  height:100%;
+  background-color:white; //TODO
+  @include box-shadow(0 0 0.5em 0 $color_shadow);
+  z-index:101;
 }

@@ -3,7 +3,7 @@
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 <link rel="shortcut icon" href="core/nexus/images/shortcut_icon.png" />
 
-<link rel="stylesheet" href="/core/nexus/fonts/font-awesome-4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/core/nexus/fonts/nexus_icons/style.css" />
 <script src="/core/nexus/scripts/jquery/jquery-2.1.4.min.js"></script>
 
 <script src="/core/nexus/scripts/jonthornton-jquery-timepicker/jquery.timepicker.min.js"></script>

@@ -163,8 +163,8 @@ class nexus{
         $filepath = dirname($fn);
 
         $filepath = ($relative == true)  ? str_replace($_SERVER["DOCUMENT_ROOT"],"",$filepath) : $filepath;
-        $this->debug($filepath,'filepath');
-        $this->debug($_SERVER['DOCUMENT_ROOT'],'doc root');
+        //$this->debug($filepath,'filepath');
+        //$this->debug($_SERVER['DOCUMENT_ROOT'],'doc root');
         return $filepath;
     }
 

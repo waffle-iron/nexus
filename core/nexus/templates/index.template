@@ -1,42 +1,18 @@
 <!DOCTYPE html>
-<html class="nexus (#module_class#) (#module_method#) (#show_menu_flag#) (#admin_user_flag#)">
+<html class="nexus (#module_class#) (#module_method#)">
 <head>
     (#head#)
 </head>
-<body class="(#body_class#)">
+<body>
     <header id="header">
-        <div class="pull_left">
-            <button class="plain" onclick="$('html').toggleClass('show_menu hide_menu');"><span class="fa fa-bars"></span>(#module_name#)</button>
-        </div>
-        <nav class="pull_right user area menu horizontal">
-
-            <a class="fa fa-envelope item" title='Unread Emails' href='http://mail.google.com' target='_blank'></a>
-
-            <span class="fa fa-bell item" title='Unread Notifications'></span>
-
-            <img class="" src="(#user_profile_image#)">
-
-            <span class='user nickname item'>(#user_nickname#)
-              <div class='menu dropdown'>
-                <a href=''>Admin Area</a>
-                <a class='item fa fa-sign-out' href='(#logout_url#)'>Logout</a>
-                <a class='item' href='(#account_settings_url#)' target='_blank'>My Account</a>
-              </div>
-            </span>
-        </nav>
+      <a class="icon icon-bars"></a>
+      <h4>Nexus</h4>
     </header>
-
-
-    <aside id="menu">
-        <header>
-            <div class="company logo" style="background-image:url('(#company_logo_url#)')"></div>
-            <label class="field search"><input type="text" placeholder="Search..."><span class="fa fa-search"></span></label>
-        </header>
-        <a class="item" href="/" title="Dashboard"><span class="fa fa-dashboard"></span><span class="text">Dashboard</span></a>
-        <a class="item" href="/tripsheets" title="Trip Sheets"><span class="fa fa-truck"></span><span class="text">Trip Sheets</span></a>
-    </aside>
-    (#content#)
-    <div id="footer">&copy; Nexus (#year#)</div>
-    <div class='mask'></div>
+    <menu id="menu">
+      <header>
+        <i class="icon icon-angle-left"></i>
+      </header>
+      <input type=text placeholder="Search..."/>
+    </menu>
 </body>
 </html>
