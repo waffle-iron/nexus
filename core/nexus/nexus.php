@@ -1,5 +1,5 @@
 <?php
-use google\appengine\api\users\User;
+//use google\appengine\api\users\User;
 use google\appengine\api\users\UserService;
 
 //set_include_path('my_additional_path' . PATH_SEPARATOR . get_include_path()); //todo auto load here
@@ -111,7 +111,6 @@ class nexus{
 
     function get_scripts(){
       $scripts = '';
-
       $location = $this->get_file_location(get_class($this).'.min.js');
       $scripts .= '<script type="text/javascript" src="'.$location.'" ></script>';
 
@@ -122,7 +121,6 @@ class nexus{
               $scripts .= '<script type="text/javascript" src="'.$data['relative_path'].'/scripts/'.$name.'.min.js" ></script>';
           }
       }
-
       return $scripts;
 
       //return file_exists($this->get_path().'/scripts/'.get_class($this).'.js') ? "<script type='text/javascript' src='".$this->get_path(['relative'])."/scripts/".get_class($this).".js'></script>" : null;
@@ -214,17 +212,20 @@ class nexus{
 
     function parse_template($template,$data = []){
 
-            //todo need a way to catch templates NOT found
-            //these are gonna be the global variables
+      //todo need a way to catch templates NOT found
+      //these are gonna be the global variables
 			//these values must get fetched from the setup file\module
 
-            //$template = file_get_contents(getcwd()."/core/templates/".$template);
+      //$template = file_get_contents(getcwd()."/core/templates/".$template);
       $template = $this->get_template($template);
 
-      //$data['logout_url']                         = UserService::createLogoutUrl('/');
 
       $data['account_settings_url']               = 'https://myaccount.google.com/';
-
+      if($this->user){
+        $data['user_nickname']                    = htmlspecialchars($this->user->getNickname());
+        $data['logout_url']                       = UserService::createLogoutUrl('/');
+        $data['user_email']                       = $this->user->getEmail();
+      }
       $data['module_name']                        = $this->name;
       $data['module_name_lowercase']              = strtolower($this->name);
       $data["module_name_singular"]               = substr($this->name,0,strlen($this->name)-1);
@@ -237,6 +238,7 @@ class nexus{
 			$data['day']                                = getdate()['mday'];
 			$data['weekday']                            = getdate()['weekday'];
 			$data['today']                              = $data['year'].'-'.$data['month'].'-'.$data['day'];
+
 
 			while(preg_match("/\(#(.*?)#\)/", $template)){
 				if (preg_match_all("/\(#(.*?)#\)/", $template, $variables)){

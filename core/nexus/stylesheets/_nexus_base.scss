@@ -1,6 +1,6 @@
 @import "_nexus_mixin.scss";
 @import "_nexus_palette.scss";
-@import "_nexus_animations.scss";
+@import "_nexus_animation.scss";
 
 
 *{
@@ -41,14 +41,14 @@ a{
 button,
 input[type=button],
 input,
-a:link,
 button,
-input[type=button],
 input[type=submit],
 input[type=reset],
 a:link,
 .button,
-select{
+select,
+.action{
+    @include user-select(none);
 
     &:not([disabled]){
       cursor:pointer;
@@ -57,10 +57,19 @@ select{
     &[disabled]{
       cursor:not-allowed;
     }
+
+    &:hover{
+      cursor:pointer;
+    }
+
 }
 
 a{
   color:$color_link;
+
+  &:visited{
+    color:$color_link_visited;
+  }
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -73,8 +82,17 @@ h4{
   font-size:1em;
 }
 
+h5{
+  font-size: 0.83em;
+}
 input:focus{
   outline-color:$color_primary;
+}
+
+img{
+  border:none;
+  max-width:100%;
+  max-height:100%;
 }
 
 .blur{
@@ -88,4 +106,33 @@ a[href]:not([href=""]):empty:after{
 .clear{
     clear:both;
     float:none;
+}
+
+.pull_left{
+  float:left;
+}
+
+.pull_right{
+  float:right;
+}
+
+.hide{
+  display:none !important;
+}
+
+.icon{
+
+  &:hover{
+    text-decoration:none;
+  }
+
+  &.button:hover{
+    cursor:pointer;
+  }
+}
+
+.menu{
+  .item{
+    display:block;
+  }
 }

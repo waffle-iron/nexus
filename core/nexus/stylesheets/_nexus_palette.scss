@@ -1,7 +1,7 @@
 /*brand colors*/
 $color_primary:#3838C3;
 $color_primary_dark:#000065 !default;
-$color_primary_light:null !default;
+$color_primary_light:#ACB2D8 !default;
 
 $color_secondary:null !default;
 $color_secondary_dark:null !default;
@@ -14,6 +14,7 @@ $color_text_secondary:null;
 
 $color_link_primary:null;
 $color_link_secondary:null;
+$color_link_visited:$color_primary_light;
 
 $color_heading:$color_secondary !default;
 
@@ -21,11 +22,11 @@ $color_link:$color_secondary !default;
 $color_link:null !default;
 
 $color_foreground:#efefef !default;
-$color_shadow:#0c0c0c !default;
+$color_shadow:#ababab !default;
 $color_accent:grey;
 
-$color_border:null !default;
-$color_text:black !default;
+$color_border:#cccccc !default;
+$color_text:#0c0c0c !default;
 
 $color_success: #41cb83;
 $color_error: #ff5548;

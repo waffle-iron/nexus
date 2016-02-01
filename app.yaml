@@ -6,6 +6,16 @@ threadsafe: yes
 default_expiration: 1h
 
 handlers:
+#CORE
+# Serve php scripts.
+- url: /(.+\.php)$
+  script: \1
+
+- url: /core/(.*)/images/(.*).png$
+  static_files: core/\1/images/\2.png
+  upload: core/(.*)/images/(.*).png$
+  application_readable: true
+
 -   url: /core/(.*)/stylesheets/(.*).css$
     static_files: core/\1/stylesheets/\2.css
     upload: core/(.*)/stylesheets/(.*).css$
@@ -42,6 +52,11 @@ handlers:
     upload: plugins/(.*)/scripts/(.*).js$
     application_readable: true
 
+-   url: /plugins/(.*)/(.*).php$
+    static_files: plugins/\1/\2.php
+    upload: plugins/(.*)/(.*).php$
+    application_readable: true
+
 -   url: /fonts/*
     static_dir: fonts/
 
@@ -54,8 +69,12 @@ handlers:
 -   url: /scripts/*
     static_dir: scripts/
 
--   url: .*
-    script: index.php
+#CORE
+- url: /
+  script: index.php
+
+- url: /.*
+  script: not_found.php
 
 skip_files:
 - ^(.*/)?\.DS_Store$

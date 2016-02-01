@@ -1,5 +1,4 @@
 <?php
     require_once("core/nexus/nexus.php");
-    new nexus();
-    
+    $nexus = new nexus();
 ?>

@@ -101,6 +101,12 @@
   }
 }
 
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
 
 // @mixin gradient($style, $origin, $color_1, $color_1_ratio, $color_2, $color_2_ratio){
 //   // //fallback
