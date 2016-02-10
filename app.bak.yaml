@@ -1,0 +1,76 @@
+application: nexus-ga
+version: alpha
+runtime: php55
+api_version: 1
+threadsafe: yes
+default_expiration: 1h
+#TODO modify the default expiration to something super long
+
+handlers:
+
+#CORE MODULE HANDLERS
+- url: /core/(.*)/images/(.*).png$
+  static_files: core/\1/images/\2.png
+  upload: core/(.*)/images/(.*).png$
+  application_readable: true
+
+- url: /core/(.*)/stylesheets/(.*).css$
+  static_files: core/\1/stylesheets/\2.css
+  upload: core/(.*)/stylesheets/(.*).css$
+  application_readable: true
+
+- url: /core/(.*)/fonts/(.*)$
+  static_files: core/\1/fonts/\2
+  upload: core/(.*)/fonts/(.*)$
+  application_readable: true
+
+- url: /core/(.*)/scripts/(.*).js$
+  static_files: core/\1/scripts/\2.js
+  upload: core/(.*)/scripts/(.*).js$
+  application_readable: true
+
+- url: /core/(.*)/scripts/(.*).css$
+  static_files: core/\1/scripts/\2.css
+  upload: core/(.*)/scripts/(.*).css$
+  application_readable: true
+
+
+  #PLUGIN MODULE HANDLERS
+- url: /plugins/(.*)/stylesheets/(.*).css$
+  static_files: plugins/\1/stylesheets/\2.css
+  upload: plugins/(.*)/stylesheets/(.*).css$
+  application_readable: true
+
+- url: /plugins/(.*)/fonts/(.*)$
+  static_files: plugins/\1/fonts/\2
+  upload: plugins/(.*)/fonts/(.*)$
+  application_readable: true
+
+- url: /plugins/(.*)/scripts/(.*).js$
+  static_files: plugins/\1/scripts/\2.js
+  upload: plugins/(.*)/scripts/(.*).js$
+  application_readable: true
+
+- url: /plugins/(.*)/(.*).php$
+  static_files: plugins/\1/\2.php
+  upload: plugins/(.*)/(.*).php$
+  application_readable: true
+
+- url: /fonts/*
+  static_dir: fonts/
+
+- url: /images/*
+  static_dir: images/
+
+- url: /fonts/*
+  static_dir: fonts/
+
+- url: /scripts/*
+  static_dir: scripts/
+
+#ALL OTHERS
+- url: /.*
+  script: /core/nexus/nexus.php
+
+skip_files:
+- ^(.*/)?\.DS_Store$

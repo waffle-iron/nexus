@@ -1,0 +1,6 @@
+<details class="debug" open>
+  <summary>(#title#)</summary>
+  <pre>
+    (#error#)
+    </pre>
+</details>

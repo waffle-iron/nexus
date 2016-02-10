@@ -1,4 +1,16 @@
-<div class='error'>
-    <div class='title'>(#title#)</div>
-    <div class='message'>(#message#)</div>
+<div class="error message card shadowed">
+    <header>
+      <span class="icon icon-exclamation-circle"></span>
+    </header>
+    <div class="content">
+      <h2 class="title">(#title#)</h2>
+      <p>(#message#)</p>
+    </div>
+    <footer>
+      <div class="hide stacktrace">
+        (#stacktrace#)
+      </div>
+      <!--   -->
+      <a onclick="$(this).parent().find('.stacktrace').toggleClass('hide');">Stack Trace...</a>
+    </footer>
 </div>

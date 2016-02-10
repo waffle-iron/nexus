@@ -70,11 +70,8 @@ handlers:
     static_dir: scripts/
 
 #CORE
-- url: /
-  script: index.php
-
-- url: /.*
-  script: not_found.php
+- url: .*
+  script: /core/nexus/engine.php
 
 skip_files:
 - ^(.*/)?\.DS_Store$

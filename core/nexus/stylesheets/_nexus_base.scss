@@ -32,6 +32,10 @@ a{
   color:$color_link;
   text-decoration:none;
 
+  &:visited{
+    color:$color_link_visited;
+  }
+
   &:hover{
     text-decoration:underline;
   }
@@ -64,13 +68,6 @@ select,
 
 }
 
-a{
-  color:$color_link;
-
-  &:visited{
-    color:$color_link_visited;
-  }
-}
 
 h1,h2,h3,h4,h5,h6{
   display: block;
@@ -99,9 +96,6 @@ img{
   @include blur(2px);
 }
 
-a[href]:not([href=""]):empty:after{
-	content:attr(href);
-}
 
 .clear{
     clear:both;

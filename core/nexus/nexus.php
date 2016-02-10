@@ -3,11 +3,46 @@
 use google\appengine\api\users\UserService;
 
 //set_include_path('my_additional_path' . PATH_SEPARATOR . get_include_path()); //todo auto load here
+
+$page_data = [
+  "page_content"          => null,
+  "account_settings_url"  => "https://myaccount.google.com/",
+  "company_name"          => "Domestic", //settings //company settings
+  "company_logo_url"      => "/images/company_logo.png",
+  "year"                  => date("Y"),
+  "month"                 => intval(getdate()["mon"]) < 10 ? ("0".getdate()["mon"]) : getdate()["mon"],
+  "day"                   => getdate()["mday"],
+  "weekday"               => getdate()["weekday"]
+];
+$page_data["today"] = $page_data["year"]."-".$page_data["month"]."-".$page_data["day"];
+
+function debug($object){
+  //TODO  change this to a javascript debug
+  //TODO change this to a template call
+  $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
+
+  if(is_array($object) && func_num_args() == 1){
+      $title = "Debugging Array(".sizeof($object).")";
+  }
+
+  $object = is_string($object) ? htmlentities($object) : $object;
+
+  print "<details class='debug' open>";
+  print "<summary>".$title."</summary>";
+  print "<pre>";
+  print_r($object);
+  print "</pre>";
+  print "</details>";
+}
+
 class nexus{
 
     public $name = '';
     public $user = null;
-    var $default_method = 'dashboard';
+    public static $instances = 0;
+    var $defaults = [
+      "method" => "dashboard"
+    ];
 
     //http://stackoverflow.com/questions/173400/how-to-check-if-php-array-is-associative-or-sequential
     function readable_string($string = ""){
@@ -23,24 +58,20 @@ class nexus{
       print '<script>alert("'.$message.'")</script>';
     }
 
-    function debug($object){
+    function error($message = "An error occurred",$title = "Error"){
+      $stacktrace = debug_backtrace();
+      array_shift($stacktrace);
 
-        $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
-
-        if(is_array($object) && func_num_args() == 1){
-            $title = "Debugging Array(".sizeof($object).")";
-        }
-
-        print "<details class='debug' open>";
-        print "<summary>".$title."</summary>";
-        print "<pre>";
-        print_r($object);
-        print "</pre>";
-        print "</details>";
+        print $this->parse_template("error.template",[
+          "title"=>$title,
+          "message"=>$message,
+          "stacktrace" => $stacktrace
+        ]);
     }
 
-    function error($title = 'Error', $message = ''){
-        return $this->parse_template("error.template",['title'=>$title, 'message'=>$message]);
+
+    function info($message = "No information provided",$title = "Info"){
+        print $this->parse_template("info.template",['title'=>$title, 'message'=>$message]);
     }
 
     function generate_html_table($data){
@@ -93,19 +124,26 @@ class nexus{
     }
 
     function get_stylesheets(){
-        $stylesheets = '';
 
+        $stylesheets = array();
         $location = $this->get_file_location(get_class($this).'.min.css');
-        $stylesheets .= '<link rel="stylesheet" href="'.$location.'" />';
+        array_push($stylesheets,$this->parse_template("link.template",[
+          "rel" => "stylesheet",
+          "href" => $location
+        ]));
 
-        //todo get parent stylesheets
         $parents = $this->get_parents();
         foreach($parents as $name=>$data){
-            if(file_exists($data['absolute_path'].'/stylesheets/'.$name.'.min.css')){
-                $stylesheets .= '<link rel="stylesheet" href="'.$data['relative_path'].'/stylesheets/'.$name.'.min.css" />';
+            if($name == "nexus") continue;
+            if(file_exists($data["absolute_path"]."/stylesheets/".$name.".min.css")){
+                array_push($stylesheets, $this->parse_template("link.template",[
+                  "rel"   => "stylesheet",
+                  "href"  => $data["relative_path"]."/stylesheets".$name.".min.css"
+                ]));
             }
         }
-
+        $stylesheets = array_reverse($stylesheets);
+        $stylesheets = implode("",$stylesheets);
         return $stylesheets;
     }
 
@@ -134,25 +172,16 @@ class nexus{
     }
 
     function get_user_info(){
+      $_SESSION["user"] = null;
+      $user = UserService::getCurrentUser();
 
-      /*
-      if (isset($user)) {
-          echo sprintf('Welcome, %s! (<a href="%s">sign out</a>)',
-                       $user->getNickname(),
-                       UserService::createLogoutUrl('/'));
-        } else {
-          echo sprintf('<a href="%s">Sign in or register</a>',
-                       UserService::createLoginUrl('/'));
-        }
-      */
-
-      if($this->user){
-        $info = [
-          'user_nickname' => $this->user->getNickname()
-        ];
+      if($user){
+        $_SESSION["user"]["nickname"]   = $user->getNickname();
+        $_SESSION["user"]["logout_url"] = UserService::createLogoutUrl('/');
+        $_SESSION["user"]['user_email'] = $user->getEmail();
       }
 
-      return $info;
+      return $_SESSION["user"];
     }
 
     function get_path($relative = false){
@@ -211,39 +240,25 @@ class nexus{
     }
 
     function parse_template($template,$data = []){
-
+      global $page_data;
       //todo need a way to catch templates NOT found
       //these are gonna be the global variables
 			//these values must get fetched from the setup file\module
 
       //$template = file_get_contents(getcwd()."/core/templates/".$template);
       $template = $this->get_template($template);
+      $page_data["user"]                               = $_SESSION["user"];
+      $page_data['module_name']                        = $this->name;
+      $page_data['module_name_lowercase']              = strtolower($this->name);
+      $page_data["module_name_singular"]               = substr($this->name,0,strlen($this->name)-1);
+      $page_data["module_class"]                       = get_class($this);
 
-
-      $data['account_settings_url']               = 'https://myaccount.google.com/';
-      if($this->user){
-        $data['user_nickname']                    = htmlspecialchars($this->user->getNickname());
-        $data['logout_url']                       = UserService::createLogoutUrl('/');
-        $data['user_email']                       = $this->user->getEmail();
-      }
-      $data['module_name']                        = $this->name;
-      $data['module_name_lowercase']              = strtolower($this->name);
-      $data["module_name_singular"]               = substr($this->name,0,strlen($this->name)-1);
-      $data["module_class"]                       = get_class($this);
-      $data['company_name']                       = "Domestic"; //settings //company settings
-      $data['company_logo_url']                   = "/images/company_logo.png";
-
-      $data['year']                               = date('Y');
-			$data['month']                              = intval(getdate()['mon']) < 10 ? ('0'.getdate()['mon']) : getdate()['mon'];
-			$data['day']                                = getdate()['mday'];
-			$data['weekday']                            = getdate()['weekday'];
-			$data['today']                              = $data['year'].'-'.$data['month'].'-'.$data['day'];
-
+      $data = array_merge($data,$page_data);
 
 			while(preg_match("/\(#(.*?)#\)/", $template)){
 				if (preg_match_all("/\(#(.*?)#\)/", $template, $variables)){
 					foreach ($variables[1] as $i => $variable_name){
-                        $match		= array_key_exists($variable_name,$data) ? $data[$variable_name] : '';
+            $match		= array_key_exists($variable_name,$data) ? $data[$variable_name] : '';
 						$match		= is_array($match) ? json_encode($match) : $match;
 						$template	= str_replace($variables[0][$i],$match, $template);
 					}
@@ -253,69 +268,125 @@ class nexus{
 			return html_entity_decode($template);
 		}
 
+    //TODO error function must check call stack for the function that initiated it
+    function curl($params = []){
+      //TODO if internet connection unavailable (maybe in js) throw error message
+      //TODO get cached version first...
+
+      $result;
+
+      if(array_key_exists("url",$params)){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $params["url"]
+        ));
+        $result = curl_exec($curl);
+        if(array_key_exists("explode",$params)){
+          $result = explode("|",$result);
+        }
+
+        curl_close($curl);
+      }
+      else{
+        $this->error("No url provided.");
+      }
+
+      return $result;
+    }
+
     function dashboard(){
         return $this->parse_template("dashboard.template");
     }
 
-    function __construct($method = null){
+    //TODO catch template not found
+
+    function get_query_string_object(){
+  		$object = [];
+
+  		if($_SERVER["QUERY_STRING"] !== ""){
+  			foreach(explode("&",$_SERVER["QUERY_STRING"]) as $index=>$string){
+  				$arr = explode("=",$string);
+  				$key = $arr[0];
+  				$value = count($arr) == 2 ? $arr[1] : null;
+  				$object[$key] = $value;
+  			}
+  		}
+  		$object["ajax"] = array_key_exists("ajax",$object) ? $object["ajax"] : "false";
+
+  		return $object;
+  	}
+
+    function __construct($requested_method = "dashboard"){
+        global $page_data;
 
         $this->name = $this->get_name();
-        $this->user = UserService::getCurrentUser();
+        $this->queries = $this->get_query_string_object();
 
-        if(strlen($_SERVER['REQUEST_URI']) > 1){
-            $request = explode("/",$_SERVER['REQUEST_URI']);
-            array_shift($request);
-            $class_name   = 'nexus_'.$request[0];
-            $class_name   = str_replace('%20','_',$class_name);
-            $method = count($request) == 2 ? $request[1] : $this->default_method;
-            $_SERVER['REQUEST_URI'] = null;
-            //todo check if that class exists, if not, redirect to the error page
-            require_once("plugins/".$class_name."/".$class_name.".php");
-            $class = new $class_name($method);
-        }
-        else{
-          $logout_url = '';
-          if (!$this->user) {
-            header('Location: ' . UserService::createLoginURL($_SERVER['REQUEST_URI']));
-          }
-          else{
-            $logout_url = UserService::createLogoutUrl('/');
-          }
+        //TODO function to fetch all page_data
+        $requested_module = null;
+        $page_data = array_merge($page_data,$this->get_user_info());
 
-          //$sql = new mysqli('172.194.229.73:3306','craig.wayne','RockSteady2015!','');
+        //catch module and method request
+        $_SERVER["QUERY_STRING"]  = !array_key_exists("QUERY_STRING",$_SERVER) ? "" : $_SERVER["QUERY_STRING"];
+        $_SERVER["PATH_INFO"]     = !array_key_exists("PATH_INFO",$_SERVER) ? str_replace($_SERVER["QUERY_STRING"],"",$_SERVER["REQUEST_URI"]) : $_SERVER["PATH_INFO"];
+        $_SERVER["PATH_INFO"]     = str_replace("?","",$_SERVER["PATH_INFO"]);
+        $request_array            = explode("/",$_SERVER["PATH_INFO"]);    //converts the url requested path string into an object
+        $request_array            = array_diff($request_array,array(""));  //removes empty values from the array
+        $request_array            = array_values($request_array);          //resets the indexes of the array
+        if(count($request_array) >= 1){
+          $requested_method = count($request_array) > 1 ? $request_array[1] : $this->defaults["method"];
+          $requested_module = $page_data["requested_module"] = $request_array[0];
+          $module_path = $_SERVER["DOCUMENT_ROOT"]."/plugins/".$requested_module."/".$requested_module.".php";
+          $_SERVER["PATH_INFO"] = null;
 
-            /*$conn = mysqli_connect(":/cloudsql/nexus-ga:sample-demo","craig.wayne","RockSteady2015!","");
-            if (mysqli_connect_errno())
-            {
-              echo "Failed to connect to MySQL: " . mysqli_connect_error();
+          if(file_exists($module_path)){
+            require_once("plugins/".$requested_module."/".$requested_module.".php");
+            if(function_exists($requested_method)){
+              $page_data["page_content"] = $requested_method();
+            }
+            elseif(class_exists($requested_module)){
+              $requested_module_class = new $requested_module($requested_method);
+              if(method_exists($requested_module_class,$requested_method)){
+                $page_data["page_content"] = $requested_module_class->$requested_method();
+              }
+              else{
+                $this->error("requested method: ".$requested_method." does not exist");
+              }
+
+              if(is_subclass_of($requested_module_class,"nexus")){
+                return;
+              }
             }
             else{
-              echo 'connection successful';
-            }*/
-
-
-            $content = '';
-            if(!method_exists($this,$method)){
-                $content .= $method ? $this->error('Method: "'.$method.'" not found') : '';
-                $method = $this->default_method;
+              $this->error("The function:<br/><i>".$requested_method."</i><br/>does not exist","Undefined");
             }
+          }
+          else{
+            $this->error("the requested page: ".$_SERVER["REQUEST_URI"]." <br/>could not be found","page not found");
+          }
 
-            $content .= $this->$method();
-
-            $template_data = [
-                'logout_url'        => $logout_url,
-                'module_method'     => $method,
-                "stylesheets"       => $this->get_stylesheets(),
-                "scripts"           => $this->get_scripts(),
-                "head"              => $this->get_template("head.template"),
-                'show_menu_flag'    => $_SERVER['REQUEST_URI'] == '/'    ? 'show_menu' : 'hide_menu',
-                'admin_user_flag'   => UserService::isCurrentUserAdmin() ? 'admin' : '',
-                "content"           => $content
-            ];
-
-            $template_data = array_merge($this->get_user_info(), $template_data);
-            echo $this->parse_template("index.template",$template_data);
+        }else{
+          $requested_module = get_class($this);
+          $page_data["page_content"] = $this->$requested_method();
         }
+
+        $page_data["head"] = $this->parse_template("head.template",[
+          "stylesheets" => $this->get_stylesheets(),
+          "scripts"     => $this->get_scripts()
+        ]);
+
+        $page_data["requested_method"]  = $requested_method;
+        $page_data["page_content"]      = $this->parse_template($page_data["page_content"],$page_data);
+
+        if($this->queries["ajax"] ==  "true"){
+          print $page_data["page_content"];
+        }else{
+          print $this->parse_template("nexus.template",$page_data);
+
+        }
+
+        return;
     }
 }
 

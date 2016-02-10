@@ -6,8 +6,10 @@
 <link rel="shortcut icon" href="/core/nexus/images/shortcut_icon.png" />
 
 <link rel="stylesheet" href="/core/nexus/fonts/nexus_icons/style.css" />
-<script src="/core/nexus/scripts/jquery/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" href="/core/nexus/stylesheets/nexus.min.css" />
 
+<script src="/core/nexus/scripts/jquery/jquery-2.1.4.min.js"></script>
+<script src="/core/nexus/scripts/Chart.min.js"></script>
 
 <link rel="stylesheet" href="/core/nexus/stylesheets/nexus_print.min.css" media="print" />
 <link rel="stylesheet" href="/core/nexus/stylesheets/_nexus_animation.min.css" />
@@ -16,7 +18,6 @@
 <script src="https://apis.google.com/js/client:platform.js?onload=nexus_gplus_init"></script>
 
 <script src="/core/nexus/scripts/nexus_base.min.js"></script>
-<script src="/core/nexus/scripts/nexus.min.js"></script>
 
 (#stylesheets#)
 (#scripts#)
