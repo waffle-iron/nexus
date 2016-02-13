@@ -1,4 +1,4 @@
-<div class="info card">
+<div class="card shadowed">
     <header><span class="icon icon-info-circle"></span></header>
     <div class="content">
       <h2 class="title">Home Page</h2>

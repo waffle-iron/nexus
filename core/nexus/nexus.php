@@ -3,6 +3,8 @@
 use google\appengine\api\users\UserService;
 
 //set_include_path('my_additional_path' . PATH_SEPARATOR . get_include_path()); //todo auto load here
+$output_buffer = "";
+$errors = [];
 
 $page_data = [
   "page_content"          => null,
@@ -27,12 +29,25 @@ function debug($object){
 
   $object = is_string($object) ? htmlentities($object) : $object;
 
+  //print "<noscript>";
   print "<details class='debug' open>";
   print "<summary>".$title."</summary>";
   print "<pre>";
   print_r($object);
   print "</pre>";
+
+  if(is_object($object) || is_array($object)){
+    //print "<script>var nexus = nexus || {}; nexus.debug = []; nexus.debug.push(".$object."); console.debug(nexus.debug);";
+    //print "</script>";
+  }
+
   print "</details>";
+  //print "</noscript>";
+}
+
+function alert($message = null){
+  if($message != null)
+  print '<script>alert("'.$message.'")</script>';
 }
 
 class nexus{
@@ -53,50 +68,50 @@ class nexus{
       return $string;
     }
 
-    function alert($message = null){
-      if($message != null)
-      print '<script>alert("'.$message.'")</script>';
+    function generate_nav_items(){
+      // //get plugin files
+      // $plugin_modules = [];
+      // $project_root_files = scandir("../../plugins");
+      // debug($project_root_files);
+      //
+      // foreach($project_root_files as $file){
+      //   //debug($file);
+      //    if(is_dir("../../".$file) && ($file != "." || $file != "..")){
+      //      //array_push($plugin_modules,$file);
+      //      $plugin_modules[] = $file;
+      //      debug($file);
+      //    }
+      // }
+      // //debug($plugin_modules);
+      //
+      // //get core files
+      // //$core_modules = [
+      //
+      // //];
+
+      //debug(scandir("../../"));
+      //debug(dirname("../../app.bak.yaml"));
+      //$path= dirname(__FILE__);
+      //$dir  = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+      //$files = new Rec")ursiveIteratorIterator($dir, RecursiveIteratorIterator::CHILD_FIRST);
+      //debug($files);
+
     }
 
     function error($message = "An error occurred",$title = "Error"){
+
       $stacktrace = debug_backtrace();
       array_shift($stacktrace);
 
-        print $this->parse_template("error.template",[
+      print $this->parse_template("error.template",[
           "title"=>$title,
           "message"=>$message,
           "stacktrace" => $stacktrace
-        ]);
+      ]);
     }
-
 
     function info($message = "No information provided",$title = "Info"){
         print $this->parse_template("info.template",['title'=>$title, 'message'=>$message]);
-    }
-
-    function generate_html_table($data){
-
-      $html_table = '
-        <table>
-          <thead>
-            <tr>';
-
-      foreach($data as $column){
-        $html_table .= '<th>';
-        $html_table .= $column;
-        $html_table .= '</th>';
-      }
-
-      $html_table .= '</tr>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot>
-          </tfoot>
-        </table>
-      ';
-
-      return $html_table;
     }
 
     function get_name(){
@@ -114,54 +129,13 @@ class nexus{
         if($parent) {
             $rfparent = new ReflectionClass($parent);
             $plist[$parent] = [
-                'absolute_path' => dirname($rfparent->getFileName()),
-                'relative_path' => str_replace($_SERVER['DOCUMENT_ROOT'],'',dirname($rfparent->getFileName()))
+                "absolute_path" => dirname($rfparent->getFileName()),
+                "relative_path" => str_replace($_SERVER['DOCUMENT_ROOT'],'',dirname($rfparent->getFileName()))
             ];
             $plist = self::get_parents($parent, $plist);
         }
         return $plist;
 
-    }
-
-    function get_stylesheets(){
-
-        $stylesheets = array();
-        $location = $this->get_file_location(get_class($this).'.min.css');
-        array_push($stylesheets,$this->parse_template("link.template",[
-          "rel" => "stylesheet",
-          "href" => $location
-        ]));
-
-        $parents = $this->get_parents();
-        foreach($parents as $name=>$data){
-            if($name == "nexus") continue;
-            if(file_exists($data["absolute_path"]."/stylesheets/".$name.".min.css")){
-                array_push($stylesheets, $this->parse_template("link.template",[
-                  "rel"   => "stylesheet",
-                  "href"  => $data["relative_path"]."/stylesheets".$name.".min.css"
-                ]));
-            }
-        }
-        $stylesheets = array_reverse($stylesheets);
-        $stylesheets = implode("",$stylesheets);
-        return $stylesheets;
-    }
-
-    function get_scripts(){
-      $scripts = '';
-      $location = $this->get_file_location(get_class($this).'.min.js');
-      $scripts .= '<script type="text/javascript" src="'.$location.'" ></script>';
-
-      //todo get parent stylesheets
-      $parents = $this->get_parents();
-      foreach($parents as $name=>$data){
-          if(file_exists($data['absolute_path'].'/scripts/'.$name.'.min.js')){
-              $scripts .= '<script type="text/javascript" src="'.$data['relative_path'].'/scripts/'.$name.'.min.js" ></script>';
-          }
-      }
-      return $scripts;
-
-      //return file_exists($this->get_path().'/scripts/'.get_class($this).'.js') ? "<script type='text/javascript' src='".$this->get_path(['relative'])."/scripts/".get_class($this).".js'></script>" : null;
     }
 
     function get_extension($filename = ''){
@@ -184,88 +158,171 @@ class nexus{
       return $_SESSION["user"];
     }
 
-    function get_path($relative = false){
+    function get_path($options = []){
+        $options = is_array($options) ? $options : array("relative");
         $reflector = new ReflectionClass(get_class($this));
         $fn = $reflector->getFileName();
         $filepath = dirname($fn);
 
-        $filepath = ($relative == true)  ? str_replace($_SERVER["DOCUMENT_ROOT"],"",$filepath) : $filepath;
+        $filepath = (array_key_exists("relative",$options) && $options["relative"] == true) ? str_replace($_SERVER["DOCUMENT_ROOT"],"",$filepath) : $filepath;
         //$this->debug($filepath,'filepath');
         //$this->debug($_SERVER['DOCUMENT_ROOT'],'doc root');
         return $filepath;
     }
 
     function get_file_location($filename = null){
-        $location = null ;
+
+        if(!$filename) return null;
+        $location = [];
+        $folder_to_check = "templates"; //default folder to check
 
         switch($this->get_extension($filename)){
             case "js":
+              $folder_to_check = "scripts";
             break;
 
             case "css":
-            if(file_exists($this->get_path()."/stylesheets/".$filename)){
-                return $this->get_path(['relative']).'/stylesheets/'.$filename;
-            }
+              $folder_to_check = "stylesheets";
             break;
 
-            default:
-            //TODO check the user template section for a template matching module name
+            case "template":
+              $folder_to_check = "templates";
+            break;
 
-
-            //check module's template folder
-            if(file_exists($this->get_path()."/templates/".$filename)){
-                return $this->get_path().'/templates/'.$filename;
-            }
-
-            //check parent's template folders
-            $parents = $this->get_parents();
-            foreach($parents as $name=>$data){
-                if(file_exists($data['absolute_path'].'/templates/'.$filename)){
-                    return $data['absolute_path'].'/templates/'.$filename;
-                }
-            }
-
+            case "widget":
+              $folder_to_check = "widgets";
             break;
         }
 
+        //check module specific folder...
+        if(file_exists($this->get_path()."/".$folder_to_check."/".$filename)){
+            $location["absolute_path"] = $this->get_path()."/".$folder_to_check."/".$filename;
+            $location["relative_path"] = $this->get_path(["relative" => true])."/".$folder_to_check."/".$filename;
+            return $location;
+        }
 
+        //check parent's module folder
+        $parents = $this->get_parents();
+        foreach($parents as $name=>$data){
+            if(file_exists($data["absolute_path"]."/".$folder_to_check."/".$filename)){
+                $location["absolute_path"] = $data["absolute_path"]."/".$folder_to_check."/".$filename;
+                $location["relative_path"] = $data["relative_path"]."/".$folder_to_check."/".$filename;
+                return $location;
+            }
+        }
+    }
 
-        return $location;
+    function get_stylesheets(){
+      //TODO:maybe link this function with the other get_scripts tag
+      $stylesheets = [];
+
+      if(file_exists($this->get_file_location(get_class($this).".min.css")["absolute_path"])){
+        $stylesheets[] = $this->parse_template("link_tag.template",[
+          "href" => $this->get_file_location(get_class($this).".min.css")["relative_path"],
+          "rel"  => "stylesheet"
+        ]);
+      }
+
+      $parents = $this->get_parents();
+      foreach($parents as $name=>$data){
+        if(file_exists($this->get_file_location($name.".min.css")["absolute_path"])){
+            $stylesheets[] = $this->parse_template("link_tag.template",[
+              "href" => $this->get_file_location($name.".min.css")["relative_path"],
+              "rel"  => "stylesheet"
+            ]);
+        }
+      }
+      $stylesheets = array_reverse($stylesheets);
+      $stylesheets = implode("",$stylesheets);
+      return $stylesheets;
+    }
+
+    function get_scripts(){
+
+      $scripts = [];
+
+      if(file_exists($this->get_file_location(get_class($this).".min.js")["absolute_path"])){
+        $scripts[] = $this->parse_template("script_tag.template",["src" => $this->get_file_location(get_class($this).".min.js")["relative_path"]]);
+      }
+
+      $parents = $this->get_parents();
+      foreach($parents as $name=>$data){
+        if(file_exists($this->get_file_location($name.".min.js")["absolute_path"])){
+            $scripts[] = $this->parse_template("script_tag.template",[
+              "src" => $this->get_file_location($name.".min.js")["relative_path"]]);
+        }
+      }
+      $scripts = array_reverse($scripts);
+      $scripts = implode("",$scripts);
+      return $scripts;
+    }
+
+    function get_file($file_name = null){
+
+      if(!$file_name) return null;
+
+      $file = [];
+      $file["location"] = $this->get_file_location($file_name);
+      return $file;
     }
 
     function get_template($template_name = null){
-        $location = $this->get_file_location($template_name);
-        $template = $location ? file_get_contents($location) : $template_name;
+        $template = [];
+
+        $template["location"] = $this->get_file_location($template_name);
+        if(!$template["location"]) return null;
+
+        if(array_key_exists("absolute_path",$template["location"])){
+          $template["contents"] = file_get_contents($template["location"]["absolute_path"]);
+        }
+        else{
+          $this->error("Template name: ".$template_name,"Template not found");
+        }
+        //$template[]
+        //fetch template
+        //fetch template name
+        //template size
+        //template location
+        //template fileextension
+
         return $template;
     }
 
-    function parse_template($template,$data = []){
+    function parse_template($template_name = null,$data = []){
+
+      if(!$template_name || !is_string($template_name)) return null;
+
+      //debug("looking for: ".$template);
       global $page_data;
       //todo need a way to catch templates NOT found
       //these are gonna be the global variables
 			//these values must get fetched from the setup file\module
 
-      //$template = file_get_contents(getcwd()."/core/templates/".$template);
-      $template = $this->get_template($template);
+      $template = $this->get_template($template_name) ?: array("contents" => $template_name);
+
       $page_data["user"]                               = $_SESSION["user"];
       $page_data['module_name']                        = $this->name;
       $page_data['module_name_lowercase']              = strtolower($this->name);
       $page_data["module_name_singular"]               = substr($this->name,0,strlen($this->name)-1);
       $page_data["module_class"]                       = get_class($this);
 
+      //TODO get public class vars into the data
       $data = array_merge($data,$page_data);
 
-			while(preg_match("/\(#(.*?)#\)/", $template)){
-				if (preg_match_all("/\(#(.*?)#\)/", $template, $variables)){
+			while(preg_match("/\(#(.*?)#\)/", $template["contents"])){
+				if (preg_match_all("/\(#(.*?)#\)/", $template["contents"], $variables)){
 					foreach ($variables[1] as $i => $variable_name){
-            $match		= array_key_exists($variable_name,$data) ? $data[$variable_name] : '';
-						$match		= is_array($match) ? json_encode($match) : $match;
-						$template	= str_replace($variables[0][$i],$match, $template);
+            if(strpos($variable_name,".widget") > -1){
+                $match = $this->parse_template($variable_name);
+            }else{
+              $match		= array_key_exists($variable_name,$data) ? $data[$variable_name] : '';
+              $match		= is_array($match) ? json_encode($match) : $match;
+            }
+            $template["contents"]	= str_replace($variables[0][$i],$match, $template["contents"]);
 					}
 				}
 			}
-
-			return html_entity_decode($template);
+      return html_entity_decode($template["contents"]);
 		}
 
     //TODO error function must check call stack for the function that initiated it
@@ -304,14 +361,16 @@ class nexus{
     function get_query_string_object(){
   		$object = [];
 
-  		if($_SERVER["QUERY_STRING"] !== ""){
-  			foreach(explode("&",$_SERVER["QUERY_STRING"]) as $index=>$string){
-  				$arr = explode("=",$string);
-  				$key = $arr[0];
-  				$value = count($arr) == 2 ? $arr[1] : null;
-  				$object[$key] = $value;
-  			}
-  		}
+      if(array_key_exists("QUERY_STRING",$_SERVER)){
+        if($_SERVER["QUERY_STRING"] != ""){
+          foreach(explode("&",$_SERVER["QUERY_STRING"]) as $index=>$string){
+            $arr = explode("=",$string);
+            $key = $arr[0];
+            $value = count($arr) == 2 ? $arr[1] : null;
+            $object[$key] = $value;
+          }
+        }
+      }
   		$object["ajax"] = array_key_exists("ajax",$object) ? $object["ajax"] : "false";
 
   		return $object;
@@ -319,6 +378,9 @@ class nexus{
 
     function __construct($requested_method = "dashboard"){
         global $page_data;
+        global $output_buffer;
+
+        ob_start();
 
         $this->name = $this->get_name();
         $this->queries = $this->get_query_string_object();
@@ -379,11 +441,14 @@ class nexus{
         $page_data["requested_method"]  = $requested_method;
         $page_data["page_content"]      = $this->parse_template($page_data["page_content"],$page_data);
 
+        $output_buffer .= ob_get_contents();
+        ob_end_clean();
+
+        $page_data["page_content"] = $output_buffer . $page_data["page_content"];
         if($this->queries["ajax"] ==  "true"){
           print $page_data["page_content"];
         }else{
           print $this->parse_template("nexus.template",$page_data);
-
         }
 
         return;

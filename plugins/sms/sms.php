@@ -1,9 +1,9 @@
 <?php
+  //http://developer.bulksms.com/eapi/
+  class sms extends nexus{
 
-  class bulksms extends nexus{
-
-    var $username = "domesticindustries";
-    var $password = "24peterroad";
+    private $username = "domesticindustries";
+    private $password = "24peterroad";
     var $credits;
 
     function get_credits(){
@@ -34,12 +34,17 @@
       $this->get_credits();
       $page_data["stat_block_balance"] = $this->parse_template("stat_block.template",[
         "stat_block_type" => "info",
+        "chart"           => $this->parse_template("chart.template"),
         "icon"            => "balance-scale",
         "label"           => "Available Credits",
         "credits"         => $this->credits,
         "link_text"       => "Top Up"
       ]);
-      $page_data["chart"] = $this->get_template("chart.template");
+
+      $page_data["send_an_sms_widget"] = $this->parse_template("send_sms.widget",[
+        "title" => "Send a SMS"
+      ]);
+      //TODO allow for creating of new widgets from backend... maybe a widgets folder?
       //TODO allow all module data to be available on the page if they are public variables... maybe prefix the template call with module_
       parent::__construct($method);
     }

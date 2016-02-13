@@ -32,6 +32,18 @@ $z_index_header:100;
 //     -webkit-flex-align: start;
 // }
 
+%block_reset{
+  display:block;
+  width:100%;
+  clear:both;
+  float:none;
+}
+
+body{
+  min-height:100vh;
+  position:relative;
+}
+
 body{
   padding:($header_height + 20px) 1em 1em 1em;
 }
@@ -68,6 +80,10 @@ span{
 
     #main_menu_toggle{
       padding:0 0.5em;
+
+      .icon{
+        margin-right:10px;
+      }
     }
 }
 
@@ -187,6 +203,7 @@ details.debug{
     summary {
         border-bottom: 1px solid white;
         padding-bottom: 0.7em;
+        outline:none;
     }
 }
 
@@ -197,8 +214,7 @@ details.debug{
   float:none;
   clear:both;
   background-color:white;
-  margin:10px auto;
-  text-align:center;
+  margin:0 auto 10px auto;
 
   header,.content{
     padding:1em;
@@ -207,6 +223,15 @@ details.debug{
 
   header{
     position:relative;
+    background-color:$color_primary_light;
+    text-transform: uppercase;
+    font-size: 1.5em;
+    max-height: 96px;
+    font-weight: bold;
+    color:white;
+    text-shadow: -2px 2px 10px rgba(0,0,0,0.2);
+    text-align:center;
+
     .icon{
       font-size:4em;
       color:white;
@@ -296,10 +321,12 @@ details.debug{
   vertical-align:top;
   float:none;
   clear:both;
+  margin:0 10px 10px 0;
 }
 
 .stat_block{
   width: 250px;
+  max-width:100%;
   color: white;
   padding: 0;
   text-align:right;
@@ -319,7 +346,7 @@ details.debug{
 
   .content{
     padding: 20px 10px;
-    height: 95px;
+    height: 96px;
     overflow: hidden;
     position: relative;
   }
@@ -356,5 +383,18 @@ details.debug{
 
   &:hover{
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  }
+}
+
+form.card{
+  header{
+    background-color:$color_aqua;
+    font-size:1.5em;
+  }
+}
+
+form{
+  .field{
+    @extend %block_reset;
   }
 }

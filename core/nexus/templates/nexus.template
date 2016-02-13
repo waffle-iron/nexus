@@ -7,8 +7,7 @@
 
     <header id="header">
 
-      <a class="icon icon-bars button" id="main_menu_toggle"></a>
-      <h4><a href="/"></span>Nexus</a></h4>
+      <a id="main_menu_toggle"><span class="icon icon-bars button"></span>Nexus</a>
 
       <div id="profile_area" class="action">
         <h5 class="gplus user name">(#user_nickname#)</h5>
@@ -27,7 +26,7 @@
 
     <div id="main_menu" class="menu inactive">
       <a class="item" href="/"><span class="icon icon-home"></span>Home</a>
-      <a class="item" href="/plugins/bulksms/bulksms.php"><span class="icon icon-plug">Bulk SMS</a></div>
+      (#menu_items#)
     </div>
 
     (#page_content#)

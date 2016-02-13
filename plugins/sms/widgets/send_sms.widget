@@ -1,0 +1,21 @@
+<form class="card brick shadowed">
+  <header>Send a SMS</header>
+  <div class="content">
+
+    <div class="field">
+      <label class="label">Recipients</label>
+      <select><option>...</option></select>
+    </div>
+
+    <div class="field">
+      <label class="label">Message</label>
+      <textarea class="input">
+        test message
+      </textarea>
+    </div>
+
+  </div>
+  <footer>
+    <input type="submit" value="send" />
+  </footer>
+</form>
