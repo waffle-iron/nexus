@@ -4,7 +4,7 @@
     (#head#)
 </head>
 <body class="(#requested_module#) (#requested_method#)">
-
+    <div id="mask" class="mask"></div>
     <header id="header">
 
       <a id="main_menu_toggle"><span class="icon icon-bars button"></span>Nexus</a>
@@ -24,12 +24,14 @@
 
     </header>
 
-    <div id="main_menu" class="menu inactive">
+    <div id="main_menu" class="menu">
       <a class="item" href="/"><span class="icon icon-home"></span>Home</a>
       (#menu_items#)
     </div>
 
-    (#page_content#)
+    <div id="page_content">
+      (#page_content#)
+    </div>
 
 </body>
 </html>

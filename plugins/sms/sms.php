@@ -4,8 +4,12 @@
 
     private $username = "domesticindustries";
     private $password = "24peterroad";
-    var $credits;
+    private $credits;
 
+    var $settings = [
+      "icon"  => "message"
+    ];
+    
     function get_credits(){
       //REF: http://developer.bulksms.com/eapi/account/get_credits/
       $error_message = "Could not fetch credits";

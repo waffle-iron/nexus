@@ -14,8 +14,53 @@ $(function() {
     }
   });
 
-  $("#main_menu_toggle").click(function(){
-    $("#main_menu").toggleClass("inactive");
-  });
 
+
+});
+
+
+//template specific
+var nexus = nexus || {};
+nexus.template = {
+  init: function(){
+    $("#main_menu_toggle").click(function(){
+      nexus.template.menu.toggle();
+    })
+    $(nexus.template.mask.selector).click(function(){
+      nexus.template.menu.toggle();
+    });
+  },
+  mask:{
+    selector:"#mask",
+    show:function(){
+      $(nexus.template.mask.selector).addClass("active");
+    },
+    hide:function(){
+      $(nexus.template.mask.selector).removeClass("active");
+    },
+  },
+  menu: {
+    selector: "#main_menu",
+    toggle: function(){
+      if($(nexus.template.menu.selector).hasClass("active")){
+        nexus.template.menu.hide();
+        nexus.template.mask.hide();
+      }else{
+        nexus.template.menu.show();
+        nexus.template.mask.show();
+      }
+
+    },
+    show: function(){
+      $(nexus.template.menu.selector).addClass("active");
+      $
+    },
+    hide: function(){
+        $(nexus.template.menu.selector).removeClass("active");
+    }
+  }
+}
+
+$(function(){
+  nexus.template.init();
 });

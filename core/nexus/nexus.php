@@ -52,12 +52,14 @@ function alert($message = null){
 
 class nexus{
 
-    public $name = '';
-    public $user = null;
-    public static $instances = 0;
+    var $name = null;
+    var $settings = [
+      "icon" => "link"
+    ];
     var $defaults = [
       "method" => "dashboard"
     ];
+
 
     //http://stackoverflow.com/questions/173400/how-to-check-if-php-array-is-associative-or-sequential
     function readable_string($string = ""){
@@ -146,6 +148,8 @@ class nexus{
     }
 
     function get_user_info(){
+      //TODO logout must clear session
+      //TODO login must reassign session to nulls and start again
       $_SESSION["user"] = null;
       $user = UserService::getCurrentUser();
 
@@ -376,9 +380,61 @@ class nexus{
   		return $object;
   	}
 
+    private function get_all_modules(){
+
+      //TODO cache this!
+      //TODO auto require all core modules
+      //TODO user info to be stored in the session variable not in the class
+
+      //REF: http://www.codedevelopr.com/articles/recursively-scan-a-directory-using-php-spl-directoryiterator/
+      $modules = [];
+      $plugins_directory = $_SERVER["DOCUMENT_ROOT"]."/plugins";
+      $directory = new RecursiveDirectoryIterator($plugins_directory,RecursiveDirectoryIterator::SKIP_DOTS);
+      $iterator = new RecursiveIteratorIterator($directory,RecursiveIteratorIterator::LEAVES_ONLY);
+
+      $extensions = array("php");
+
+      foreach ($iterator as $fileinfo) {
+          if (in_array($fileinfo->getExtension(), $extensions)) {
+              $file_name = str_replace(".".$fileinfo->getExtension(),"",$fileinfo->getFileName());
+              $folder_name = basename(dirname($fileinfo->getPathname()));
+
+              if($file_name == $folder_name){
+                //TODO check if this class is excluded from the menu via its class settings
+                //TODO get module name from class settings
+                //TODO cache this bitch
+                require_once($fileinfo->getPathname());
+                $class_settings = get_class_vars($file_name)["settings"];
+                $class_settings["name"] = !array_key_exists("name",$class_settings) ? $file_name : $class_settings["name"];
+                $class_settings["url"]  = !array_key_exists("url", $class_settings) ? "/".$file_name : $class_settings["url"];
+                $modules[$file_name] = $class_settings;
+              }
+          }
+      }
+
+      return $modules;
+    }
+
+    public function generate_main_menu(){
+      $menu_items = "";
+      $modules = $this->get_all_modules();
+      foreach($modules as $module){
+        $menu_items .= $this->parse_template("menu_item.template",[
+          "url" => $module["url"],
+          "text" => $module["name"],
+          "icon" => $module["icon"]
+        ]);
+      }
+
+      return $menu_items;
+    }
+
     function __construct($requested_method = "dashboard"){
+      //TODO:clean up this function
         global $page_data;
         global $output_buffer;
+
+        $requested_module = null;
 
         ob_start();
 
@@ -386,7 +442,6 @@ class nexus{
         $this->queries = $this->get_query_string_object();
 
         //TODO function to fetch all page_data
-        $requested_module = null;
         $page_data = array_merge($page_data,$this->get_user_info());
 
         //catch module and method request
@@ -396,6 +451,7 @@ class nexus{
         $request_array            = explode("/",$_SERVER["PATH_INFO"]);    //converts the url requested path string into an object
         $request_array            = array_diff($request_array,array(""));  //removes empty values from the array
         $request_array            = array_values($request_array);          //resets the indexes of the array
+
         if(count($request_array) >= 1){
           $requested_method = count($request_array) > 1 ? $request_array[1] : $this->defaults["method"];
           $requested_module = $page_data["requested_module"] = $request_array[0];
@@ -440,7 +496,7 @@ class nexus{
 
         $page_data["requested_method"]  = $requested_method;
         $page_data["page_content"]      = $this->parse_template($page_data["page_content"],$page_data);
-
+        $page_data["menu_items"]        = $this->generate_main_menu();
         $output_buffer .= ob_get_contents();
         ob_end_clean();
 
