@@ -7,9 +7,11 @@
     private $credits;
 
     var $settings = [
-      "icon"  => "message"
+      "icon"  => "message",
+      "name"  => "SMS"
+
     ];
-    
+
     function get_credits(){
       //REF: http://developer.bulksms.com/eapi/account/get_credits/
       $error_message = "Could not fetch credits";

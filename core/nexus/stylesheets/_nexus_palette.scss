@@ -1,16 +1,23 @@
-//https://coolors.co/app/0b132b-1c2541-3a506b-5bc0be-6fffe9
-//https://coolors.co/app/2b2d42-8d99ae-edf2f4-ef233c-d90429
-//https://coolors.co/app/011627-fdfffc-2ec4b6-e71d36-ff9f1c
-//https://coolors.co/app/5bc0eb-fde74c-9bc53d-e55934-fa7921
+/*
+  BRAND COLORS
+  https://coolors.co/app/2b2d42-8d99ae-edf2f4-ef233c-d90429
+
+  OTHERS BRAND COLORS:
+  https://coolors.co/app/0b132b-1c2541-3a506b-5bc0be-6fffe9
+  https://coolors.co/app/011627-fdfffc-2ec4b6-e71d36-ff9f1c
+
+  SUCCESS, ERROR, INFO COLORS
+  https://coolors.co/app/5bc0eb-fde74c-9bc53d-e55934-fa7921
+*/
 
 /*brand colors*/
-$color_primary:#1C2541;
-$color_primary_dark: #0B132B !default;
+$color_primary:#2B2D42;
+$color_primary_dark:null !default;
 $color_primary_light:#8D99AE !default;
 
-$color_secondary:null !default;
+$color_secondary:#D90429 !default;
 $color_secondary_dark:null !default;
-$color_secondary_light:null !default;
+$color_secondary_light:#EF233C !default;
 
 
 /*text colors*/
@@ -27,6 +34,7 @@ $color_link:$color_secondary !default;
 $color_link:null !default;
 
 $color_foreground:#efefef !default;
+$color_foreground:#EDF2F4;
 $color_shadow:#ababab !default;
 $color_accent:grey;
 

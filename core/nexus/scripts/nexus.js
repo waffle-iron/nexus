@@ -23,11 +23,12 @@ $(function() {
 var nexus = nexus || {};
 nexus.template = {
   init: function(){
-    $("#main_menu_toggle").click(function(){
-      nexus.template.menu.toggle();
-    })
     $(nexus.template.mask.selector).click(function(){
       nexus.template.menu.toggle();
+    });
+
+    $("[data-toggle]").click(function(){
+      $($(this).attr("data-toggle")).toggleClass("active");
     });
   },
   mask:{
@@ -53,7 +54,7 @@ nexus.template = {
     },
     show: function(){
       $(nexus.template.menu.selector).addClass("active");
-      $
+      $(nexus.template.menu.toggle_button_selector).addClass("active");
     },
     hide: function(){
         $(nexus.template.menu.selector).removeClass("active");

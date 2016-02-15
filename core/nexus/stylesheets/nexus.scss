@@ -8,7 +8,6 @@
 
 @import "_nexus_palette.scss";
 @import "_nexus_mixin.scss";
-@import "_nexus_base.scss";
 @import "_nexus_animation.scss";
 
 
@@ -39,7 +38,23 @@ $z_index_header:100;
   float:none;
 }
 
+*{
+  @include box-sizing(border-box);
+}
+
+html, body{
+    min-height:100%;
+    width:100%;
+    -webkit-font-smoothing:antialiased;
+    margin:0;
+}
+
+
 body{
+  color:$color_text;
+  @include word-break(break-word);
+  font:$font;
+  background-color:$color_foreground;
   min-height:100vh;
   position:relative;
 }
@@ -48,157 +63,87 @@ body{
   padding:($header_height + 20px) $gap $gap $gap;
 }
 
+img{
+    border:none;
+    max-height:100%;
+    max-width:100%;
+}
+
+a{
+  color:$color_link;
+  text-decoration:none;
+
+  &:visited{
+    color:$color_link_visited;
+  }
+
+  &:hover{
+    text-decoration:underline;
+  }
+
+}
+
+button,
+input[type=button],
+input,
+button,
+input[type=submit],
+input[type=reset],
+a:link,
+.button,
+select,
+.action,
+[data-toggle]{
+    @include user-select(none);
+
+    &:not([disabled]){
+      cursor:pointer;
+    }
+
+    &[disabled]{
+      cursor:not-allowed;
+    }
+
+    &:hover{
+      cursor:pointer;
+    }
+
+}
+
+
+h1,h2,h3,h4,h5,h6{
+  display: block;
+  font-weight: bold;
+  margin:0;
+}
+
+h3{
+
+}
+
+h4{
+  font-size:1em;
+}
+
+h5{
+  font-size: 0.83em;
+}
+input:focus{
+  outline-color:$color_primary;
+}
+
+img{
+  border:none;
+  max-width:100%;
+  max-height:100%;
+}
+
 textarea{
   max-width:100%;
 }
 
 span{
   display:inline;
-}
-
-#header {
-    padding:0;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color:$color_primary_dark;
-    z-index:$z_index_header;
-    box-shadow:$shadow;
-    position:fixed;
-    z-index:100;
-    height:$header_height;
-    color:white;
-    //TODO mixin for multiple box-shadows
-
-    >*{
-      display:inline-block;
-      vertical-align:baseline;
-      margin:0;
-      line-height:$header_height;
-
-    }
-
-    a{
-      color:white;
-    }
-
-    #main_menu_toggle{
-      padding:0 0.5em;
-
-      .icon{
-        margin-right:10px;
-      }
-    }
-}
-
-#profile_area{
-  position:absolute;
-  top:0;
-  right:0;
-  margin:0;
-  padding:5px 60px 5px 5px;
-  line-height:14px;
-  text-align:right;
-  font-size:12px;
-  background-color:inherit;
-  height:100%;
-  min-width:120px;
-
-  img{
-    width:$header_height + 15px;
-    height:$header_height + 15px;
-    @include border-radius(100%);
-    border:4px solid $color_primary_dark;
-    background-color:$color_primary_dark;
-    @include box-shadow(0 0 1em 0 $color_primary_dark);
-    position:absolute;
-    top:0;
-    right:0;
-    max-height:none;
-    z-index:1;
-  }
-
-  .menu{
-    display:block;
-    background-color: white;
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    padding: 10px;
-    text-align:left;
-    margin-top:-20px;
-    @include transition(all 0.3s ease);
-    @include opacity(0);
-    box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    visibility: hidden;
-    z-index:-1;
-
-    a{
-      color:$color_primary;
-    }
-
-    .item{
-      line-height:2em;
-    }
-  }
-
-  &:hover{
-    .menu{
-      top:100%;
-      margin:0;
-      @include opacity(1);
-      visibility:visible;
-    }
-  }
-}
-
-#main_menu{
-  width:200px;
-  max-width: 100%;
-  position:fixed;
-  left:-100px;
-  top:$header_height;
-  height:calc(100% - #{$header_height});
-  background-color:$color_primary;
-  @include transition(all 0.2s linear);
-  @include opacity(0);
-  @include box-shadow($shadow);
-  margin:0;
-  font-size:0.8em;
-  color:white;
-  overflow:hidden;
-  visibility: hidden;
-  z-index:$z_index_header + 1;
-
-  &.active{
-    @include opacity(1);
-    left:0;
-    visibility: visible;
-  }
-
-  a{
-    color:inherit;
-    &:hover{
-      text-decoration: none;
-    }
-  }
-
-
-  .item{
-    padding:$gap;
-    border-bottom:1px solid rgba(255,255,255,0.5);
-    @include transition(0.1s all linear);
-    white-space:nowrap;
-
-    .icon{
-      margin:0 $gap 0 0;
-    }
-
-    &:hover{
-      background-color:rgba(255,255,255,0.2)
-    }
-  }
-
 }
 
 details.debug{
@@ -217,6 +162,45 @@ details.debug{
         padding-bottom: 0.7em;
         outline:none;
     }
+}
+
+.blur{
+  @include blur(2px);
+}
+
+
+.clear{
+    clear:both;
+    float:none;
+}
+
+.pull_left{
+  float:left;
+}
+
+.pull_right{
+  float:right;
+}
+
+.hide{
+  display:none !important;
+}
+
+.icon{
+
+  &:hover{
+    text-decoration:none;
+  }
+
+  &.button:hover{
+    cursor:pointer;
+  }
+}
+
+.menu{
+  .item{
+    display:block;
+  }
 }
 
 .card{
@@ -424,8 +408,6 @@ form{
   }
 }
 
-
-/*template styles*/
 .mask{
   position: fixed;
   top: 0;
@@ -435,7 +417,7 @@ form{
   background-color: rgba(0,0,0,0.7);
   z-index: -1;
   @include opacity(0);
-  @include transition(all 0.2 ease);
+  @include transition(opacity 0.2s ease);
 
   &.active{
     z-index:1;
@@ -444,5 +426,178 @@ form{
     & ~ #page_content{
       @include blur(2px);
     }
+  }
+}
+
+.profile_badge{
+  position:relative;
+  margin:0;
+  padding:5px 60px 5px 5px;
+  line-height:14px;
+  text-align:right;
+  font-size:12px;
+  line-height:normal;
+  background-color:$color_primary;
+
+  img{
+    width:$header_height + 15px;
+    height:$header_height + 15px;
+    @include border-radius(100%);
+    border:4px solid $color_primary;
+    background-color:$color_primary;
+    @include box-shadow(0 0 1em 0 $color_primary);
+    position:absolute;
+    top:0;
+    right:0;
+    max-height:none;
+    z-index:1;
+  }
+
+  .menu{
+    display:block;
+    background-color: white;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    padding: 10px;
+    text-align:left;
+    margin-top:-20px;
+    @include transition(all 0.3s ease);
+    @include opacity(0);
+    box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    visibility: hidden;
+    z-index:-1;
+
+    a{
+      color:$color_primary;
+    }
+
+    .item{
+      line-height:2em;
+    }
+  }
+
+  &:hover{
+    .menu{
+      top:100%;
+      margin:0;
+      @include opacity(1);
+      visibility:visible;
+    }
+  }
+}
+
+#header {
+    padding:0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:$color_primary_dark;
+    background-color:$color_primary;
+    z-index:$z_index_header;
+    box-shadow:$shadow;
+    position:fixed;
+    z-index:100;
+    height:$header_height;
+    color:white;
+    //TODO mixin for multiple box-shadows
+
+}
+
+#header_profile_badge{
+  position:absolute;
+  top:0;
+  right:0;
+  height:100%;
+  min-width:120px;
+}
+
+#main_menu_toggle{
+  padding: 0;
+  position: absolute;
+  top: $gap;
+  left: $gap;
+  z-index: $z_index_header + 2;
+  color: white;
+  .icon{
+    margin-right:$gap;
+  }
+}
+
+#main_menu{
+  width:300px;
+  max-width: 100%;
+  position:fixed;
+  left:-100px;
+  top:0;
+  height:100%;
+  background-color:white;
+  @include transition(all 0.2s linear);
+  @include opacity(0);
+  @include box-shadow($shadow);
+  margin:0;
+  font-size:1.1em;
+  overflow:hidden;
+  visibility: hidden;
+  z-index:$z_index_header + 1;
+  counter-reset:menu_items;
+
+  &.active{
+    @include opacity(1);
+    left:0;
+    visibility: visible;
+
+    .item{
+      left:0;
+    }
+  }
+
+  header{
+    width:100%;
+    display:block;
+    background-color:$color_secondary;
+    height:200px;
+    position:relative;
+    padding-top:$header_height;
+
+    .gplus.user.name{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 10px;
+      color: white;
+      font-weight: normal;
+    }
+  }
+
+  a{
+    color:inherit;
+    &:hover{
+      text-decoration: none;
+    }
+  }
+
+  .item{
+    padding:$gap;
+    white-space:nowrap;
+    position:relative;
+
+    @include transition(0.1s 1s left linear);
+
+    .icon{
+      margin:0 $gap 0 0;
+      vertical-align:top;
+    }
+
+    &:hover{
+      color:$color_secondary;
+    }
+  }
+
+}
+
+@media (max-width:320px){
+  .stat_block, .card{
+      width:100%;
   }
 }
