@@ -94,7 +94,7 @@ handlers:
 #CORE
 - url: .*
   script: /core/nexus/engine.php
-  #login: required
+  login: required
 
 skip_files:
 - ^(.*/)?\.DS_Store$
