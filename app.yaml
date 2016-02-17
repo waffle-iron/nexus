@@ -41,7 +41,7 @@ handlers:
 #CORE
 - url: .*
   script: /core/nexus/engine.php
-  login: required
+  #login: required
 
 # https://cloud.google.com/appengine/docs/php/config/appconfig#PHP_app_yaml_Skipping_files
 # error_handlers:

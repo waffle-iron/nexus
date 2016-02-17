@@ -1,4 +1,4 @@
-appengine-php-guestbook
+Nexus ERP Enabler
 ================================
 
-Guestbook demo for Google App Engine that uses PHP
+An ERP tool to facilitate a variety of business processes
