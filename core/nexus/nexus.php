@@ -162,6 +162,13 @@ class nexus{
       return $_SESSION["user"];
     }
 
+    function save_user_info(){
+      var_dump($_GET);
+      //todo once the google script has loaded call this function
+      //then do a check to see if profile name and profile exists, if so dont load the gplus script
+      return null;
+    }
+
     function get_path($options = []){
         $options = is_array($options) ? $options : array("relative");
         $reflector = new ReflectionClass(get_class($this));

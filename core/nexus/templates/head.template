@@ -15,5 +15,8 @@
 <script src="https://apis.google.com/js/client:platform.js?onload=nexus_gplus_init"></script>
 <script src="/core/nexus/scripts/nexus_base.min.js"></script>
 
+<script src="/core/nexus/scripts/chosen_v1.5.0/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="/core/nexus/scripts/chosen_v1.5.0/chosen.css" />
+
 (#stylesheets#)
 (#scripts#)

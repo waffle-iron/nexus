@@ -23,6 +23,7 @@
     </header>
 
     <div id="main_menu" class="menu">
+      <!--: REF: http://codepen.io/creotip/full/QbLXYq/ -->
       <header>
         <h2 class="gplus user name">(#user_nickname#)</h2>
       </header>

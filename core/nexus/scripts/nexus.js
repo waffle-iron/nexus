@@ -30,6 +30,11 @@ nexus.template = {
     $("[data-toggle]").click(function(){
       $($(this).attr("data-toggle")).toggleClass("active");
     });
+
+    //check if chosen is installed
+    if($.fn.chosen){
+      $(".chosen-select").chosen();
+    }
   },
   mask:{
     selector:"#mask",

@@ -5,60 +5,23 @@ api_version: 1
 threadsafe: yes
 default_expiration: 1h
 
+skip_files:
+- ^(.*/)?\.DS_Store$
+- ^(.*/)?\.scss$
+
 handlers:
-#CORE
-# Serve php scripts.
-- url: /(.+\.php)$
-  script: \1
-
-- url: /core/(.*)/widgets/(.*).widget$
-  static_files: core/\1/widgets/\2.widget
-  upload: core/(.*)/widgets/(.*).widget$
+- url: /(.+\.(gif|png|jpg|css|js))$
+  static_files: \1
+  upload: .+\.(gif|png|jpg|css|js)$
   application_readable: true
 
-- url: /core/(.*)/templates/(.*).template$
-  static_files: core/\1/templates/\2.template
-  upload: core/(.*)/templates/(.*).template$
-  application_readable: true
-
-- url: /core/(.*)/images/(.*).png$
-  static_files: core/\1/images/\2.png
-  upload: core/(.*)/images/(.*).png$
-  application_readable: true
-
-- url: /core/(.*)/stylesheets/(.*).css$
-  static_files: core/\1/stylesheets/\2.css
-  upload: core/(.*)/stylesheets/(.*).css$
-  application_readable: true
+- url: (.*)?debug=true
+  script: ?debug=true
+  login: admin
 
 - url: /core/(.*)/fonts/(.*)$
   static_files: core/\1/fonts/\2
   upload: core/(.*)/fonts/(.*)$
-  application_readable: true
-
-- url: /core/(.*)/scripts/(.*).js$
-  static_files: core/\1/scripts/\2.js
-  upload: core/(.*)/scripts/(.*).js$
-  application_readable: true
-
-- url: /core/(.*)/scripts/(.*).css$
-  static_files: core/\1/scripts/\2.css
-  upload: core/(.*)/scripts/(.*).css$
-  application_readable: true
-
-- url: /plugins/(.*)/templates/(.*).template$
-  static_files: plugins/\1/templates/\2.template
-  upload: plugins/(.*)/templates/(.*).template$
-  application_readable: true
-
-- url: /plugins/(.*)/widgets/(.*).widget$
-  static_files: plugins/\1/widgets/\2.widget
-  upload: plugins/(.*)/widgets/(.*).widget$
-  application_readable: true
-
-- url: /plugins/(.*)/stylesheets/(.*).css$
-  static_files: plugins/\1/stylesheets/\2.css
-  upload: plugins/(.*)/stylesheets/(.*).css$
   application_readable: true
 
 - url: /plugins/(.*)/fonts/(.*)$
@@ -66,27 +29,11 @@ handlers:
   upload: plugins/(.*)/fonts/(.*)$
   application_readable: true
 
-- url: /plugins/(.*)/scripts/(.*).js$
-  static_files: plugins/\1/scripts/\2.js
-  upload: plugins/(.*)/scripts/(.*).js$
-  application_readable: true
-
-- url: /plugins/(.*)/(.*).php$
-  static_files: plugins/\1/\2.php
-  upload: plugins/(.*)/(.*).php$
-  application_readable: true
-
 - url: /fonts/*
   static_dir: fonts/
 
-- url: /images/*
-  static_dir: images/
-
 - url: /fonts/*
   static_dir: fonts/
-
-- url: /scripts/*
-  static_dir: scripts/
 
 #TODO check error handlers for the app.yaml
 #TODO go through app.yaml dox to see if i can improve this page
@@ -96,6 +43,9 @@ handlers:
   script: /core/nexus/engine.php
   login: required
 
-skip_files:
-- ^(.*/)?\.DS_Store$
-- ^(.*/)?\.scss$
+# https://cloud.google.com/appengine/docs/php/config/appconfig#PHP_app_yaml_Skipping_files
+# error_handlers:
+#   - file: default_error.html
+#
+#   - error_code: over_quota
+#     file: over_quota.html
