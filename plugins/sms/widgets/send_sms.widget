@@ -20,7 +20,7 @@
     </div>
 
     <div class="field">
-      <textarea class="input" required rows=10></textarea>
+      <textarea class="input" required rows="5"></textarea>
       <label class="label">Message</label>
     </div>
 

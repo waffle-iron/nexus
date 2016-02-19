@@ -235,7 +235,7 @@ details.debug{
     @include box-shadow(0 2px 5px 1px rgba(0,0,0,0.2));
     @include user-select(none);
     .icon{
-      font-size:4em;
+      font-size:3em;
       color:white;
     }
   }
@@ -501,7 +501,7 @@ form{
 .profile_badge{
   position:relative;
   margin:0;
-  padding:5px 60px 5px 5px;
+  padding:$gap/2 $gap*6 $gap/2 $gap/2;
   line-height:14px;
   text-align:right;
   font-size:12px;
@@ -509,8 +509,8 @@ form{
   background-color:$color_primary;
 
   img{
-    width:$header_height + ($gap*3);
-    height:$header_height + ($gap*3);
+    width:$header_height + ($gap*1.5);
+    height:var(width);
     @include border-radius(100%);
     border:4px solid $color_primary;
     background-color:$color_primary;

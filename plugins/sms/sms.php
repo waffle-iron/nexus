@@ -36,23 +36,23 @@
     }
 
     function __construct($method = "dashboard"){
-      global $page_data;
-      $this->get_credits();
-      $page_data["stat_block_balance"] = $this->parse_template("stat_block.template",[
-        "stat_block_type" => "info",
-        "chart"           => $this->parse_template("chart.template"),
-        "icon"            => "balance-scale",
-        "label"           => "Available Credits",
-        "credits"         => $this->credits,
-        "link_text"       => "Top Up"
-      ]);
-
-      $page_data["send_an_sms_widget"] = $this->parse_template("send_sms.widget",[
-        "title" => "Send a SMS"
-      ]);
-      //TODO allow for creating of new widgets from backend... maybe a widgets folder?
-      //TODO allow all module data to be available on the page if they are public variables... maybe prefix the template call with module_
-      parent::__construct($method);
+      // global $page_data;
+      // $this->get_credits();
+      // $page_data["stat_block_balance"] = $this->parse_template("stat_block.template",[
+      //   "stat_block_type" => "info",
+      //   "chart"           => $this->parse_template("chart.template"),
+      //   "icon"            => "balance-scale",
+      //   "label"           => "Available Credits",
+      //   "credits"         => $this->credits,
+      //   "link_text"       => "Top Up"
+      // ]);
+      //
+      // $page_data["send_an_sms_widget"] = $this->parse_template("send_sms.widget",[
+      //   "title" => "Send a SMS"
+      // ]);
+      // //TODO allow for creating of new widgets from backend... maybe a widgets folder?
+      // //TODO allow all module data to be available on the page if they are public variables... maybe prefix the template call with module_
+      // parent::__construct($method);
     }
   }
 

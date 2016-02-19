@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    (#head#)
+    (#page|head#)
 </head>
-<body class="(#requested_module#) (#requested_method#)">
+<body class="(#request|module|name#) (#request|method#)">
     <div id="mask" class="mask"></div>
     <a id="main_menu_toggle" data-toggle="#main_menu, #mask"><span class="icon icon-bars button"></span>Nexus</a>
     <header id="header">
       <div id="header_profile_badge" class="profile_badge action">
-        <h5 class="gplus user name">(#user_nickname#)</h5>
-        <h5 class="user email">(#user_email#)</h5>
+        <h5 class="gplus user name">(#user|nickname#)</h5>
+        <h5 class="user email">(#user|email#)</h5>
         <img class="gplus user image" src="/core/nexus/images/avatar.png" />
 
         <div class="menu">
@@ -25,14 +25,14 @@
     <div id="main_menu" class="menu">
       <!--: REF: http://codepen.io/creotip/full/QbLXYq/ -->
       <header>
-        <h2 class="gplus user name">(#user_nickname#)</h2>
+        <h2 class="gplus user name">(#user|nickname#)</h2>
       </header>
       <a class="item" href="/"><span class="icon icon-home"></span>Home</a>
       (#menu_items#)
     </div>
 
     <div id="page_content">
-      (#page_content#)
+      (#page|content#)
     </div>
 
 </body>

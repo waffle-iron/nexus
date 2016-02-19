@@ -2,7 +2,7 @@
 <meta content="width=device-width,minimum-scale=1.0" name="viewport">
 <meta name="google-signin-client_id" content="921086267509-lkb3ck09h1esjcul2tm6kp1t879g12a4.apps.googleusercontent.com"></meta>
 
-<title>(#module_name#)</title>
+<title>(#request|module|name#)</title>
 
 <link rel="shortcut icon" href="/core/nexus/images/shortcut_icon.png" />
 
