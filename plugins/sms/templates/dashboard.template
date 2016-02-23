@@ -1,5 +1,2 @@
-(#stat_block_balance#)
-
-(#chart#)
-
+(#credits_stat_block.template#)
 (#send_sms.widget#)

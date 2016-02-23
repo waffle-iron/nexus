@@ -5,6 +5,18 @@
 session_start(); //todo close this session on logout
 $_nexus = [];
 
+function error($message = "An error occurred",$title = "Error"){
+
+  $stacktrace = debug_backtrace();
+  array_shift($stacktrace);
+
+  print parse_template("error.template",[
+      "title"=>$title,
+      "message"=>$message,
+      "stacktrace" => $stacktrace
+  ]);
+}
+
 function get_server_info(){
   global $_nexus;
   $_nexus["server"] = $_SERVER;
@@ -75,12 +87,16 @@ function get_file_location($filename = null){
         break;
     }
 
+    jslog("Extension for: ".$filename." = '".get_extension($filename)."'");
+
     //check module specific folder...
     //TODO this must equal the loaded class
     if(file_exists($_nexus["request"]["module"]["class"]->get_path()."/".$folder_to_check."/".$filename)){
         $location["absolute_path"] = $_nexus["request"]["module"]["class"]->get_path()."/".$folder_to_check."/".$filename;
         $location["relative_path"] = $_nexus["request"]["module"]["class"]->get_path(["relative" => true])."/".$folder_to_check."/".$filename;
         return $location;
+    }else{
+      jslog("checking parents now",$filename." was not found in it's own folder... ");
     }
 
     //check parent's module folder
@@ -89,9 +105,11 @@ function get_file_location($filename = null){
         if(file_exists($data["absolute_path"]."/".$folder_to_check."/".$filename)){
             $location["absolute_path"] = $data["absolute_path"]."/".$folder_to_check."/".$filename;
             $location["relative_path"] = $data["relative_path"]."/".$folder_to_check."/".$filename;
+            jslog($filename." was found :)",$filename);
             return $location;
         }
     }
+    jslog($filename. " count not be found", "File not found!");
 }
 
 function get_template($template_name = null){
@@ -129,16 +147,14 @@ function parse_template($template_name = null,$template_data = []){
   $template_data["request"] = $_nexus["request"];
   $template_data["user"]    = !isset($_SESSION["user"]) ? [] : $_SESSION["user"];
 
-  $template_data["company"] = get_company_info();
+  $template_data["company"]         = get_company_info();
   $template_data["date"]["year"]    = date("Y");
   $template_data["date"]["month"]   = intval(getdate()["mon"]) < 10 ? ("0".getdate()["mon"]) : getdate()["mon"];
   $template_data["date"]["day"]     = getdate()["mday"];
   $template_data["date"]["weekday"] = getdate()["weekday"];
-  debug($template_data);
+  $template_data["module"]          = get_object_vars($_nexus["request"]["module"]["class"]); //TODO: maybe this should only get done once??
   $template_regex = "/\(#(.*?)#\)/";
-  $count = 0;
-  while(preg_match($template_regex, $template["contents"]) && $count < 10){
-    $count++;
+  while(preg_match($template_regex, $template["contents"])){
     if (preg_match_all($template_regex,$template["contents"], $variables_found)){
 
       foreach ($variables_found[1] as $i => $variable_name){
@@ -147,7 +163,6 @@ function parse_template($template_name = null,$template_data = []){
           $lua = $template_data;
           $v = $variable_name;
           $ra = explode("|",$v);
-
           foreach($ra as $k){
             if(array_key_exists($k,$lua)){
               $lua = $lua[$k];
@@ -158,7 +173,17 @@ function parse_template($template_name = null,$template_data = []){
               break;
             }
           }
+        }elseif(strpos($variable_name,".template") > -1){
+          if(preg_match_all('/<data>(.*?)<\/data>/s', $template["contents"], $matches)){
+            $matches = json_decode($matches[1][0],true);
+            foreach($matches as $key=>$value){
+              $template_data[$key] = parse_template($value,$template_data);
+            }
+            $template["contents"] = preg_replace('/<data>(.*?)<\/data>/s',null,$template["contents"]);
+          }
 
+          //check for (#var.widget#)
+          $match = parse_template($variable_name,$template_data);
         }elseif(strpos($variable_name,".widget") > -1){
           //check for (#var.widget#)
           $match = parse_template($variable_name);
@@ -176,6 +201,9 @@ function parse_template($template_name = null,$template_data = []){
 
 
 
+  //TODO NO WIDGETS!!!!!!! only templates
+  //TODO possible template function name could be weave, and from the class called Arachne
+
   return html_entity_decode($template["contents"]);
 }
 
@@ -184,7 +212,8 @@ function display_page(){
   ob_start();
 
   if($_nexus["request"]){
-    $_nexus["request"]["module"]["class"] = new nexus();
+    require_once("plugins/".$_nexus["request"]["module"]["name"]."/".$_nexus["request"]["module"]["name"].".php");
+    $_nexus["request"]["module"]["class"] = new $_nexus["request"]["module"]["name"]();
     $_nexus["request"]["method"]          = "dashboard";
   }else{
     $_nexus["request"]["module"]["name"]  = "nexus";
@@ -197,8 +226,8 @@ function display_page(){
   $_nexus["page"]["content"]    = !isset($_nexus["page"]["content"]) ? "" : $_nexus["page"]["content"];
   $_nexus["page"]["content"]    .= $_nexus["request"]["module"]["class"]->$_nexus["request"]["method"]();
   $_nexus["page"]["content"]    .= ob_get_contents();
-
   ob_end_clean();
+
   $_nexus["page"]["head"] = parse_template("head.template",[
      "stylesheets" => $_nexus["request"]["module"]["class"]->get_stylesheets(),
      "scripts"     => $_nexus["request"]["module"]["class"]->get_scripts()
@@ -262,35 +291,6 @@ function init(){
   get_server_info();
   get_url_requests();
   display_page();
-
-  //debug($match);
-
-  // //first | replace with [
-  // $t = str_replace_first("|","[",$t);
-  //
-  // //every other pipe replace with ][
-  // $t = str_replace("|","][",$t);
-  // $t .= "]";
-  // parse_str($t,$request_arr);
-  // debug($request_arr);
-  //
-  // $result = array_intersect($_nexus,$request_arr);
-  // debug(array_keys($result));
-  //
-  // if($_test[$request_arr]){
-  //   print_r("the requested array was found");
-  // }
-  // else{
-  //   print_r("not found :(");
-  // }
-
-  //debug($request_arr);
-
-  //then append to string ]
-
-
-  //parse_str($t, $request_arr);
-  //debug($request_arr);
 }
 
 init();

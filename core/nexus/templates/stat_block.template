@@ -1,7 +1,7 @@
 <div class="stat_block (#stat_block_type#) shadowed brick" title="(#title#)">
   <div class="content">
     <span class="block_icon icon icon-(#icon#)"></span>
-    <h1 class="value">(#credits#)</h1>
+    <h1 class="value">(#value#)</h1>
     <label class="label">(#label#)</label>
   </div>
   <a class="footer" href="(#link#)">(#link_text#)<i class="icon icon-arrow-circle-o-right"></i></a>

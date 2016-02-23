@@ -17,6 +17,20 @@ function get_extension($filename = ""){
     return $parts[count($parts)-1];
 }
 
+function jslog($message = null, $title = null){
+  print "<script>";
+
+  if($title){
+    print "console.group(\"".$title."\");";
+  }
+  print "console.log(\"".$message."\");";
+
+  if($title){
+    print "console.groupEnd();";
+  }
+  print "</script>";
+}
+
 function alert($message = null){
   if($message != null)
   print '<script>alert("'.$message.'")</script>';
@@ -25,11 +39,8 @@ function alert($message = null){
 function debug($object){
   //TODO  change this to a javascript debug
   //TODO change this to a template call
-  $title = (func_num_args() == 2) ? func_get_arg(1) : 'Debug';
 
-  if(is_array($object) && func_num_args() == 1){
-      $title = "Debugging Array(".sizeof($object).")";
-  }
+  $title = func_num_args() == 1 ? "Debugging ".ucfirst(gettype($object))." (".sizeof($object).")" : func_get_arg(1);
 
   $object = is_string($object) ? htmlentities($object) : $object;
 
@@ -40,10 +51,6 @@ function debug($object){
   print_r($object);
   print "</pre>";
 
-  if(is_object($object) || is_array($object)){
-    //print "<script>var nexus = nexus || {}; nexus.debug = []; nexus.debug.push(".$object."); console.debug(nexus.debug);";
-    //print "</script>";
-  }
   print "<details closed>";
   print "<summary>StackTrace</summary>";
   print "<pre>";
@@ -56,8 +63,5 @@ function debug($object){
   print "</details>";
   //print "</noscript>";
 }
-
-
-
 
 ?>

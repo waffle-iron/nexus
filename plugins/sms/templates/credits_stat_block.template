@@ -1,0 +1,11 @@
+(#stat_block.template#)
+
+<data>
+  {
+    "stat_block_type":  "info",
+    "icon":             "balance-scale",
+    "value":            "(#module|credits#)",
+    "label":            "credits",
+    "link_text":        "top up"
+  }
+</data>

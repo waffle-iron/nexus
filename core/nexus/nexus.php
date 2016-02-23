@@ -54,18 +54,6 @@ class nexus{
 
     }
 
-    function error($message = "An error occurred",$title = "Error"){
-
-      $stacktrace = debug_backtrace();
-      array_shift($stacktrace);
-
-      print parse_template("error.template",[
-          "title"=>$title,
-          "message"=>$message,
-          "stacktrace" => $stacktrace
-      ]);
-    }
-
     function info($message = "No information provided",$title = "Info"){
         print parse_template("info.template",['title'=>$title, 'message'=>$message]);
     }
@@ -123,8 +111,6 @@ class nexus{
         $filepath = dirname($fn);
 
         $filepath = (array_key_exists("relative",$options) && $options["relative"] == true) ? str_replace($_SERVER["DOCUMENT_ROOT"],"",$filepath) : $filepath;
-        //$this->debug($filepath,'filepath');
-        //$this->debug($_SERVER['DOCUMENT_ROOT'],'doc root');
         return $filepath;
     }
 
@@ -142,9 +128,9 @@ class nexus{
 
       $parents = $this->get_parents();
       foreach($parents as $name=>$data){
-        if(file_exists($this->get_file_location($name.".min.css")["absolute_path"])){
+        if(file_exists(get_file_location($name.".min.css")["absolute_path"])){
             $stylesheets[] = parse_template("link_tag.template",[
-              "href"    => $this->get_file_location($name.".min.css")["relative_path"],
+              "href"    => get_file_location($name.".min.css")["relative_path"],
               "rel"     => "stylesheet",
               "module"  => $name
             ]);
@@ -169,9 +155,9 @@ class nexus{
 
       $parents = $this->get_parents();
       foreach($parents as $name=>$data){
-        if(file_exists($this->get_file_location($name.".min.js")["absolute_path"])){
+        if(file_exists(get_file_location($name.".min.js")["absolute_path"])){
             $scripts[] = parse_template("script_tag.template",[
-              "src" => $this->get_file_location($name.".min.js")["relative_path"],
+              "src" => get_file_location($name.".min.js")["relative_path"],
               "module"  => get_class($this)
             ]);
         }
