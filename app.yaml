@@ -6,42 +6,59 @@ threadsafe: yes
 default_expiration: 1h
 
 skip_files:
-- ^(.*/)?\.DS_Store$
-- ^(.*/)?\.scss$
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(.*/)?\.bak$
 
 handlers:
-- url: /(.+\.(gif|png|jpg|css|js))$
+- url: /
+  script: /themes/gentelella/index.html
+
+
+- url: /(.*\.(css|js|woff2|png|ttf|jpg))$
   static_files: \1
-  upload: .+\.(gif|png|jpg|css|js)$
-  application_readable: true
+  upload: .*\.(css|js|woff2|png|ttf|jpg)$
 
-- url: (.*)?debug=true
-  script: ?debug=true
-  login: admin
+- url: /(.*\.(html))$
+  script: /themes/gentelella/\1
 
-- url: /core/(.*)/fonts/(.*)$
-  static_files: core/\1/fonts/\2
-  upload: core/(.*)/fonts/(.*)$
-  application_readable: true
-
-- url: /plugins/(.*)/fonts/(.*)$
-  static_files: plugins/\1/fonts/\2
-  upload: plugins/(.*)/fonts/(.*)$
-  application_readable: true
-
-- url: /fonts/*
-  static_dir: fonts/
-
-- url: /fonts/*
-  static_dir: fonts/
+#
+# - url: /(.+\.(gif|png|jpg|css|js))$
+#   static_files: \1
+#   upload: .+\.(gif|png|jpg|css|js)$
+#   application_readable: true
+#
+# - url: (.*)?debug=true
+#   script: ?debug=true
+#   login: admin
+#
+# - url: /core/(.*)/fonts/(.*)$
+#   static_files: core/\1/fonts/\2
+#   upload: core/(.*)/fonts/(.*)$
+#   application_readable: true
+#
+# - url: /plugins/(.*)/fonts/(.*)$
+#   static_files: plugins/\1/fonts/\2
+#   upload: plugins/(.*)/fonts/(.*)$
+#   application_readable: true
+#
+# - url: /fonts/*
+#   static_dir: fonts/
+#
+# - url: /fonts/*
+#   static_dir: fonts/
 
 #TODO check error handlers for the app.yaml
 #TODO go through app.yaml dox to see if i can improve this page
 
 #CORE
-- url: .*
-  script: /core/nexus/engine.php
-  login: required
+#- url: .*
+  #script: /core/nexus/engine.php
+#  script: /themes/gentelella/index.html
+  #login: required
 
 # https://cloud.google.com/appengine/docs/php/config/appconfig#PHP_app_yaml_Skipping_files
 # error_handlers:
