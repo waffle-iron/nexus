@@ -1,5 +1,0 @@
-<div class="profile_badge action">
-  <h5 class="gplus user name">(#user_nickname#)</h5>
-  <h5 class="user email">(#user_email#)</h5>
-  <img class="gplus user image" src="/core/nexus/images/avatar.png" />
-</div>

@@ -1,68 +1,38 @@
+#Copyright 2015 Google Inc. All Rights Reserved.
 application: nexus-ga
-version: alpha
 runtime: php55
 api_version: 1
-threadsafe: yes
-default_expiration: 1h
+threadsafe: true
+
+# [START clear_cache]
+handlers:
+# a script to clear our cache
+- url: /clear_cache
+  script: web/clear_cache.php
+  login: admin
+# [END clear_cache]
+
+# tell appengine where our static assets live
+- url: /bundles
+  static_dir: web/bundles
+
+- url: /robots.txt
+  static_files: web/robots.txt
+  upload: web/robots.txt
+
+- url: /favicon.ico
+  static_files: web/favicon.ico
+  upload: web/favicon.ico
+
+# the symfony front controller
+- url: /.*
+  script: web/app.php
+
+# [START env_vars]
+env_variables:
+  GCS_BUCKET_NAME: "nexus-ga-default-bucket"
+# [END env_vars]
 
 skip_files:
-- ^(.*/)?#.*#$
-- ^(.*/)?.*~$
-- ^(.*/)?.*\.py[co]$
-- ^(.*/)?.*/RCS/.*$
-- ^(.*/)?\..*$
-- ^(.*/)?\.bak$
-
-handlers:
-- url: /
-  script: /themes/gentelella/index.html
-
-
-- url: /(.*\.(css|js|woff2|png|ttf|jpg))$
-  static_files: \1
-  upload: .*\.(css|js|woff2|png|ttf|jpg)$
-
-- url: /(.*\.(html))$
-  script: /themes/gentelella/\1
-
-#
-# - url: /(.+\.(gif|png|jpg|css|js))$
-#   static_files: \1
-#   upload: .+\.(gif|png|jpg|css|js)$
-#   application_readable: true
-#
-# - url: (.*)?debug=true
-#   script: ?debug=true
-#   login: admin
-#
-# - url: /core/(.*)/fonts/(.*)$
-#   static_files: core/\1/fonts/\2
-#   upload: core/(.*)/fonts/(.*)$
-#   application_readable: true
-#
-# - url: /plugins/(.*)/fonts/(.*)$
-#   static_files: plugins/\1/fonts/\2
-#   upload: plugins/(.*)/fonts/(.*)$
-#   application_readable: true
-#
-# - url: /fonts/*
-#   static_dir: fonts/
-#
-# - url: /fonts/*
-#   static_dir: fonts/
-
-#TODO check error handlers for the app.yaml
-#TODO go through app.yaml dox to see if i can improve this page
-
-#CORE
-#- url: .*
-  #script: /core/nexus/engine.php
-#  script: /themes/gentelella/index.html
-  #login: required
-
-# https://cloud.google.com/appengine/docs/php/config/appconfig#PHP_app_yaml_Skipping_files
-# error_handlers:
-#   - file: default_error.html
-#
-#   - error_code: over_quota
-#     file: over_quota.html
+  - (.*/)?Tests\/Fixtures\/(.*)
+  - ^app\/cache\/(.*)
