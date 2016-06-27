@@ -1,0 +1,4 @@
+# the main key is meaningless, just needs to be unique
+canbeanythingunique:
+    resource: @AppEngineHelloWorldBundle/Controller/
+    type:     annotation
