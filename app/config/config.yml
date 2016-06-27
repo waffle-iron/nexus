@@ -34,7 +34,11 @@ twig:
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
+<<<<<<< HEAD
     use_controller: true
+=======
+    use_controller: false
+>>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
     bundles:        [ ]
     #java: /usr/bin/java
     filters:

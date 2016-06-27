@@ -28,6 +28,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+<<<<<<< HEAD
+=======
+        phpinfo();
+>>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
         $time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
         echo '<p>Load time: '.round($time,2).' seconds</p>';
         return $this->render('default/index.html.twig');

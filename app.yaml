@@ -4,6 +4,7 @@ runtime: php55
 api_version: 1
 threadsafe: true
 
+<<<<<<< HEAD
 skip_files:
   - ^(.*/)?#.*#$
   - ^(.*/)?.*~$
@@ -14,6 +15,8 @@ skip_files:
   - (.*/)?Tests\/Fixtures\/(.*)
   - ^app\/cache\/(.*)
 
+=======
+>>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
 # [START clear_cache]
 handlers:
 # a script to clear our cache
@@ -34,14 +37,26 @@ handlers:
   static_files: web/favicon.ico
   upload: web/favicon.ico
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
 # the symfony front controller
 - url: /.*
   script: web/app.php
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
 # [START env_vars]
 env_variables:
   GCS_BUCKET_NAME: "nexus-ga-default-bucket"
 # [END env_vars]
 
+<<<<<<< HEAD
+=======
+skip_files:
+  - (.*/)?Tests\/Fixtures\/(.*)
+  - ^app\/cache\/(.*)
+>>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
