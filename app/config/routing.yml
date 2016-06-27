@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 # the main key is meaningless, just needs to be unique
 canbeanythingunique:
     resource: @AppEngineHelloWorldBundle/Controller/
     type:     annotation
-=======
-app:
-    resource: @AppEngineHelloWorldBundle/Controller/
-    type:     annotation
->>>>>>> 5a6097503584b47cd6d14cc0dcfe19a273bf22d7
