@@ -6,8 +6,9 @@ parameters:
 services:
     memcache:
         class: Memcache
+
     session.handler.memcache:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler
         arguments:
-          - "@memcache"
-          - { prefix: ~, expiretime: ~ }
+            - "@memcache"
+            - { prefix: ~, expiretime: ~ }

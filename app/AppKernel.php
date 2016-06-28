@@ -40,7 +40,7 @@ class AppKernel extends Kernel
 
         // Symfony console requires timezone to be set manually.
         if (!ini_get('date.timezone')) {
-          date_default_timezone_set('UTC');
+            date_default_timezone_set('UTC');
         }
 
         // Enable optimistic caching for GCS.
@@ -54,12 +54,19 @@ class AppKernel extends Kernel
         stream_context_set_default($options);
 
         $this->gcsBucketName = getenv('GCS_BUCKET_NAME');
+
+        // enable stream wrapper for memcache
+        if (!in_array('memcache', stream_get_wrappers())) {
+            stream_wrapper_register('memcache', 'AppEngine\MemcacheStreamWrapper');
+        }
     }
 
     public function getCacheDir()
     {
-        if ($this->gcsBucketName) {
-            return sprintf('gs://%s/symfony/cache%s', $this->gcsBucketName, $this->getVersionSuffix());
+        if ($bucketName = $this->getGcsBucketName()) {
+            return sprintf('gs://%s/symfony/cache%s', $bucketName, $this->getVersionSuffix());
+        } elseif ($this->memcacheExists()) {
+            return sprintf('memcache://symfony/cache%s', $this->getVersionSuffix());
         }
 
         return parent::getCacheDir();
@@ -67,8 +74,10 @@ class AppKernel extends Kernel
 
     public function getLogDir()
     {
-        if ($this->gcsBucketName) {
-            return sprintf('gs://%s/symfony/log', $this->gcsBucketName);
+        if ($bucketName = $this->getGcsBucketName()) {
+            return sprintf('gs://%s/symfony/log', $bucketName);
+        } elseif ($this->memcacheExists()) {
+            return 'memcache://symfony/log';
         }
 
         return parent::getLogDir();
@@ -113,5 +122,17 @@ class AppKernel extends Kernel
 
             return '-' . $major;
         }
+    }
+
+    private function getGcsBucketName()
+    {
+        if ($this->gcsBucketName && $this->gcsBucketName != 'YOUR_GCS_BUCKET_NAME') {
+            return $this->gcsBucketName;
+        }
+    }
+
+    private function memcacheExists()
+    {
+        return class_exists('Memcached');
     }
 }

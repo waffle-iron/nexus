@@ -1,18 +1,7 @@
-#Copyright 2015 Google Inc. All Rights Reserved.
-application: nexus-ga
+# Copyright 2015 Google Inc. All Rights Reserved.
 runtime: php55
 api_version: 1
 threadsafe: true
-
-skip_files:
-  - ^(.*/)?#.*#$
-  - ^(.*/)?.*~$
-  - ^(.*/)?.*\.py[co]$
-  - ^(.*/)?.*/RCS/.*$
-  - ^(.*/)?\..*$
-  - ^(.*/)?\.bak$
-  - (.*/)?Tests\/Fixtures\/(.*)
-  - ^app\/cache\/(.*)
 
 # [START clear_cache]
 handlers:
@@ -34,14 +23,16 @@ handlers:
   static_files: web/favicon.ico
   upload: web/favicon.ico
 
-
 # the symfony front controller
 - url: /.*
   script: web/app.php
 
-
 # [START env_vars]
 env_variables:
-  GCS_BUCKET_NAME: "nexus-ga-default-bucket"
+  GCS_BUCKET_NAME: "YOUR_GCS_BUCKET_NAME"
 # [END env_vars]
 
+skip_files:
+  - (.*/)?Tests\/Fixtures\/(.*)
+  - ^app\/cache\/(.*)
+  - ^app\/logs\/(.*)
