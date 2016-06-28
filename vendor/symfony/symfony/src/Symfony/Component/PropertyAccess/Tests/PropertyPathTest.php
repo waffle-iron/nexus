@@ -69,7 +69,7 @@ class PropertyPathTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\PropertyAccess\Exception\InvalidArgumentException
+     * @expectedException \Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
      */
     public function testPathCannotBeNull()
     {
@@ -77,7 +77,7 @@ class PropertyPathTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\PropertyAccess\Exception\InvalidArgumentException
+     * @expectedException \Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
      */
     public function testPathCannotBeFalse()
     {

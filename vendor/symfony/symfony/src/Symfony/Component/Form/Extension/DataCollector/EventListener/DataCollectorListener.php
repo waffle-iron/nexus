@@ -21,7 +21,6 @@ use Symfony\Component\Form\FormEvents;
  * and {@link FormEvents::POST_SUBMIT} events.
  *
  * @since  2.4
- *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class DataCollectorListener implements EventSubscriberInterface

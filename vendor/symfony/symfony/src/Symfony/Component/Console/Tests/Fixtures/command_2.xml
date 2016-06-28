@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <command id="descriptor:command2" name="descriptor:command2">
-  <usages>
-    <usage>descriptor:command2 [-o|--option_name] [--] &lt;argument_name&gt;</usage>
-    <usage>descriptor:command2 -o|--option_name &lt;argument_name&gt;</usage>
-    <usage>descriptor:command2 &lt;argument_name&gt;</usage>
-  </usages>
+  <usage>descriptor:command2 [-o|--option_name] argument_name</usage>
   <description>command 2 description</description>
   <help>command 2 help</help>
+  <aliases/>
   <arguments>
     <argument name="argument_name" is_required="1" is_array="0">
       <description></description>

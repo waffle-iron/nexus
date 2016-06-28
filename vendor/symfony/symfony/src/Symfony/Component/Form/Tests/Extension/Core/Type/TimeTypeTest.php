@@ -11,12 +11,20 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\Type;
 
-use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Test\TypeTestCase as TestCase;
+use Symfony\Component\Intl\Util\IntlTestHelper;
 
 class TimeTypeTest extends TestCase
 {
+    protected function setUp()
+    {
+        IntlTestHelper::requireIntl($this);
+
+        parent::setUp();
+    }
+
     public function testSubmitDateTime()
     {
         $form = $this->factory->create('time', null, array(
@@ -467,6 +475,7 @@ class TimeTypeTest extends TestCase
         $this->assertTrue($form->isPartiallyFilled());
     }
 
+    // Bug fix
     public function testInitializeWithDateTime()
     {
         // Throws an exception if "data_class" option is not explicitly set
@@ -561,9 +570,6 @@ class TimeTypeTest extends TestCase
         $this->assertSame('Empty', $view['second']->vars['placeholder']);
     }
 
-    /**
-     * @group legacy
-     */
     public function testPassEmptyValueBC()
     {
         $form = $this->factory->create('time', null, array(

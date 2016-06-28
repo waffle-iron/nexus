@@ -20,18 +20,19 @@
         }
     ],
     "require": {
-        "php": ">=5.3.9"
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "~2.7"
     },
     "autoload": {
-        "psr-4": { "Symfony\\Component\\CssSelector\\": "" },
-        "exclude-from-classmap": [
-            "/Tests/"
-        ]
+        "psr-0": { "Symfony\\Component\\CssSelector\\": "" }
     },
+    "target-dir": "Symfony/Component/CssSelector",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }

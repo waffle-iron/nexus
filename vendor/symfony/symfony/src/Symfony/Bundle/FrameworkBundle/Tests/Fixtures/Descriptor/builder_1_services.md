@@ -12,7 +12,7 @@ definition_1
 - Public: yes
 - Synthetic: no
 - Lazy: yes
-- Synchronized: no
+- Synchronized: yes
 - Abstract: yes
 - Factory Class: `Full\Qualified\FactoryClass`
 - Factory Method: `get`

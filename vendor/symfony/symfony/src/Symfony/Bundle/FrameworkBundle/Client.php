@@ -29,7 +29,6 @@ class Client extends BaseClient
 {
     private $hasPerformedRequest = false;
     private $profiler = false;
-    private $reboot = true;
 
     /**
      * {@inheritdoc}
@@ -42,7 +41,7 @@ class Client extends BaseClient
     /**
      * Returns the container.
      *
-     * @return ContainerInterface|null Returns null when the Kernel has been shutdown or not started yet
+     * @return ContainerInterface
      */
     public function getContainer()
     {
@@ -86,25 +85,6 @@ class Client extends BaseClient
     }
 
     /**
-     * Disables kernel reboot between requests.
-     *
-     * By default, the Client reboots the Kernel for each request. This method
-     * allows to keep the same kernel across requests.
-     */
-    public function disableReboot()
-    {
-        $this->reboot = false;
-    }
-
-    /**
-     * Enables kernel reboot between requests.
-     */
-    public function enableReboot()
-    {
-        $this->reboot = true;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @param Request $request A Request instance
@@ -115,7 +95,7 @@ class Client extends BaseClient
     {
         // avoid shutting down the Kernel if no request has been performed yet
         // WebTestCase::createClient() boots the Kernel but do not handle a request
-        if ($this->hasPerformedRequest && $this->reboot) {
+        if ($this->hasPerformedRequest) {
             $this->kernel->shutdown();
         } else {
             $this->hasPerformedRequest = true;
@@ -185,7 +165,7 @@ class Client extends BaseClient
         $code = <<<EOF
 <?php
 
-error_reporting($errorReporting);
+error_reporting($errorReporting & ~E_USER_DEPRECATED);
 
 if ('$autoloader') {
     require_once '$autoloader';

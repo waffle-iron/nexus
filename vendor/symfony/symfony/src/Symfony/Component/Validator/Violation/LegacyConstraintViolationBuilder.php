@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Validator\Violation;
 
-@trigger_error('The '.__NAMESPACE__.'\LegacyConstraintViolationBuilder class is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
 use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
@@ -23,7 +21,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  * @internal You should not instantiate or use this class. Code against
  *           {@link ConstraintViolationBuilderInterface} instead.
  *
- * @deprecated since version 2.5.5, to be removed in 3.0.
+ * @deprecated This class will be removed in Symfony 3.0.
  */
 class LegacyConstraintViolationBuilder implements ConstraintViolationBuilderInterface
 {

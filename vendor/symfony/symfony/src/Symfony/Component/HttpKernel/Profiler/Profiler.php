@@ -117,7 +117,7 @@ class Profiler
         }
 
         if (!($ret = $this->storage->write($profile)) && null !== $this->logger) {
-            $this->logger->warning('Unable to store the profiler information.', array('configured_storage' => get_class($this->storage)));
+            $this->logger->warning('Unable to store the profiler information.');
         }
 
         return $ret;
@@ -202,7 +202,6 @@ class Profiler
         $profile->setUrl($request->getUri());
         $profile->setIp($request->getClientIp());
         $profile->setMethod($request->getMethod());
-        $profile->setStatusCode($response->getStatusCode());
 
         $response->headers->set('X-Debug-Token', $profile->getToken());
 

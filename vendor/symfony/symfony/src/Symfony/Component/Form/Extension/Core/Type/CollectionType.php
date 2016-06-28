@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CollectionType extends AbstractType
 {
@@ -55,8 +55,7 @@ class CollectionType extends AbstractType
         ));
 
         if ($form->getConfig()->hasAttribute('prototype')) {
-            $prototype = $form->getConfig()->getAttribute('prototype');
-            $view->vars['prototype'] = $prototype->setParent($form)->createView($view);
+            $view->vars['prototype'] = $form->getConfig()->getAttribute('prototype')->createView($view);
         }
     }
 
@@ -73,7 +72,7 @@ class CollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $optionsNormalizer = function (Options $options, $value) {
             $value['block_name'] = 'entry';
@@ -91,7 +90,9 @@ class CollectionType extends AbstractType
             'delete_empty' => false,
         ));
 
-        $resolver->setNormalizer('options', $optionsNormalizer);
+        $resolver->setNormalizers(array(
+            'options' => $optionsNormalizer,
+        ));
     }
 
     /**

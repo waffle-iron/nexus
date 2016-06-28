@@ -52,13 +52,4 @@ class NumericNode extends ScalarNode
 
         return $value;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function isValueEmpty($value)
-    {
-        // a numeric value cannot be empty
-        return false;
-    }
 }

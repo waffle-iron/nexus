@@ -336,6 +336,8 @@ class Button implements \IteratorAggregate, FormInterface
 
     /**
      * Unsupported method.
+     *
+     * @return null Always returns null
      */
     public function getTransformationFailure()
     {

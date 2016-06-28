@@ -16,15 +16,15 @@ use Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener;
 
 class AnonymousAuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHandleWithTokenStorageHavingAToken()
+    public function testHandleWithContextHavingAToken()
     {
-        $tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
-        $tokenStorage
+        $context = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $context
             ->expects($this->any())
             ->method('getToken')
             ->will($this->returnValue($this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')))
         ;
-        $tokenStorage
+        $context
             ->expects($this->never())
             ->method('setToken')
         ;
@@ -35,14 +35,14 @@ class AnonymousAuthenticationListenerTest extends \PHPUnit_Framework_TestCase
             ->method('authenticate')
         ;
 
-        $listener = new AnonymousAuthenticationListener($tokenStorage, 'TheKey', null, $authenticationManager);
+        $listener = new AnonymousAuthenticationListener($context, 'TheKey', null, $authenticationManager);
         $listener->handle($this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false));
     }
 
-    public function testHandleWithTokenStorageHavingNoToken()
+    public function testHandleWithContextHavingNoToken()
     {
-        $tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
-        $tokenStorage
+        $context = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $context
             ->expects($this->any())
             ->method('getToken')
             ->will($this->returnValue(null))
@@ -60,28 +60,28 @@ class AnonymousAuthenticationListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($anonymousToken))
         ;
 
-        $tokenStorage
+        $context
             ->expects($this->once())
             ->method('setToken')
             ->with($anonymousToken)
         ;
 
-        $listener = new AnonymousAuthenticationListener($tokenStorage, 'TheKey', null, $authenticationManager);
+        $listener = new AnonymousAuthenticationListener($context, 'TheKey', null, $authenticationManager);
         $listener->handle($this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false));
     }
 
     public function testHandledEventIsLogged()
     {
-        $tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        $context = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $logger = $this->getMock('Psr\Log\LoggerInterface');
         $logger->expects($this->once())
             ->method('info')
-            ->with('Populated the TokenStorage with an anonymous Token.')
+            ->with('Populated SecurityContext with an anonymous Token')
         ;
 
         $authenticationManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
 
-        $listener = new AnonymousAuthenticationListener($tokenStorage, 'TheKey', $logger, $authenticationManager);
+        $listener = new AnonymousAuthenticationListener($context, 'TheKey', $logger, $authenticationManager);
         $listener->handle($this->getMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false));
     }
 }

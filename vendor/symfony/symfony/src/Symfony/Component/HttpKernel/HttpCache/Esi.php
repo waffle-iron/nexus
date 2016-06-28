@@ -57,7 +57,7 @@ class Esi implements SurrogateInterface
      */
     public function createCacheStrategy()
     {
-        return new ResponseCacheStrategy();
+        return new EsiResponseCacheStrategy();
     }
 
     /**
@@ -69,11 +69,7 @@ class Esi implements SurrogateInterface
      */
     public function hasSurrogateCapability(Request $request)
     {
-        if (null === $value = $request->headers->get('Surrogate-Capability')) {
-            return false;
-        }
-
-        return false !== strpos($value, 'ESI/1.0');
+        return $this->hasSurrogateEsiCapability($request);
     }
 
     /**
@@ -83,13 +79,15 @@ class Esi implements SurrogateInterface
      *
      * @return bool true if one surrogate has ESI/1.0 capability, false otherwise
      *
-     * @deprecated since version 2.6, to be removed in 3.0. Use hasSurrogateCapability() instead
+     * @deprecated Deprecated since version 2.6, to be removed in 3.0. Use hasSurrogateCapability() instead
      */
     public function hasSurrogateEsiCapability(Request $request)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in 3.0. Use the hasSurrogateCapability() method instead.', E_USER_DEPRECATED);
+        if (null === $value = $request->headers->get('Surrogate-Capability')) {
+            return false;
+        }
 
-        return $this->hasSurrogateCapability($request);
+        return false !== strpos($value, 'ESI/1.0');
     }
 
     /**
@@ -99,10 +97,7 @@ class Esi implements SurrogateInterface
      */
     public function addSurrogateCapability(Request $request)
     {
-        $current = $request->headers->get('Surrogate-Capability');
-        $new = 'symfony2="ESI/1.0"';
-
-        $request->headers->set('Surrogate-Capability', $current ? $current.', '.$new : $new);
+        $this->addSurrogateEsiCapability($request);
     }
 
     /**
@@ -110,13 +105,14 @@ class Esi implements SurrogateInterface
      *
      * @param Request $request A Request instance
      *
-     * @deprecated since version 2.6, to be removed in 3.0. Use addSurrogateCapability() instead
+     * @deprecated Deprecated since version 2.6, to be removed in 3.0. Use addSurrogateCapability() instead
      */
     public function addSurrogateEsiCapability(Request $request)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in 3.0. Use the addSurrogateCapability() method instead.', E_USER_DEPRECATED);
+        $current = $request->headers->get('Surrogate-Capability');
+        $new = 'symfony2="ESI/1.0"';
 
-        $this->addSurrogateCapability($request);
+        $request->headers->set('Surrogate-Capability', $current ? $current.', '.$new : $new);
     }
 
     /**
@@ -142,11 +138,7 @@ class Esi implements SurrogateInterface
      */
     public function needsParsing(Response $response)
     {
-        if (!$control = $response->headers->get('Surrogate-Control')) {
-            return false;
-        }
-
-        return (bool) preg_match('#content="[^"]*ESI/1.0[^"]*"#', $control);
+        return $this->needsEsiParsing($response);
     }
 
     /**
@@ -156,13 +148,15 @@ class Esi implements SurrogateInterface
      *
      * @return bool true if the Response needs to be parsed, false otherwise
      *
-     * @deprecated since version 2.6, to be removed in 3.0. Use needsParsing() instead
+     * @deprecated Deprecated since version 2.6, to be removed in 3.0. Use needsParsing() instead
      */
     public function needsEsiParsing(Response $response)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in 3.0. Use the needsParsing() method instead.', E_USER_DEPRECATED);
+        if (!$control = $response->headers->get('Surrogate-Control')) {
+            return false;
+        }
 
-        return $this->needsParsing($response);
+        return (bool) preg_match('#content="[^"]*ESI/1.0[^"]*"#', $control);
     }
 
     /**
@@ -200,6 +194,7 @@ class Esi implements SurrogateInterface
      */
     public function process(Request $request, Response $response)
     {
+        $this->request = $request;
         $type = $response->headers->get('Content-Type');
         if (empty($type)) {
             $type = 'text/html';
@@ -212,8 +207,8 @@ class Esi implements SurrogateInterface
 
         // we don't use a proper XML parser here as we can have ESI tags in a plain text response
         $content = $response->getContent();
-        $content = preg_replace('#<esi\:remove>.*?</esi\:remove>#s', '', $content);
-        $content = preg_replace('#<esi\:comment[^>]+>#s', '', $content);
+        $content = preg_replace('#<esi\:remove>.*?</esi\:remove>#', '', $content);
+        $content = preg_replace('#<esi\:comment[^>]*(?:/|</esi\:comment)>#', '', $content);
 
         $chunks = preg_split('#<esi\:include\s+(.*?)\s*(?:/|</esi\:include)>#', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
         $chunks[0] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[0]);

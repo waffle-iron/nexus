@@ -17,12 +17,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class PhpExtractorTest extends TestCase
 {
-    /**
-     * @dataProvider resourcesProvider
-     *
-     * @param array|string $resource
-     */
-    public function testExtraction($resource)
+    public function testExtraction()
     {
         // Arrange
         $extractor = new PhpExtractor();
@@ -30,7 +25,7 @@ class PhpExtractorTest extends TestCase
         $catalogue = new MessageCatalogue('en');
 
         // Act
-        $extractor->extract($resource, $catalogue);
+        $extractor->extract(__DIR__.'/../Fixtures/Resources/views/', $catalogue);
 
         $expectedHeredoc = <<<EOF
 heredoc key with whitespace and escaped \$\n sequences
@@ -54,29 +49,5 @@ EOF;
         $actualCatalogue = $catalogue->all();
 
         $this->assertEquals($expectedCatalogue, $actualCatalogue);
-    }
-
-    public function resourcesProvider()
-    {
-        $directory = __DIR__.'/../Fixtures/Resources/views/';
-        $splFiles = array();
-        foreach (new \DirectoryIterator($directory) as $fileInfo) {
-            if ($fileInfo->isDot()) {
-                continue;
-            }
-            if ('translation.html.php' === $fileInfo->getBasename()) {
-                $phpFile = $fileInfo->getPathname();
-            }
-            $splFiles[] = $fileInfo->getFileInfo();
-        }
-
-        return array(
-            array($directory),
-            array($phpFile),
-            array(glob($directory.'*')),
-            array($splFiles),
-            array(new \ArrayObject(glob($directory.'*'))),
-            array(new \ArrayObject($splFiles)),
-        );
     }
 }

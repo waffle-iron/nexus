@@ -20,7 +20,10 @@ class PercentToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCas
     {
         parent::setUp();
 
-        \Locale::setDefault('en');
+        // Since we test against "de_AT", we need the full implementation
+        IntlTestHelper::requireFullIntl($this);
+
+        \Locale::setDefault('de_AT');
     }
 
     public function testTransform()
@@ -50,13 +53,8 @@ class PercentToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCas
         $this->assertEquals('16', $transformer->transform(15.9));
     }
 
-    public function testTransformWithScale()
+    public function testTransformWithPrecision()
     {
-        // Since we test against "de_AT", we need the full implementation
-        IntlTestHelper::requireFullIntl($this);
-
-        \Locale::setDefault('de_AT');
-
         $transformer = new PercentToLocalizedStringTransformer(2);
 
         $this->assertEquals('12,34', $transformer->transform(0.1234));
@@ -89,13 +87,8 @@ class PercentToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCas
         $this->assertEquals(200, $transformer->reverseTransform('200'));
     }
 
-    public function testReverseTransformWithScale()
+    public function testReverseTransformWithPrecision()
     {
-        // Since we test against "de_AT", we need the full implementation
-        IntlTestHelper::requireFullIntl($this);
-
-        \Locale::setDefault('de_AT');
-
         $transformer = new PercentToLocalizedStringTransformer(2);
 
         $this->assertEquals(0.1234, $transformer->reverseTransform('12,34'));

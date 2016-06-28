@@ -41,12 +41,10 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
      *
      * @return int
      *
-     * @deprecated since version 2.5, to be removed in 3.0. JsonEncode throws exception if an error is found.
+     * @deprecated since 2.5, JsonEncode throws exception if an error is found, will be removed in 3.0
      */
     public function getLastEncodingError()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0. Catch the exception raised by the Symfony\Component\Serializer\Encoder\JsonEncode::encode() method instead to get the last JSON encoding error.', E_USER_DEPRECATED);
-
         return $this->encodingImpl->getLastError();
     }
 
@@ -55,12 +53,10 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
      *
      * @return int
      *
-     * @deprecated since version 2.5, to be removed in 3.0. JsonDecode throws exception if an error is found.
+     * @deprecated since 2.5, JsonDecode throws exception if an error is found, will be removed in 3.0
      */
     public function getLastDecodingError()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0. Catch the exception raised by the Symfony\Component\Serializer\Encoder\JsonDecode::decode() method instead to get the last JSON decoding error.', E_USER_DEPRECATED);
-
         return $this->decodingImpl->getLastError();
     }
 

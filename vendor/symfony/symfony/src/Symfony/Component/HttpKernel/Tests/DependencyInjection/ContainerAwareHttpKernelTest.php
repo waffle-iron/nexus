@@ -18,9 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/**
- * @group legacy
- */
 class ContainerAwareHttpKernelTest extends \PHPUnit_Framework_TestCase
 {
     /**

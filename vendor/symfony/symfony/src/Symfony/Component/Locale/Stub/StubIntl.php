@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Locale\Stub;
 
-@trigger_error('The '.__NAMESPACE__.'\StubIntl class is deprecated since version 2.3 and will be removed in 3.0. Use the Symfony\Component\Intl\Globals\IntlGlobals class instead.', E_USER_DEPRECATED);
-
 use Symfony\Component\Intl\Globals\IntlGlobals;
 
 /**
@@ -20,8 +18,8 @@ use Symfony\Component\Intl\Globals\IntlGlobals;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @deprecated since version 2.3, to be removed in 3.0.
- *             Use {@link \Symfony\Component\Intl\Globals\IntlGlobals} instead.
+ * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use
+ *             {@link \Symfony\Component\Intl\Globals\IntlGlobals} instead.
  */
 abstract class StubIntl extends IntlGlobals
 {

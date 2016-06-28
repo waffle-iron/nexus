@@ -13,11 +13,11 @@ namespace Symfony\Bridge\Twig\Tests\Extension\Fixtures;
 
 class StubFilesystemLoader extends \Twig_Loader_Filesystem
 {
-    protected function findTemplate($name, $throw = true)
+    protected function findTemplate($name)
     {
         // strip away bundle name
         $parts = explode(':', $name);
 
-        return parent::findTemplate(end($parts), $throw);
+        return parent::findTemplate(end($parts));
     }
 }

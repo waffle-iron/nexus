@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
- * @group legacy
  */
 class UnloadedEntityChoiceListCompositeIdWithQueryBuilderTest extends UnloadedEntityChoiceListCompositeIdTest
 {

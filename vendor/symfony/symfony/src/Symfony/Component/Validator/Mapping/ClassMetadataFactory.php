@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Validator\Mapping;
 
-@trigger_error('The '.__NAMESPACE__.'\ClassMetadataFactory class is deprecated since version 2.5 and will be removed in 3.0. Use the Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory class instead.', E_USER_DEPRECATED);
-
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 
 /**
@@ -20,7 +18,7 @@ use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @deprecated since version 2.5, to be removed in 3.0.
+ * @deprecated Deprecated since version 2.5, to be removed in Symfony 3.0.
  *             Use {@link LazyLoadingMetadataFactory} instead.
  */
 class ClassMetadataFactory extends LazyLoadingMetadataFactory

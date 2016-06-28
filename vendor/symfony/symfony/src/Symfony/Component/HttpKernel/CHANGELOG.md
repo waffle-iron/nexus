@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-2.7.0
------
-
- * added the HTTP status code to profiles
-
 2.6.0
 -----
 

@@ -31,7 +31,7 @@ class TemplateFilenameParser implements TemplateNameParserInterface
             return $name;
         }
 
-        $parts = explode('/', str_replace('\\', '/', $name));
+        $parts = explode('/', strtr($name, '\\', '/'));
 
         $elements = explode('.', array_pop($parts));
         if (3 > count($elements)) {

@@ -44,7 +44,6 @@
                 <argument key="cache_dir">%kernel.cache_dir%/translations</argument>
                 <argument key="debug">%kernel.debug%</argument>
             </argument>
-            <argument type="collection" /> <!-- translation resources -->
         </service>
 
         <service id="translator.logging" class="Symfony\Component\Translation\LoggingTranslator" public="false">
@@ -152,10 +151,5 @@
         <service id="translation.extractor" class="%translation.extractor.class%"/>
 
         <service id="translation.writer" class="%translation.writer.class%"/>
-
-        <service id="translation.warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\TranslationsCacheWarmer" public="false">
-            <argument type="service" id="translator" />
-            <tag name="kernel.cache_warmer" />
-        </service>
     </services>
 </container>

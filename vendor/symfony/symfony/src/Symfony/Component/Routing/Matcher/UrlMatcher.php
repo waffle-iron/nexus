@@ -24,6 +24,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
  * UrlMatcher matches URL based on a set of routes.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 {
@@ -59,6 +61,8 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
      *
      * @param RouteCollection $routes  A RouteCollection instance
      * @param RequestContext  $context The context
+     *
+     * @api
      */
     public function __construct(RouteCollection $routes, RequestContext $context)
     {
@@ -94,7 +98,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
         }
 
         throw 0 < count($this->allow)
-            ? new MethodNotAllowedException(array_unique($this->allow))
+            ? new MethodNotAllowedException(array_unique(array_map('strtoupper', $this->allow)))
             : new ResourceNotFoundException(sprintf('No routes found for "%s".', $pathinfo));
     }
 
@@ -148,14 +152,14 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
             }
 
             // check HTTP method requirement
-            if ($requiredMethods = $route->getMethods()) {
+            if ($req = $route->getRequirement('_method')) {
                 // HEAD and GET are equivalent as per RFC
                 if ('HEAD' === $method = $this->context->getMethod()) {
                     $method = 'GET';
                 }
 
-                if (!in_array($method, $requiredMethods)) {
-                    $this->allow = array_merge($this->allow, $requiredMethods);
+                if (!in_array($method, $req = explode('|', strtoupper($req)))) {
+                    $this->allow = array_merge($this->allow, $req);
 
                     continue;
                 }

@@ -102,7 +102,7 @@ class JsonDescriptor extends Descriptor
             'name' => $argument->getName(),
             'is_required' => $argument->isRequired(),
             'is_array' => $argument->isArray(),
-            'description' => preg_replace('/\s*[\r\n]\s*/', ' ', $argument->getDescription()),
+            'description' => $argument->getDescription(),
             'default' => $argument->getDefault(),
         );
     }
@@ -120,7 +120,7 @@ class JsonDescriptor extends Descriptor
             'accept_value' => $option->acceptValue(),
             'is_value_required' => $option->isValueRequired(),
             'is_multiple' => $option->isArray(),
-            'description' => preg_replace('/\s*[\r\n]\s*/', ' ', $option->getDescription()),
+            'description' => $option->getDescription(),
             'default' => $option->getDefault(),
         );
     }
@@ -157,9 +157,10 @@ class JsonDescriptor extends Descriptor
 
         return array(
             'name' => $command->getName(),
-            'usage' => array_merge(array($command->getSynopsis()), $command->getUsages(), $command->getAliases()),
+            'usage' => $command->getSynopsis(),
             'description' => $command->getDescription(),
             'help' => $command->getProcessedHelp(),
+            'aliases' => $command->getAliases(),
             'definition' => $this->getInputDefinitionData($command->getNativeDefinition()),
         );
     }

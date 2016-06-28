@@ -77,6 +77,14 @@ class PropertyPathMapperTest extends \PHPUnit_Framework_TestCase
         return $form;
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getDataMapper()
+    {
+        return $this->getMock('Symfony\Component\Form\DataMapperInterface');
+    }
+
     public function testMapDataToFormsPassesObjectRefIfByReference()
     {
         $car = new \stdClass();

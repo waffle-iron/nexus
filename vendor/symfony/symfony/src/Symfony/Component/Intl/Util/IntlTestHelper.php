@@ -40,7 +40,7 @@ class IntlTestHelper
         //   * the intl extension is not loaded
 
         if (IcuVersion::compare(Intl::getIcuVersion(), Intl::getIcuStubVersion(), '!=', 1)) {
-            $testCase->markTestSkipped('ICU version '.Intl::getIcuStubVersion().' is required.');
+            $testCase->markTestSkipped('Please change ICU version to '.Intl::getIcuStubVersion());
         }
 
         // Normalize the default locale in case this is not done explicitly
@@ -67,12 +67,12 @@ class IntlTestHelper
     {
         // We only run tests if the intl extension is loaded...
         if (!Intl::isExtensionLoaded()) {
-            $testCase->markTestSkipped('Extension intl is required.');
+            $testCase->markTestSkipped('The intl extension is not available.');
         }
 
         // ... and only if the version is *one specific version*
         if (IcuVersion::compare(Intl::getIcuVersion(), Intl::getIcuStubVersion(), '!=', 1)) {
-            $testCase->markTestSkipped('ICU version '.Intl::getIcuStubVersion().' is required.');
+            $testCase->markTestSkipped('Please change ICU version to '.Intl::getIcuStubVersion());
         }
 
         // Normalize the default locale in case this is not done explicitly
@@ -95,7 +95,7 @@ class IntlTestHelper
     public static function require32Bit(\PhpUnit_Framework_TestCase $testCase)
     {
         if (4 !== PHP_INT_SIZE) {
-            $testCase->markTestSkipped('PHP 32 bit is required.');
+            $testCase->markTestSkipped('PHP must be compiled in 32 bit mode to run this test');
         }
     }
 
@@ -107,7 +107,7 @@ class IntlTestHelper
     public static function require64Bit(\PhpUnit_Framework_TestCase $testCase)
     {
         if (8 !== PHP_INT_SIZE) {
-            $testCase->markTestSkipped('PHP 64 bit is required.');
+            $testCase->markTestSkipped('PHP must be compiled in 64 bit mode to run this test');
         }
     }
 

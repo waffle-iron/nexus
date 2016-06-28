@@ -27,8 +27,9 @@ namespace Symfony\Component\Form\Extension\Csrf\CsrfProvider;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @deprecated since version 2.4, to be removed in 3.0.
- *             Use {@link \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface} instead.
+ * @deprecated Deprecated since version 2.4, to be removed in Symfony 3.0. Use
+ *             {@link \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface}
+ *             instead.
  */
 interface CsrfProviderInterface
 {

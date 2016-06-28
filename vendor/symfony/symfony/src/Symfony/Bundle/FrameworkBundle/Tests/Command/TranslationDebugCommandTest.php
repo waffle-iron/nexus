@@ -26,7 +26,7 @@ class TranslationDebugCommandTest extends \PHPUnit_Framework_TestCase
         $tester = $this->createCommandTester($this->getContainer(array('foo' => 'foo')));
         $tester->execute(array('locale' => 'en', 'bundle' => 'foo'));
 
-        $this->assertRegExp('/missing/', $tester->getDisplay());
+        $this->assertRegExp('/x (\s|\|)+foo/', $tester->getDisplay(), 'Display x in case of missing message');
     }
 
     public function testDebugUnusedMessages()
@@ -34,7 +34,7 @@ class TranslationDebugCommandTest extends \PHPUnit_Framework_TestCase
         $tester = $this->createCommandTester($this->getContainer(array(), array('foo' => 'foo')));
         $tester->execute(array('locale' => 'en', 'bundle' => 'foo'));
 
-        $this->assertRegExp('/unused/', $tester->getDisplay());
+        $this->assertRegExp('/o (\s|\|)+foo/', $tester->getDisplay(), 'Display o in case of unused message');
     }
 
     public function testDebugFallbackMessages()
@@ -42,7 +42,7 @@ class TranslationDebugCommandTest extends \PHPUnit_Framework_TestCase
         $tester = $this->createCommandTester($this->getContainer(array(), array('foo' => 'foo')));
         $tester->execute(array('locale' => 'fr', 'bundle' => 'foo'));
 
-        $this->assertRegExp('/fallback/', $tester->getDisplay());
+        $this->assertRegExp('/= (\s|\|)+foo/', $tester->getDisplay(), 'Display = in case of fallback message');
     }
 
     public function testNoDefinedMessages()
@@ -50,46 +50,7 @@ class TranslationDebugCommandTest extends \PHPUnit_Framework_TestCase
         $tester = $this->createCommandTester($this->getContainer());
         $tester->execute(array('locale' => 'fr', 'bundle' => 'test'));
 
-        $this->assertRegExp('/No defined or extracted messages for locale "fr"/', $tester->getDisplay());
-    }
-
-    public function testDebugDefaultDirectory()
-    {
-        $tester = $this->createCommandTester($this->getContainer(array('foo' => 'foo'), array('bar' => 'bar')));
-        $tester->execute(array('locale' => 'en'));
-
-        $this->assertRegExp('/missing/', $tester->getDisplay());
-        $this->assertRegExp('/unused/', $tester->getDisplay());
-    }
-
-    public function testDebugCustomDirectory()
-    {
-        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
-        $kernel->expects($this->once())
-            ->method('getBundle')
-            ->with($this->equalTo($this->translationDir))
-            ->willThrowException(new \InvalidArgumentException());
-
-        $tester = $this->createCommandTester($this->getContainer(array('foo' => 'foo'), array('bar' => 'bar'), $kernel));
-        $tester->execute(array('locale' => 'en', 'bundle' => $this->translationDir));
-
-        $this->assertRegExp('/missing/', $tester->getDisplay());
-        $this->assertRegExp('/unused/', $tester->getDisplay());
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testDebugInvalidDirectory()
-    {
-        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
-        $kernel->expects($this->once())
-            ->method('getBundle')
-            ->with($this->equalTo('dir'))
-            ->will($this->throwException(new \InvalidArgumentException()));
-
-        $tester = $this->createCommandTester($this->getContainer(array(), array(), $kernel));
-        $tester->execute(array('locale' => 'en', 'bundle' => 'dir'));
+        $this->assertRegExp('/^No defined or extracted messages for locale "fr"/', $tester->getDisplay());
     }
 
     protected function setUp()
@@ -119,7 +80,7 @@ class TranslationDebugCommandTest extends \PHPUnit_Framework_TestCase
         return new CommandTester($application->find('debug:translation'));
     }
 
-    private function getContainer($extractedMessages = array(), $loadedMessages = array(), $kernel = null)
+    private function getContainer($extractedMessages = array(), $loadedMessages = array())
     {
         $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')
             ->disableOriginalConstructor()
@@ -150,21 +111,14 @@ class TranslationDebugCommandTest extends \PHPUnit_Framework_TestCase
                 })
             );
 
-        if (null === $kernel) {
-            $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
-            $kernel
-                ->expects($this->any())
-                ->method('getBundle')
-                ->will($this->returnValueMap(array(
-                    array('foo', true, $this->getBundle($this->translationDir)),
-                    array('test', true, $this->getBundle('test')),
-                )));
-        }
-
+        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
         $kernel
             ->expects($this->any())
-            ->method('getRootDir')
-            ->will($this->returnValue($this->translationDir));
+            ->method('getBundle')
+            ->will($this->returnValueMap(array(
+                array('foo', true, $this->getBundle($this->translationDir)),
+                array('test', true, $this->getBundle('test')),
+            )));
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container

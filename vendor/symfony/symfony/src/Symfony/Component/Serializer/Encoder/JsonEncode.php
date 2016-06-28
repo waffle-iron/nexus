@@ -33,14 +33,12 @@ class JsonEncode implements EncoderInterface
      *
      * @return int
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
-     *             The {@self encode()} throws an exception if error found.
+     * @deprecated since 2.5, encode() throws an exception if error found, will be removed in 3.0
+     *
      * @see http://php.net/manual/en/function.json-last-error.php json_last_error
      */
     public function getLastError()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0. Catch the exception raised by the encode() method instead to get the last JSON encoding error.', E_USER_DEPRECATED);
-
         return $this->lastError;
     }
 

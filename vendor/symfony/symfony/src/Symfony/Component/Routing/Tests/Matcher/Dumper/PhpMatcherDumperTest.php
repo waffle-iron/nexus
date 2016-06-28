@@ -26,10 +26,7 @@ class PhpMatcherDumperTest extends \PHPUnit_Framework_TestCase
         $collection->add('secure', new Route(
             '/secure',
             array(),
-            array(),
-            array(),
-            '',
-            array('https')
+            array('_scheme' => 'https')
         ));
         $dumper = new PhpMatcherDumper($collection);
         $dumper->dump();
@@ -64,21 +61,13 @@ class PhpMatcherDumperTest extends \PHPUnit_Framework_TestCase
         $collection->add('bar', new Route(
             '/bar/{foo}',
             array(),
-            array(),
-            array(),
-            '',
-            array(),
-            array('GET', 'head')
+            array('_method' => 'GET|head')
         ));
         // GET method requirement automatically adds HEAD as valid
         $collection->add('barhead', new Route(
             '/barhead/{foo}',
             array(),
-            array(),
-            array(),
-            '',
-            array(),
-            array('GET')
+            array('_method' => 'GET')
         ));
         // simple
         $collection->add('baz', new Route(
@@ -100,21 +89,13 @@ class PhpMatcherDumperTest extends \PHPUnit_Framework_TestCase
         $collection->add('baz5', new Route(
             '/test/{foo}/',
             array(),
-            array(),
-            array(),
-            '',
-            array(),
-            array('post')
+            array('_method' => 'post')
         ));
         // complex name
         $collection->add('baz.baz6', new Route(
             '/test/{foo}/',
             array(),
-            array(),
-            array(),
-            '',
-            array(),
-            array('put')
+            array('_method' => 'put')
         ));
         // defaults without variable
         $collection->add('foofoo', new Route(
@@ -186,6 +167,8 @@ class PhpMatcherDumperTest extends \PHPUnit_Framework_TestCase
         $route1 = new Route('/route1', array(), array(), array(), 'a.example.com');
         $collection1->add('route1', $route1);
 
+        $collection2 = new RouteCollection();
+
         $route2 = new Route('/c2/route2', array(), array(), array(), 'a.example.com');
         $collection1->add('route2', $route2);
 
@@ -252,20 +235,14 @@ class PhpMatcherDumperTest extends \PHPUnit_Framework_TestCase
         $redirectCollection->add('secure', new Route(
             '/secure',
             array(),
-            array(),
-            array(),
-            '',
-            array('https')
+            array('_scheme' => 'https')
         ));
 
         // force HTTP redirection
         $redirectCollection->add('nonsecure', new Route(
             '/nonsecure',
             array(),
-            array(),
-            array(),
-            '',
-            array('http')
+            array('_scheme' => 'http')
         ));
 
         /* test case 3 */

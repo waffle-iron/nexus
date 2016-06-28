@@ -11,21 +11,16 @@
 
 namespace Symfony\Component\Form\Extension\Core\EventListener;
 
-@trigger_error('The class '.__NAMESPACE__.'\FixRadioInputListener is deprecated since version 2.7 and will be removed in 3.0. Use Symfony\Component\Form\Extension\Core\DataMapper\RadioListMapper instead.', E_USER_DEPRECATED);
-
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 
 /**
  * Takes care of converting the input from a single radio button
  * to an array.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
- *
- * @deprecated since version 2.7, to be removed in 3.0.
- *             Use {@link \Symfony\Component\Form\Extension\Core\DataMapper\RadioListMapper} instead.
  */
 class FixRadioInputListener implements EventSubscriberInterface
 {
@@ -68,13 +63,11 @@ class FixRadioInputListener implements EventSubscriberInterface
     /**
      * Alias of {@link preSubmit()}.
      *
-     * @deprecated since version 2.3, to be removed in 3.0.
-     *             Use {@link preSubmit()} instead.
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use
+     *             {@link preSubmit()} instead.
      */
     public function preBind(FormEvent $event)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 3.0. Use the preSubmit() method instead.', E_USER_DEPRECATED);
-
         $this->preSubmit($event);
     }
 

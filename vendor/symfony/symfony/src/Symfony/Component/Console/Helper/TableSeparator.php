@@ -16,14 +16,6 @@ namespace Symfony\Component\Console\Helper;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TableSeparator extends TableCell
+class TableSeparator
 {
-    /**
-     * @param string $value
-     * @param array  $options
-     */
-    public function __construct(array $options = array())
-    {
-        parent::__construct('', $options);
-    }
 }

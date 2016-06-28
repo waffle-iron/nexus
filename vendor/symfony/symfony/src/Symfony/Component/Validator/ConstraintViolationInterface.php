@@ -32,6 +32,8 @@ namespace Symfony\Component\Validator;
  * element is still the person, but the property path is "address.street".
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @api
  */
 interface ConstraintViolationInterface
 {
@@ -39,6 +41,8 @@ interface ConstraintViolationInterface
      * Returns the violation message.
      *
      * @return string The violation message.
+     *
+     * @api
      */
     public function getMessage();
 
@@ -50,6 +54,8 @@ interface ConstraintViolationInterface
      * message template and parameters to a translation engine.
      *
      * @return string The raw violation message.
+     *
+     * @api
      */
     public function getMessageTemplate();
 
@@ -60,7 +66,8 @@ interface ConstraintViolationInterface
      *               that appear in the message template.
      *
      * @see getMessageTemplate()
-     * @deprecated since version 2.7, to be replaced by getParameters() in 3.0.
+     *
+     * @api
      */
     public function getMessageParameters();
 
@@ -79,8 +86,6 @@ interface ConstraintViolationInterface
      * pluralization form (in this case "choices").
      *
      * @return int|null The number to use to pluralize of the message.
-     *
-     * @deprecated since version 2.7, to be replaced by getPlural() in 3.0.
      */
     public function getMessagePluralization();
 
@@ -91,6 +96,8 @@ interface ConstraintViolationInterface
      *               the validation was started. Because the validator traverses
      *               the object graph, the value at which the violation occurs
      *               is not necessarily the value that was originally validated.
+     *
+     * @api
      */
     public function getRoot();
 
@@ -105,6 +112,8 @@ interface ConstraintViolationInterface
      *                path is "address.street". Property access is denoted by
      *                dots, while array access is denoted by square brackets,
      *                for example "addresses[1].street".
+     *
+     * @api
      */
     public function getPropertyPath();
 
@@ -113,6 +122,8 @@ interface ConstraintViolationInterface
      *
      * @return mixed The invalid value that caused the validated constraint to
      *               fail.
+     *
+     * @api
      */
     public function getInvalidValue();
 

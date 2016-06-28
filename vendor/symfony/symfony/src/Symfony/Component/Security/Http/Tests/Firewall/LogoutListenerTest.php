@@ -19,7 +19,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testHandleUnmatchedPath()
     {
-        list($listener, $tokenStorage, $httpUtils, $options) = $this->getListener();
+        list($listener, $context, $httpUtils, $options) = $this->getListener();
 
         list($event, $request) = $this->getGetResponseEvent();
 
@@ -39,7 +39,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
         $successHandler = $this->getSuccessHandler();
         $tokenManager = $this->getTokenManager();
 
-        list($listener, $tokenStorage, $httpUtils, $options) = $this->getListener($successHandler, $tokenManager);
+        list($listener, $context, $httpUtils, $options) = $this->getListener($successHandler, $tokenManager);
 
         list($event, $request) = $this->getGetResponseEvent();
 
@@ -59,7 +59,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
             ->with($request)
             ->will($this->returnValue($response = new Response()));
 
-        $tokenStorage->expects($this->once())
+        $context->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token = $this->getToken()));
 
@@ -68,7 +68,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
             ->method('logout')
             ->with($request, $response, $token);
 
-        $tokenStorage->expects($this->once())
+        $context->expects($this->once())
             ->method('setToken')
             ->with(null);
 
@@ -85,7 +85,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
     {
         $successHandler = $this->getSuccessHandler();
 
-        list($listener, $tokenStorage, $httpUtils, $options) = $this->getListener($successHandler);
+        list($listener, $context, $httpUtils, $options) = $this->getListener($successHandler);
 
         list($event, $request) = $this->getGetResponseEvent();
 
@@ -99,7 +99,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
             ->with($request)
             ->will($this->returnValue($response = new Response()));
 
-        $tokenStorage->expects($this->once())
+        $context->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token = $this->getToken()));
 
@@ -108,7 +108,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
             ->method('logout')
             ->with($request, $response, $token);
 
-        $tokenStorage->expects($this->once())
+        $context->expects($this->once())
             ->method('setToken')
             ->with(null);
 
@@ -128,7 +128,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
     {
         $successHandler = $this->getSuccessHandler();
 
-        list($listener, $tokenStorage, $httpUtils, $options) = $this->getListener($successHandler);
+        list($listener, $context, $httpUtils, $options) = $this->getListener($successHandler);
 
         list($event, $request) = $this->getGetResponseEvent();
 
@@ -152,7 +152,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
     {
         $tokenManager = $this->getTokenManager();
 
-        list($listener, $tokenStorage, $httpUtils, $options) = $this->getListener(null, $tokenManager);
+        list($listener, $context, $httpUtils, $options) = $this->getListener(null, $tokenManager);
 
         list($event, $request) = $this->getGetResponseEvent();
 
@@ -175,9 +175,11 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface');
     }
 
-    private function getTokenStorage()
+    private function getContext()
     {
-        return $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        return $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     private function getGetResponseEvent()
@@ -208,7 +210,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
     private function getListener($successHandler = null, $tokenManager = null)
     {
         $listener = new LogoutListener(
-            $tokenStorage = $this->getTokenStorage(),
+            $context = $this->getContext(),
             $httpUtils = $this->getHttpUtils(),
             $successHandler ?: $this->getSuccessHandler(),
             $options = array(
@@ -220,7 +222,7 @@ class LogoutListenerTest extends \PHPUnit_Framework_TestCase
             $tokenManager
         );
 
-        return array($listener, $tokenStorage, $httpUtils, $options);
+        return array($listener, $context, $httpUtils, $options);
     }
 
     private function getSuccessHandler()

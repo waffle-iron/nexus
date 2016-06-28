@@ -13,6 +13,8 @@ namespace Symfony\Component\Validator;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @api
  */
 interface ConstraintValidatorInterface
 {
@@ -28,6 +30,8 @@ interface ConstraintValidatorInterface
      *
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
+     *
+     * @api
      */
     public function validate($value, Constraint $constraint);
 }

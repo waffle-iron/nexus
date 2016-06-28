@@ -75,23 +75,20 @@ abstract class RegisterMappingsPass implements CompilerPassInterface
 
     /**
      * Naming pattern for the configuration service id, for example
-     * 'doctrine.orm.%s_configuration'.
-     *
+     * 'doctrine.orm.%s_configuration'
      * @var string
      */
     private $configurationPattern;
 
     /**
      * Method name to call on the configuration service. This depends on the
-     * Doctrine implementation. For example addEntityNamespace.
-     *
+     * Doctrine implementation. For example addEntityNamespace
      * @var string
      */
     private $registerAliasMethodName;
 
     /**
      * Map of alias to namespace.
-     *
      * @var string[]
      */
     private $aliasMap;
@@ -234,7 +231,7 @@ abstract class RegisterMappingsPass implements CompilerPassInterface
             }
         }
 
-        throw new ParameterNotFoundException('Could not determine the Doctrine manager. Either Doctrine is not configured or a bundle is misconfigured.');
+        throw new ParameterNotFoundException('None of the managerParameters resulted in a valid name');
     }
 
     /**

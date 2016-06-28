@@ -39,7 +39,7 @@ abstract class AbstractEntityChoiceListTest extends AbstractChoiceListTest
         $this->em = DoctrineTestHelper::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
-        $classes = $this->getClassesMetadata();
+        $classes = array($this->em->getClassMetadata($this->getEntityClass()));
 
         try {
             $schemaTool->dropSchema($classes);
@@ -72,11 +72,6 @@ abstract class AbstractEntityChoiceListTest extends AbstractChoiceListTest
     abstract protected function getEntityClass();
 
     abstract protected function createObjects();
-
-    protected function getClassesMetadata()
-    {
-        return array($this->em->getClassMetadata($this->getEntityClass()));
-    }
 
     /**
      * @return \Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface

@@ -16,22 +16,23 @@
         }
     ],
     "require": {
-        "php": ">=5.3.9"
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "~2.7"
     },
     "suggest": {
         "ext-symfony_debug": ""
     },
     "autoload": {
         "files": [ "Resources/functions/dump.php" ],
-        "psr-4": { "Symfony\\Component\\VarDumper\\": "" },
-        "exclude-from-classmap": [
-            "/Tests/"
-        ]
+        "psr-0": { "Symfony\\Component\\VarDumper\\": "" }
     },
+    "target-dir": "Symfony/Component/VarDumper",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }

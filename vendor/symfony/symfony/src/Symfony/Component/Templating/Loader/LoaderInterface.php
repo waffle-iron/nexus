@@ -18,6 +18,8 @@ use Symfony\Component\Templating\Storage\Storage;
  * LoaderInterface is the interface all loaders must implement.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 interface LoaderInterface
 {
@@ -27,6 +29,8 @@ interface LoaderInterface
      * @param TemplateReferenceInterface $template A template
      *
      * @return Storage|bool false if the template cannot be loaded, a Storage instance otherwise
+     *
+     * @api
      */
     public function load(TemplateReferenceInterface $template);
 
@@ -37,6 +41,8 @@ interface LoaderInterface
      * @param int                        $time     The last modification time of the cached template (timestamp)
      *
      * @return bool
+     *
+     * @api
      */
     public function isFresh(TemplateReferenceInterface $template, $time);
 }

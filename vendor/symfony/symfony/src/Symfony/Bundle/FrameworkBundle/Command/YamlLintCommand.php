@@ -29,8 +29,7 @@ class YamlLintCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('lint:yaml')
-            ->setAliases(array('yaml:lint'))
+            ->setName('yaml:lint')
             ->setDescription('Lints a file and outputs encountered errors')
             ->addArgument('filename', null, 'A file or a directory or STDIN')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
@@ -62,10 +61,6 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (false !== strpos($input->getFirstArgument(), ':l')) {
-            $output->writeln('<comment>The use of "yaml:lint" command is deprecated since version 2.7 and will be removed in 3.0. Use the "lint:yaml" instead.</comment>');
-        }
-
         $filename = $input->getArgument('filename');
 
         if (!$filename) {
@@ -105,9 +100,9 @@ EOF
 
     private function validate($content, $file = null)
     {
-        $parser = new Parser();
+        $this->parser = new Parser();
         try {
-            $parser->parse($content);
+            $this->parser->parse($content);
         } catch (ParseException $e) {
             return array('file' => $file, 'valid' => false, 'message' => $e->getMessage());
         }
@@ -135,7 +130,7 @@ EOF
             if ($info['valid'] && $output->isVerbose()) {
                 $output->writeln('<info>OK</info>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
             } elseif (!$info['valid']) {
-                ++$errors;
+                $errors++;
                 $output->writeln(sprintf('<error>KO</error> in %s', $info['file']));
                 $output->writeln(sprintf('<error>>> %s</error>', $info['message']));
             }
@@ -153,7 +148,7 @@ EOF
         array_walk($filesInfo, function (&$v) use (&$errors) {
             $v['file'] = (string) $v['file'];
             if (!$v['valid']) {
-                ++$errors;
+                $errors++;
             }
         });
 

@@ -70,24 +70,17 @@ class ControllerResolver extends BaseControllerResolver
             }
         }
 
-        return parent::createController($controller);
-    }
+        list($class, $method) = explode('::', $controller, 2);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function instantiateController($class)
-    {
-        if ($this->container->has($class)) {
-            return $this->container->get($class);
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
 
-        $controller = parent::instantiateController($class);
-
+        $controller = $this->instantiateController($class);
         if ($controller instanceof ContainerAwareInterface) {
             $controller->setContainer($this->container);
         }
 
-        return $controller;
+        return array($controller, $method);
     }
 }

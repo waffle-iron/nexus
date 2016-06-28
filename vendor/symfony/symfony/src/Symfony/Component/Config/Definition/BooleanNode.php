@@ -39,13 +39,4 @@ class BooleanNode extends ScalarNode
             throw $ex;
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function isValueEmpty($value)
-    {
-        // a boolean value cannot be empty
-        return false;
-    }
 }

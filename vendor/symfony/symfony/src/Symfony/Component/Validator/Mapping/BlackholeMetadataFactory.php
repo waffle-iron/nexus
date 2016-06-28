@@ -11,18 +11,14 @@
 
 namespace Symfony\Component\Validator\Mapping;
 
-@trigger_error('The '.__NAMESPACE__.'\BlackholeMetadataFactory class is deprecated since version 2.5 and will be removed in 3.0. Use the Symfony\Component\Validator\Mapping\Factory\BlackHoleMetadataFactory class instead.', E_USER_DEPRECATED);
-
-use Symfony\Component\Validator\Mapping\Factory\BlackHoleMetadataFactory as MappingBlackHoleMetadataFactory;
-
 /**
  * Alias of {@link Factory\BlackHoleMetadataFactory}.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @deprecated since version 2.5, to be removed in 3.0.
+ * @deprecated Deprecated since version 2.5, to be removed in Symfony 3.0.
  *             Use {@link Factory\BlackHoleMetadataFactory} instead.
  */
-class BlackholeMetadataFactory extends MappingBlackHoleMetadataFactory
+class BlackholeMetadataFactory extends \Symfony\Component\Validator\Mapping\Factory\BlackHoleMetadataFactory
 {
 }

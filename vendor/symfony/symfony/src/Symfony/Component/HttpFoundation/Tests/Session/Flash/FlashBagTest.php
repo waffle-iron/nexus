@@ -133,9 +133,9 @@ class FlashBagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group legacy
+     * @covers Symfony\Component\HttpFoundation\Session\Flash\FlashBag::getIterator
      */
-    public function testLegacyGetIterator()
+    public function testGetIterator()
     {
         $flashes = array('hello' => 'world', 'beep' => 'boop', 'notice' => 'nope');
         foreach ($flashes as $key => $val) {

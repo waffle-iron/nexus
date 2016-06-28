@@ -11,13 +11,14 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @api
  */
 class TypeValidator extends ConstraintValidator
 {
@@ -47,16 +48,9 @@ class TypeValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->context instanceof ExecutionContextInterface) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setParameter('{{ type }}', $constraint->type)
-                ->addViolation();
-        } else {
-            $this->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setParameter('{{ type }}', $constraint->type)
-                ->addViolation();
-        }
+        $this->buildViolation($constraint->message)
+            ->setParameter('{{ value }}', $this->formatValue($value))
+            ->setParameter('{{ type }}', $constraint->type)
+            ->addViolation();
     }
 }

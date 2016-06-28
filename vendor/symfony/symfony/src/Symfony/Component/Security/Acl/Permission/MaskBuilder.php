@@ -42,7 +42,7 @@ namespace Symfony\Component\Security\Acl\Permission;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class MaskBuilder extends AbstractMaskBuilder
+class MaskBuilder
 {
     const MASK_VIEW = 1;           // 1 << 0
     const MASK_CREATE = 2;         // 1 << 1
@@ -67,6 +67,50 @@ class MaskBuilder extends AbstractMaskBuilder
     const OFF = '.';
     const ON = '*';
 
+    private $mask;
+
+    /**
+     * Constructor.
+     *
+     * @param int $mask optional; defaults to 0
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($mask = 0)
+    {
+        if (!is_int($mask)) {
+            throw new \InvalidArgumentException('$mask must be an integer.');
+        }
+
+        $this->mask = $mask;
+    }
+
+    /**
+     * Adds a mask to the permission.
+     *
+     * @param mixed $mask
+     *
+     * @return MaskBuilder
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function add($mask)
+    {
+        $this->mask |= $this->getMask($mask);
+
+        return $this;
+    }
+
+    /**
+     * Returns the mask of this permission.
+     *
+     * @return int
+     */
+    public function get()
+    {
+        return $this->mask;
+    }
+
     /**
      * Returns a human-readable representation of the permission.
      *
@@ -89,6 +133,34 @@ class MaskBuilder extends AbstractMaskBuilder
         }
 
         return $pattern;
+    }
+
+    /**
+     * Removes a mask from the permission.
+     *
+     * @param mixed $mask
+     *
+     * @return MaskBuilder
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function remove($mask)
+    {
+        $this->mask &= ~$this->getMask($mask);
+
+        return $this;
+    }
+
+    /**
+     * Resets the PermissionBuilder.
+     *
+     * @return MaskBuilder
+     */
+    public function reset()
+    {
+        $this->mask = 0;
+
+        return $this;
     }
 
     /**
@@ -124,7 +196,7 @@ class MaskBuilder extends AbstractMaskBuilder
     }
 
     /**
-     * Returns the mask for the passed code.
+     * Returns the mask for the passed code
      *
      * @param mixed $code
      *
@@ -132,7 +204,7 @@ class MaskBuilder extends AbstractMaskBuilder
      *
      * @throws \InvalidArgumentException
      */
-    public function resolveMask($code)
+    private function getMask($code)
     {
         if (is_string($code)) {
             if (!defined($name = sprintf('static::MASK_%s', strtoupper($code)))) {

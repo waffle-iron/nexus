@@ -19,8 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class CompleteConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-    private static $containerCache = array();
-
     abstract protected function loadFromFile(ContainerBuilder $container, $file);
 
     public function testRolesHierarchy()
@@ -237,9 +235,6 @@ abstract class CompleteConfigurationTest extends \PHPUnit_Framework_TestCase
 
     protected function getContainer($file)
     {
-        if (isset(self::$containerCache[$file])) {
-            return self::$containerCache[$file];
-        }
         $container = new ContainerBuilder();
         $security = new SecurityExtension();
         $container->registerExtension($security);
@@ -252,6 +247,6 @@ abstract class CompleteConfigurationTest extends \PHPUnit_Framework_TestCase
         $container->getCompilerPassConfig()->setRemovingPasses(array());
         $container->compile();
 
-        return self::$containerCache[$file] = $container;
+        return $container;
     }
 }

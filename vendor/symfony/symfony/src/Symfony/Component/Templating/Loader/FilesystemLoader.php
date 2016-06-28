@@ -19,6 +19,8 @@ use Symfony\Component\Templating\TemplateReferenceInterface;
  * FilesystemLoader is a loader that read templates from the filesystem.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 class FilesystemLoader extends Loader
 {
@@ -28,6 +30,8 @@ class FilesystemLoader extends Loader
      * Constructor.
      *
      * @param array $templatePathPatterns An array of path patterns to look for templates
+     *
+     * @api
      */
     public function __construct($templatePathPatterns)
     {
@@ -40,6 +44,8 @@ class FilesystemLoader extends Loader
      * @param TemplateReferenceInterface $template A template
      *
      * @return Storage|bool false if the template cannot be loaded, a Storage instance otherwise
+     *
+     * @api
      */
     public function load(TemplateReferenceInterface $template)
     {
@@ -54,31 +60,29 @@ class FilesystemLoader extends Loader
             $replacements['%'.$key.'%'] = $value;
         }
 
-        $fileFailures = array();
+        $logs = array();
         foreach ($this->templatePathPatterns as $templatePathPattern) {
             if (is_file($file = strtr($templatePathPattern, $replacements)) && is_readable($file)) {
                 if (null !== $this->logger) {
-                    $this->logger->debug('Loaded template file.', array('file' => $file));
+                    $this->logger->debug(sprintf('Loaded template file "%s"', $file));
                 } elseif (null !== $this->debugger) {
                     // just for BC, to be removed in 3.0
-                    $this->debugger->log(sprintf('Loaded template file "%s".', $file));
+                    $this->debugger->log(sprintf('Loaded template file "%s"', $file));
                 }
 
                 return new FileStorage($file);
             }
 
             if (null !== $this->logger || null !== $this->debugger) {
-                $fileFailures[] = $file;
+                $logs[] = sprintf('Failed loading template file "%s"', $file);
             }
         }
 
-        // only log failures if no template could be loaded at all
-        foreach ($fileFailures as $file) {
+        foreach ($logs as $log) {
             if (null !== $this->logger) {
-                $this->logger->debug('Failed loading template file.', array('file' => $file));
+                $this->logger->debug($log);
             } elseif (null !== $this->debugger) {
-                // just for BC, to be removed in 3.0
-                $this->debugger->log(sprintf('Failed loading template file "%s".', $file));
+                $this->debugger->log($log);
             }
         }
 
@@ -92,6 +96,8 @@ class FilesystemLoader extends Loader
      * @param int                        $time     The last modification time of the cached template (timestamp)
      *
      * @return bool true if the template is still fresh, false otherwise
+     *
+     * @api
      */
     public function isFresh(TemplateReferenceInterface $template, $time)
     {

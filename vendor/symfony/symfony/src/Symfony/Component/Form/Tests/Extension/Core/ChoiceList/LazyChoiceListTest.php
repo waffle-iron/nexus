@@ -12,25 +12,18 @@
 namespace Symfony\Component\Form\Tests\Extension\Core\ChoiceList;
 
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
+use Symfony\Component\Form\Extension\Core\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
-use Symfony\Component\Form\Tests\Extension\Core\ChoiceList\Fixtures\LazyChoiceListImpl;
-use Symfony\Component\Form\Tests\Extension\Core\ChoiceList\Fixtures\LazyChoiceListInvalidImpl;
 
-/**
- * @group legacy
- */
 class LazyChoiceListTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var LazyChoiceListImpl
-     */
     private $list;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->list = new LazyChoiceListImpl(new SimpleChoiceList(array(
+        $this->list = new LazyChoiceListTest_Impl(new SimpleChoiceList(array(
             'a' => 'A',
             'b' => 'B',
             'c' => 'C',
@@ -64,14 +57,24 @@ class LazyChoiceListTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(0 => new ChoiceView('a', 'a', 'A'), 2 => new ChoiceView('c', 'c', 'C')), $this->list->getRemainingViews());
     }
 
-    public function testGetIndicesForChoices()
+    /**
+     * @group legacy
+     */
+    public function testLegacyGetIndicesForChoices()
     {
+        $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
+
         $choices = array('b', 'c');
         $this->assertSame(array(1, 2), $this->list->getIndicesForChoices($choices));
     }
 
-    public function testGetIndicesForValues()
+    /**
+     * @group legacy
+     */
+    public function testLegacyGetIndicesForValues()
     {
+        $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
+
         $values = array('b', 'c');
         $this->assertSame(array(1, 2), $this->list->getIndicesForValues($values));
     }
@@ -93,8 +96,31 @@ class LazyChoiceListTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadChoiceListShouldReturnChoiceList()
     {
-        $list = new LazyChoiceListInvalidImpl();
+        $list = new LazyChoiceListTest_InvalidImpl();
 
         $list->getChoices();
+    }
+}
+
+class LazyChoiceListTest_Impl extends LazyChoiceList
+{
+    private $choiceList;
+
+    public function __construct($choiceList)
+    {
+        $this->choiceList = $choiceList;
+    }
+
+    protected function loadChoiceList()
+    {
+        return $this->choiceList;
+    }
+}
+
+class LazyChoiceListTest_InvalidImpl extends LazyChoiceList
+{
+    protected function loadChoiceList()
+    {
+        return new \stdClass();
     }
 }

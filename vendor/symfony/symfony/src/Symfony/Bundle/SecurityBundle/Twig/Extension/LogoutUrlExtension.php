@@ -11,16 +11,12 @@
 
 namespace Symfony\Bundle\SecurityBundle\Twig\Extension;
 
-@trigger_error('The '.__NAMESPACE__.'\LogoutUrlExtension class is deprecated since version 2.7 and will be removed in 3.0. Use Symfony\Bridge\Twig\Extension\LogoutUrlExtension instead.', E_USER_DEPRECATED);
-
 use Symfony\Bundle\SecurityBundle\Templating\Helper\LogoutUrlHelper;
 
 /**
  * LogoutUrlHelper provides generator functions for the logout URL to Twig.
  *
  * @author Jeremy Mikola <jmikola@gmail.com>
- *
- * @deprecated since version 2.7, to be removed in 3.0. Use Symfony\Bridge\Twig\Extension\LogoutUrlExtension instead.
  */
 class LogoutUrlExtension extends \Twig_Extension
 {
@@ -45,11 +41,11 @@ class LogoutUrlExtension extends \Twig_Extension
     /**
      * Generates the relative logout URL for the firewall.
      *
-     * @param string|null $key The firewall key or null to use the current firewall key
+     * @param string $key The firewall key
      *
      * @return string The relative logout URL
      */
-    public function getLogoutPath($key = null)
+    public function getLogoutPath($key)
     {
         return $this->helper->getLogoutPath($key);
     }
@@ -57,11 +53,11 @@ class LogoutUrlExtension extends \Twig_Extension
     /**
      * Generates the absolute logout URL for the firewall.
      *
-     * @param string|null $key The firewall key or null to use the current firewall key
+     * @param string $key The firewall key
      *
      * @return string The absolute logout URL
      */
-    public function getLogoutUrl($key = null)
+    public function getLogoutUrl($key)
     {
         return $this->helper->getLogoutUrl($key);
     }

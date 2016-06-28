@@ -61,13 +61,17 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
      *
      * @throws UnexpectedTypeException if a timezone is not a string
      */
-    public function __construct($inputTimezone = null, $outputTimezone = null, $format = 'Y-m-d H:i:s', $parseUsingPipe = true)
+    public function __construct($inputTimezone = null, $outputTimezone = null, $format = 'Y-m-d H:i:s', $parseUsingPipe = null)
     {
         parent::__construct($inputTimezone, $outputTimezone);
 
         $this->generateFormat = $this->parseFormat = $format;
 
-        $this->parseUsingPipe = $parseUsingPipe || null === $parseUsingPipe;
+        // The pipe in the parser pattern only works as of PHP 5.3.7
+        // See http://bugs.php.net/54316
+        $this->parseUsingPipe = null === $parseUsingPipe
+            ? PHP_VERSION_ID >= 50307
+            : $parseUsingPipe;
 
         // See http://php.net/manual/en/datetime.createfromformat.php
         // The character "|" in the format makes sure that the parts of a date
@@ -86,7 +90,7 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
      * Transforms a DateTime object into a date string with the configured format
      * and timezone.
      *
-     * @param \DateTime|\DateTimeInterface $value A DateTime object
+     * @param \DateTime|\DateTimeInterface $dateTime A DateTime object
      *
      * @return string A value as produced by PHP's date() function
      *
@@ -138,21 +142,21 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
             throw new TransformationFailedException('Expected a string.');
         }
 
-        $outputTz = new \DateTimeZone($this->outputTimezone);
-        $dateTime = \DateTime::createFromFormat($this->parseFormat, $value, $outputTz);
-
-        $lastErrors = \DateTime::getLastErrors();
-
-        if (0 < $lastErrors['warning_count'] || 0 < $lastErrors['error_count']) {
-            throw new TransformationFailedException(
-                implode(', ', array_merge(
-                    array_values($lastErrors['warnings']),
-                    array_values($lastErrors['errors'])
-                ))
-            );
-        }
-
         try {
+            $outputTz = new \DateTimeZone($this->outputTimezone);
+            $dateTime = \DateTime::createFromFormat($this->parseFormat, $value, $outputTz);
+
+            $lastErrors = \DateTime::getLastErrors();
+
+            if (0 < $lastErrors['warning_count'] || 0 < $lastErrors['error_count']) {
+                throw new TransformationFailedException(
+                    implode(', ', array_merge(
+                        array_values($lastErrors['warnings']),
+                        array_values($lastErrors['errors'])
+                    ))
+                );
+            }
+
             // On PHP versions < 5.3.7 we need to emulate the pipe operator
             // and reset parts not given in the format to their equivalent
             // of the UNIX base timestamp.
@@ -220,6 +224,8 @@ class DateTimeToStringTransformer extends BaseDateTimeTransformer
             if ($this->inputTimezone !== $this->outputTimezone) {
                 $dateTime->setTimezone(new \DateTimeZone($this->inputTimezone));
             }
+        } catch (TransformationFailedException $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
         }

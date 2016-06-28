@@ -24,6 +24,8 @@ use Symfony\Component\ExpressionLanguage\Expression;
  * YamlDumper dumps a service container as a YAML string.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 class YamlDumper extends Dumper
 {
@@ -35,6 +37,8 @@ class YamlDumper extends Dumper
      * @param array $options An array of options
      *
      * @return string A YAML string representing of the service container
+     *
+     * @api
      */
     public function dump(array $options = array())
     {
@@ -60,12 +64,8 @@ class YamlDumper extends Dumper
     private function addService($id, $definition)
     {
         $code = "    $id:\n";
-        if ($class = $definition->getClass()) {
-            if ('\\' === substr($class, 0, 1)) {
-                $class = substr($class, 1);
-            }
-
-            $code .= sprintf("        class: %s\n", $this->dumper->dump($class));
+        if ($definition->getClass()) {
+            $code .= sprintf("        class: %s\n", $definition->getClass());
         }
 
         if (!$definition->isPublic()) {
@@ -89,31 +89,31 @@ class YamlDumper extends Dumper
         }
 
         if ($definition->getFile()) {
-            $code .= sprintf("        file: %s\n", $this->dumper->dump($definition->getFile()));
+            $code .= sprintf("        file: %s\n", $definition->getFile());
         }
 
         if ($definition->isSynthetic()) {
             $code .= sprintf("        synthetic: true\n");
         }
 
-        if ($definition->isSynchronized(false)) {
+        if ($definition->isSynchronized()) {
             $code .= sprintf("        synchronized: true\n");
         }
 
-        if ($definition->getFactoryClass(false)) {
-            $code .= sprintf("        factory_class: %s\n", $this->dumper->dump($definition->getFactoryClass(false)));
+        if ($definition->getFactoryClass()) {
+            $code .= sprintf("        factory_class: %s\n", $definition->getFactoryClass());
         }
 
         if ($definition->isLazy()) {
             $code .= sprintf("        lazy: true\n");
         }
 
-        if ($definition->getFactoryMethod(false)) {
-            $code .= sprintf("        factory_method: %s\n", $this->dumper->dump($definition->getFactoryMethod(false)));
+        if ($definition->getFactoryMethod()) {
+            $code .= sprintf("        factory_method: %s\n", $definition->getFactoryMethod());
         }
 
-        if ($definition->getFactoryService(false)) {
-            $code .= sprintf("        factory_service: %s\n", $this->dumper->dump($definition->getFactoryService(false)));
+        if ($definition->getFactoryService()) {
+            $code .= sprintf("        factory_service: %s\n", $definition->getFactoryService());
         }
 
         if ($definition->getArguments()) {
@@ -129,7 +129,7 @@ class YamlDumper extends Dumper
         }
 
         if (ContainerInterface::SCOPE_CONTAINER !== $scope = $definition->getScope()) {
-            $code .= sprintf("        scope: %s\n", $this->dumper->dump($scope));
+            $code .= sprintf("        scope: %s\n", $scope);
         }
 
         if (null !== $decorated = $definition->getDecoratedService()) {
@@ -162,10 +162,10 @@ class YamlDumper extends Dumper
     private function addServiceAlias($alias, $id)
     {
         if ($id->isPublic()) {
-            return sprintf("    %s: '@%s'\n", $alias, $id);
+            return sprintf("    %s: @%s\n", $alias, $id);
+        } else {
+            return sprintf("    %s:\n        alias: %s\n        public: false", $alias, $id);
         }
-
-        return sprintf("    %s:\n        alias: %s\n        public: false", $alias, $id);
     }
 
     /**
@@ -212,7 +212,7 @@ class YamlDumper extends Dumper
     }
 
     /**
-     * Dumps callable to YAML format.
+     * Dumps callable to YAML format
      *
      * @param callable $callable
      *

@@ -11,13 +11,10 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\EventListener;
 
-use Symfony\Component\Form\ChoiceList\ArrayKeyChoiceList;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Extension\Core\EventListener\FixRadioInputListener;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
-/**
- * @group legacy
- */
 class FixRadioInputListenerTest extends \PHPUnit_Framework_TestCase
 {
     private $choiceList;
@@ -26,7 +23,7 @@ class FixRadioInputListenerTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->choiceList = new ArrayKeyChoiceList(array('' => 'Empty', 0 => 'A', 1 => 'B'));
+        $this->choiceList = new SimpleChoiceList(array('' => 'Empty', 0 => 'A', 1 => 'B'));
     }
 
     protected function tearDown()
@@ -45,6 +42,7 @@ class FixRadioInputListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new FixRadioInputListener($this->choiceList, true);
         $listener->preSubmit($event);
 
+        // Indices in SimpleChoiceList are zero-based generated integers
         $this->assertEquals(array(2 => '1'), $event->getData());
     }
 
@@ -57,6 +55,7 @@ class FixRadioInputListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new FixRadioInputListener($this->choiceList, true);
         $listener->preSubmit($event);
 
+        // Indices in SimpleChoiceList are zero-based generated integers
         $this->assertEquals(array(1 => '0'), $event->getData());
     }
 
@@ -69,12 +68,13 @@ class FixRadioInputListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new FixRadioInputListener($this->choiceList, true);
         $listener->preSubmit($event);
 
+        // Indices in SimpleChoiceList are zero-based generated integers
         $this->assertEquals(array(0 => ''), $event->getData());
     }
 
     public function testConvertEmptyStringToPlaceholderIfNotFound()
     {
-        $list = new ArrayKeyChoiceList(array(0 => 'A', 1 => 'B'));
+        $list = new SimpleChoiceList(array(0 => 'A', 1 => 'B'));
 
         $data = '';
         $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
@@ -88,7 +88,7 @@ class FixRadioInputListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testDontConvertEmptyStringToPlaceholderIfNoPlaceholderUsed()
     {
-        $list = new ArrayKeyChoiceList(array(0 => 'A', 1 => 'B'));
+        $list = new SimpleChoiceList(array(0 => 'A', 1 => 'B'));
 
         $data = '';
         $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');

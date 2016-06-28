@@ -78,7 +78,7 @@ class PdoCaster
             }
         }
 
-        $prefix = Caster::PREFIX_VIRTUAL;
+        $prefix = "\0~\0";
         $a += array(
             $prefix.'inTransaction' => method_exists($c, 'inTransaction'),
             $prefix.'errorInfo' => $c->errorInfo(),
@@ -102,7 +102,7 @@ class PdoCaster
 
     public static function castPdoStatement(\PDOStatement $c, array $a, Stub $stub, $isNested)
     {
-        $prefix = Caster::PREFIX_VIRTUAL;
+        $prefix = "\0~\0";
         $a[$prefix.'errorInfo'] = $c->errorInfo();
 
         if (!isset($a[$prefix.'errorInfo'][1], $a[$prefix.'errorInfo'][2])) {

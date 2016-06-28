@@ -15,7 +15,7 @@ use Symfony\Component\ClassLoader\ClassCollectionLoader;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
-use Composer\Script\Event;
+use Composer\Script\CommandEvent;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -37,9 +37,9 @@ class ScriptHandler
     /**
      * Asks if the new directory structure should be used, installs the structure if needed.
      *
-     * @param Event $event
+     * @param CommandEvent $event
      */
-    public static function defineDirectoryStructure(Event $event)
+    public static function defineDirectoryStructure(CommandEvent $event)
     {
         $options = static::getOptions($event);
 
@@ -62,9 +62,9 @@ class ScriptHandler
      * The bootstrap file contains PHP file that are always needed by the application.
      * It speeds up the application bootstrapping.
      *
-     * @param Event $event
+     * @param $event CommandEvent A instance
      */
-    public static function buildBootstrap(Event $event)
+    public static function buildBootstrap(CommandEvent $event)
     {
         $options = static::getOptions($event);
         $bootstrapDir = $autoloadDir = $options['symfony-app-dir'];
@@ -82,7 +82,7 @@ class ScriptHandler
         static::executeBuildBootstrap($event, $bootstrapDir, $autoloadDir, $options['process-timeout']);
     }
 
-    protected static function hasDirectory(Event $event, $configName, $path, $actionName)
+    protected static function hasDirectory(CommandEvent $event, $configName, $path, $actionName)
     {
         if (!is_dir($path)) {
             $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', $configName, $path, getcwd(), $actionName));
@@ -97,14 +97,14 @@ class ScriptHandler
      * Sets up deployment target specific features.
      * Could be custom web server configs, boot command files etc.
      *
-     * @param Event $event
+     * @param $event CommandEvent An instance
      */
-    public static function prepareDeploymentTarget(Event $event)
+    public static function prepareDeploymentTarget(CommandEvent $event)
     {
         static::prepareDeploymentTargetHeroku($event);
     }
 
-    protected static function prepareDeploymentTargetHeroku(Event $event)
+    protected static function prepareDeploymentTargetHeroku(CommandEvent $event)
     {
         $options = static::getOptions($event);
         if (($stack = getenv('STACK')) && ($stack == 'cedar' || $stack == 'cedar-14')) {
@@ -119,9 +119,9 @@ class ScriptHandler
     /**
      * Clears the Symfony cache.
      *
-     * @param Event $event
+     * @param $event CommandEvent A instance
      */
-    public static function clearCache(Event $event)
+    public static function clearCache(CommandEvent $event)
     {
         $options = static::getOptions($event);
         $consoleDir = static::getConsoleDir($event, 'clear the cache');
@@ -148,9 +148,9 @@ class ScriptHandler
      * strict user permission checks (which can be done on Windows 7 but not on Windows
      * Vista).
      *
-     * @param Event $event
+     * @param $event CommandEvent A instance
      */
-    public static function installAssets(Event $event)
+    public static function installAssets(CommandEvent $event)
     {
         $options = static::getOptions($event);
         $consoleDir = static::getConsoleDir($event, 'install assets');
@@ -178,9 +178,9 @@ class ScriptHandler
     /**
      * Updated the requirements file.
      *
-     * @param Event $event
+     * @param $event CommandEvent A instance
      */
-    public static function installRequirementsFile(Event $event)
+    public static function installRequirementsFile(CommandEvent $event)
     {
         $options = static::getOptions($event);
         $appDir = $options['symfony-app-dir'];
@@ -224,7 +224,7 @@ class ScriptHandler
         }
     }
 
-    public static function removeSymfonyStandardFiles(Event $event)
+    public static function removeSymfonyStandardFiles(CommandEvent $event)
     {
         $options = static::getOptions($event);
         $appDir = $options['symfony-app-dir'];
@@ -239,6 +239,116 @@ class ScriptHandler
 
         $fs = new Filesystem();
         $fs->remove($appDir.'/SymfonyStandard');
+    }
+
+    public static function installAcmeDemoBundle(CommandEvent $event)
+    {
+        $rootDir = getcwd();
+        $options = static::getOptions($event);
+
+        if (file_exists($rootDir.'/src/Acme/DemoBundle')) {
+            return;
+        }
+
+        if (!getenv('SENSIOLABS_FORCE_ACME_DEMO')) {
+            if (!$event->getIO()->askConfirmation('Would you like to install Acme demo bundle? [y/N] ', false)) {
+                return;
+            }
+        }
+
+        $event->getIO()->write('Installing the Acme demo bundle.');
+
+        $appDir = $options['symfony-app-dir'];
+
+        $kernelFile = $appDir.'/AppKernel.php';
+
+        $fs = new Filesystem();
+        $fs->mirror(__DIR__.'/../Resources/skeleton/acme-demo-bundle', $rootDir.'/src', null, array('override' => true));
+
+        $ref = '$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();';
+        $bundleDeclaration = "\$bundles[] = new Acme\\DemoBundle\\AcmeDemoBundle();";
+        $content = file_get_contents($kernelFile);
+
+        if (false === strpos($content, $bundleDeclaration)) {
+            $updatedContent = str_replace($ref, $bundleDeclaration."\n            ".$ref, $content);
+            if ($content === $updatedContent) {
+                throw new \RuntimeException('Unable to patch %s.', $kernelFile);
+            }
+            $fs->dumpFile($kernelFile, $updatedContent);
+        }
+
+        static::patchAcmeDemoBundleConfiguration($appDir, $fs);
+    }
+
+    private static function patchAcmeDemoBundleConfiguration($appDir, Filesystem $fs)
+    {
+        $routingFile = $appDir.'/config/routing_dev.yml';
+        $securityFile = $appDir.'/config/security.yml';
+
+        $routingData = file_get_contents($routingFile).<<<EOF
+
+# AcmeDemoBundle routes (to be removed)
+_acme_demo:
+    resource: "@AcmeDemoBundle/Resources/config/routing.yml"
+EOF;
+        $fs->dumpFile($routingFile, $routingData);
+
+        $securityData = <<<EOF
+# you can read more about security in the related section of the documentation
+# http://symfony.com/doc/current/book/security.html
+security:
+    # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory:
+            memory:
+                users:
+                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        # the login page has to be accessible for everybody
+        demo_login:
+            pattern:  ^/demo/secured/login$
+            security: false
+
+        # secures part of the application
+        demo_secured_area:
+            pattern:    ^/demo/secured/
+            # it's important to notice that in this case _demo_security_check and _demo_login
+            # are route names and that they are specified in the AcmeDemoBundle
+            form_login:
+                check_path: _demo_security_check
+                login_path: _demo_login
+            logout:
+                path:   _demo_logout
+                target: _demo
+            #anonymous: ~
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    # with these settings you can restrict or allow access for different parts
+    # of your application based on roles, ip, host or methods
+    # http://symfony.com/doc/current/cookbook/security/access_control.html
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+EOF;
+
+        $fs->dumpFile($securityFile, $securityData);
     }
 
     public static function doBuildBootstrap($bootstrapDir, $autoloadDir = null, $useNewDirectoryStructure = false)
@@ -290,7 +400,7 @@ class ScriptHandler
 
         if ($useNewDirectoryStructure) {
             $cacheDir = $fs->makePathRelative($bootstrapDir, $autoloadDir);
-            $bootstrapContent = str_replace(array("return \$this->rootDir.'/logs", "return \$this->rootDir.'/cache"), array("return \$this->rootDir.'/".$cacheDir.'logs', "return \$this->rootDir.'/".$cacheDir.'cache'), $bootstrapContent);
+            $bootstrapContent = str_replace(array("return \$this->rootDir.'/logs", "return \$this->rootDir.'/cache"), array("return \$this->rootDir.'/".$cacheDir."logs", "return \$this->rootDir.'/".$cacheDir."cache"), $bootstrapContent);
         }
 
         if ($autoloadDir) {
@@ -314,7 +424,7 @@ EOF
             , $autoloadDir, $bootstrapContent));
     }
 
-    protected static function executeCommand(Event $event, $consoleDir, $cmd, $timeout = 300)
+    protected static function executeCommand(CommandEvent $event, $consoleDir, $cmd, $timeout = 300)
     {
         $php = escapeshellarg(static::getPhp(false));
         $phpArgs = implode(' ', array_map('escapeshellarg', static::getPhpArguments()));
@@ -330,7 +440,7 @@ EOF
         }
     }
 
-    protected static function executeBuildBootstrap(Event $event, $bootstrapDir, $autoloadDir, $timeout = 300)
+    protected static function executeBuildBootstrap(CommandEvent $event, $bootstrapDir, $autoloadDir, $timeout = 300)
     {
         $php = escapeshellarg(static::getPhp(false));
         $phpArgs = implode(' ', array_map('escapeshellarg', static::getPhpArguments()));
@@ -349,7 +459,7 @@ EOF
         }
     }
 
-    protected static function updateDirectoryStructure(Event $event, $rootDir, $appDir, $binDir, $varDir, $webDir)
+    protected static function updateDirectoryStructure(CommandEvent $event, $rootDir, $appDir, $binDir, $varDir, $webDir)
     {
         $event->getIO()->write('Updating Symfony directory structure...');
 
@@ -396,8 +506,8 @@ EOF;
         <server name="KERNEL_DIR" value="$appDir/" />
     </php>
 EOF;
-        $phpunit = str_replace(array('<directory>../src', '"bootstrap.php.cache"', $phpunitKernelBefore), array('<directory>src', '"'.$varDir.'/bootstrap.php.cache"', $phpunitKernelAfter), file_get_contents($rootDir.'/phpunit.xml.dist'));
-        $composer = str_replace('"symfony-app-dir": "app",', "\"symfony-app-dir\": \"app\",\n        \"symfony-bin-dir\": \"bin\",\n        \"symfony-var-dir\": \"var\",", file_get_contents($rootDir.'/composer.json'));
+        $phpunit = str_replace(array('<directory>../src', '"bootstrap.php.cache"', $phpunitKernelBefore), array('<directory>src', '"'.$varDir.'/bootstrap.php.cache"', $phpunitKernelAfter),  file_get_contents($rootDir.'/phpunit.xml.dist'));
+        $composer = str_replace("\"symfony-app-dir\": \"app\",", "\"symfony-app-dir\": \"app\",\n        \"symfony-bin-dir\": \"bin\",\n        \"symfony-var-dir\": \"var\",", file_get_contents($rootDir.'/composer.json'));
 
         $fs->dumpFile($webDir.'/app.php', str_replace($appDir.'/bootstrap.php.cache', $varDir.'/bootstrap.php.cache', file_get_contents($webDir.'/app.php')));
         $fs->dumpFile($webDir.'/app_dev.php', str_replace($appDir.'/bootstrap.php.cache', $varDir.'/bootstrap.php.cache', file_get_contents($webDir.'/app_dev.php')));
@@ -410,7 +520,7 @@ EOF;
         $fs->chmod($binDir.'/console', 0755);
     }
 
-    protected static function getOptions(Event $event)
+    protected static function getOptions(CommandEvent $event)
     {
         $options = array_merge(static::$options, $event->getComposer()->getPackage()->getExtra());
 
@@ -450,12 +560,12 @@ EOF;
     /**
      * Returns a relative path to the directory that contains the `console` command.
      *
-     * @param Event $event      The command event.
+     * @param CommandEvent $event      The command event.
      * @param string       $actionName The name of the action
      *
      * @return string|null The path to the console directory, null if not found.
      */
-    protected static function getConsoleDir(Event $event, $actionName)
+    protected static function getConsoleDir(CommandEvent $event, $actionName)
     {
         $options = static::getOptions($event);
 

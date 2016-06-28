@@ -31,7 +31,6 @@ class Profile
     private $method;
     private $url;
     private $time;
-    private $statusCode;
 
     /**
      * @var Profile
@@ -170,22 +169,6 @@ class Profile
     public function setTime($time)
     {
         $this->time = $time;
-    }
-
-    /**
-     * @param int $statusCode
-     */
-    public function setStatusCode($statusCode)
-    {
-        $this->statusCode = $statusCode;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStatusCode()
-    {
-        return $this->statusCode;
     }
 
     /**

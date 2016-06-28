@@ -157,7 +157,7 @@ class JsonDescriptor extends Descriptor
     {
         $key = isset($options['parameter']) ? $options['parameter'] : '';
 
-        $this->writeData(array($key => $parameter), $options);
+        $this->writeData(array($key => $this->formatParameter($parameter)), $options);
     }
 
     /**
@@ -217,25 +217,21 @@ class JsonDescriptor extends Descriptor
             'public' => $definition->isPublic(),
             'synthetic' => $definition->isSynthetic(),
             'lazy' => $definition->isLazy(),
+            'synchronized' => $definition->isSynchronized(),
+            'abstract' => $definition->isAbstract(),
+            'file' => $definition->getFile(),
         );
 
-        if (method_exists($definition, 'isSynchronized')) {
-            $data['synchronized'] = $definition->isSynchronized(false);
+        if ($definition->getFactoryClass()) {
+            $data['factory_class'] = $definition->getFactoryClass();
         }
 
-        $data['abstract'] = $definition->isAbstract();
-        $data['file'] = $definition->getFile();
-
-        if ($definition->getFactoryClass(false)) {
-            $data['factory_class'] = $definition->getFactoryClass(false);
+        if ($definition->getFactoryService()) {
+            $data['factory_service'] = $definition->getFactoryService();
         }
 
-        if ($definition->getFactoryService(false)) {
-            $data['factory_service'] = $definition->getFactoryService(false);
-        }
-
-        if ($definition->getFactoryMethod(false)) {
-            $data['factory_method'] = $definition->getFactoryMethod(false);
+        if ($definition->getFactoryMethod()) {
+            $data['factory_method'] = $definition->getFactoryMethod();
         }
 
         if ($factory = $definition->getFactory()) {

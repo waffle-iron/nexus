@@ -24,6 +24,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     */
     public function testCreateProxyServiceWithRuntimeInstantiator()
     {
         $builder = new ContainerBuilder();
@@ -32,8 +35,6 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->register('foo1', 'ProxyManagerBridgeFooClass')->setFile(__DIR__.'/Fixtures/includes/foo.php');
         $builder->getDefinition('foo1')->setLazy(true);
-
-        $builder->compile();
 
         /* @var $foo1 \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $foo1 = $builder->get('foo1');

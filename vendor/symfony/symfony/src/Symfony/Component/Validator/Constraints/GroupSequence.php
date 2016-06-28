@@ -54,6 +54,8 @@ use Symfony\Component\Validator\Exception\OutOfBoundsException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
+ * @api
+ *
  * Implementing \ArrayAccess, \IteratorAggregate and \Countable is @deprecated since 2.5 and will be removed in 3.0.
  */
 class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
@@ -95,42 +97,35 @@ class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Returns an iterator for this group.
      *
-     * Implemented for backwards compatibility with Symfony < 2.5.
-     *
      * @return \Traversable The iterator
      *
      * @see \IteratorAggregate::getIterator()
-     * @deprecated since version 2.5, to be removed in 3.0.
+     *
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             To be removed in Symfony 3.0.
      */
     public function getIterator()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
         return new \ArrayIterator($this->groups);
     }
 
     /**
      * Returns whether the given offset exists in the sequence.
      *
-     * Implemented for backwards compatibility with Symfony < 2.5.
-     *
      * @param int $offset The offset
      *
      * @return bool Whether the offset exists
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             To be removed in Symfony 3.0.
      */
     public function offsetExists($offset)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
         return isset($this->groups[$offset]);
     }
 
     /**
      * Returns the group at the given offset.
-     *
-     * Implemented for backwards compatibility with Symfony < 2.5.
      *
      * @param int $offset The offset
      *
@@ -138,12 +133,11 @@ class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
      *
      * @throws OutOfBoundsException If the object does not exist
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             To be removed in Symfony 3.0.
      */
     public function offsetGet($offset)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
         if (!isset($this->groups[$offset])) {
             throw new OutOfBoundsException(sprintf(
                 'The offset "%s" does not exist.',
@@ -157,17 +151,14 @@ class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Sets the group at the given offset.
      *
-     * Implemented for backwards compatibility with Symfony < 2.5.
-     *
      * @param int    $offset The offset
      * @param string $value  The group name
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             To be removed in Symfony 3.0.
      */
     public function offsetSet($offset, $value)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
         if (null !== $offset) {
             $this->groups[$offset] = $value;
 
@@ -180,32 +171,26 @@ class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Removes the group at the given offset.
      *
-     * Implemented for backwards compatibility with Symfony < 2.5.
-     *
      * @param int $offset The offset
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             To be removed in Symfony 3.0.
      */
     public function offsetUnset($offset)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
         unset($this->groups[$offset]);
     }
 
     /**
      * Returns the number of groups in the sequence.
      *
-     * Implemented for backwards compatibility with Symfony < 2.5.
-     *
      * @return int The number of groups
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             To be removed in Symfony 3.0.
      */
     public function count()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
-
         return count($this->groups);
     }
 }

@@ -331,18 +331,16 @@ class XmlDescriptor extends Descriptor
 
         $serviceXML->setAttribute('class', $definition->getClass());
 
-        if (method_exists($definition, 'getFactoryMethod')) {
-            if ($definition->getFactoryClass(false)) {
-                $serviceXML->setAttribute('factory-class', $definition->getFactoryClass(false));
-            }
+        if ($definition->getFactoryClass()) {
+            $serviceXML->setAttribute('factory-class', $definition->getFactoryClass());
+        }
 
-            if ($definition->getFactoryService(false)) {
-                $serviceXML->setAttribute('factory-service', $definition->getFactoryService(false));
-            }
+        if ($definition->getFactoryService()) {
+            $serviceXML->setAttribute('factory-service', $definition->getFactoryService());
+        }
 
-            if ($definition->getFactoryMethod(false)) {
-                $serviceXML->setAttribute('factory-method', $definition->getFactoryMethod(false));
-            }
+        if ($definition->getFactoryMethod()) {
+            $serviceXML->setAttribute('factory-method', $definition->getFactoryMethod());
         }
 
         if ($factory = $definition->getFactory()) {
@@ -366,9 +364,7 @@ class XmlDescriptor extends Descriptor
         $serviceXML->setAttribute('public', $definition->isPublic() ? 'true' : 'false');
         $serviceXML->setAttribute('synthetic', $definition->isSynthetic() ? 'true' : 'false');
         $serviceXML->setAttribute('lazy', $definition->isLazy() ? 'true' : 'false');
-        if (method_exists($definition, 'isSynchronized')) {
-            $serviceXML->setAttribute('synchronized', $definition->isSynchronized(false) ? 'true' : 'false');
-        }
+        $serviceXML->setAttribute('synchronized', $definition->isSynchronized() ? 'true' : 'false');
         $serviceXML->setAttribute('abstract', $definition->isAbstract() ? 'true' : 'false');
         $serviceXML->setAttribute('file', $definition->getFile());
 

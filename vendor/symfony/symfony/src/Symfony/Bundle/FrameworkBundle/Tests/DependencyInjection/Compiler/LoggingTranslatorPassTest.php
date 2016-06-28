@@ -12,6 +12,8 @@
 namespace Symfony\Bundle\FrameworkBundle\Tests\DependencyInjection\Compiler;
 
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\LoggingTranslatorPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class LoggingTranslatorPassTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +35,7 @@ class LoggingTranslatorPassTest extends \PHPUnit_Framework_TestCase
             ->method('getAlias')
             ->will($this->returnValue('translation.default'));
 
-        $container->expects($this->exactly(3))
+        $container->expects($this->exactly(2))
             ->method('getDefinition')
             ->will($this->returnValue($definition));
 
@@ -44,7 +46,7 @@ class LoggingTranslatorPassTest extends \PHPUnit_Framework_TestCase
 
         $definition->expects($this->once())
             ->method('getClass')
-            ->will($this->returnValue('%translator.class%'));
+            ->will($this->returnValue("%translator.class%"));
 
         $parameterBag->expects($this->once())
             ->method('resolveValue')

@@ -17,7 +17,7 @@ namespace Symfony\Component\Security\Acl\Permission;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class BasicPermissionMap implements PermissionMapInterface, MaskBuilderRetrievalInterface
+class BasicPermissionMap implements PermissionMapInterface
 {
     const PERMISSION_VIEW = 'VIEW';
     const PERMISSION_EDIT = 'EDIT';
@@ -104,13 +104,5 @@ class BasicPermissionMap implements PermissionMapInterface, MaskBuilderRetrieval
     public function contains($permission)
     {
         return isset($this->map[$permission]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMaskBuilder()
-    {
-        return new MaskBuilder();
     }
 }

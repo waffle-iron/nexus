@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\Definition;
  * Tests for {@see \Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper}.
  *
  * @author Marco Pivetta <ocramius@gmail.com>
+ *
+ * @covers \Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper
  */
 class ProxyDumperTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,7 +71,7 @@ class ProxyDumperTest extends \PHPUnit_Framework_TestCase
         $code = $this->dumper->getProxyFactoryCode($definition, 'foo');
 
         $this->assertStringMatchesFormat(
-            '%wif ($lazyLoad) {%w$container = $this;%wreturn $this->services[\'foo\'] =%s'
+            '%wif ($lazyLoad) {%w$container = $this;%wreturn $this->services[\'foo\'] = new '
             .'SymfonyBridgeProxyManagerTestsLazyProxyPhpDumperProxyDumperTest_%s(%wfunction '
             .'(&$wrappedInstance, \ProxyManager\Proxy\LazyLoadingInterface $proxy) use ($container) {'
             .'%w$wrappedInstance = $container->getFooService(false);%w$proxy->setProxyInitializer(null);'

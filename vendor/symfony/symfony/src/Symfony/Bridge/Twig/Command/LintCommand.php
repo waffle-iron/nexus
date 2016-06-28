@@ -12,7 +12,6 @@
 namespace Symfony\Bridge\Twig\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,7 +30,7 @@ class LintCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function __construct($name = 'lint:twig')
+    public function __construct($name = 'twig:lint')
     {
         parent::__construct($name);
     }
@@ -57,10 +56,9 @@ class LintCommand extends Command
     protected function configure()
     {
         $this
-            ->setAliases(array('twig:lint'))
             ->setDescription('Lints a template and outputs encountered errors')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
-            ->addArgument('filename', InputArgument::IS_ARRAY)
+            ->addArgument('filename')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command lints a template and outputs to STDOUT
 the first encountered syntax error.
@@ -84,10 +82,6 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (false !== strpos($input->getFirstArgument(), ':l')) {
-            $output->writeln('<comment>The use of "twig:lint" command is deprecated since version 2.7 and will be removed in 3.0. Use the "lint:twig" instead.</comment>');
-        }
-
         $twig = $this->getTwigEnvironment();
 
         if (null === $twig) {
@@ -96,9 +90,9 @@ EOF
             return 1;
         }
 
-        $filenames = $input->getArgument('filename');
+        $filename = $input->getArgument('filename');
 
-        if (0 === count($filenames)) {
+        if (!$filename) {
             if (0 !== ftell(STDIN)) {
                 throw new \RuntimeException('Please provide a filename or pipe template content to STDIN.');
             }
@@ -111,21 +105,12 @@ EOF
             return $this->display($input, $output, array($this->validate($twig, $template, uniqid('sf_'))));
         }
 
-        $filesInfo = $this->getFilesInfo($twig, $filenames);
-
-        return $this->display($input, $output, $filesInfo);
-    }
-
-    private function getFilesInfo(\Twig_Environment $twig, array $filenames)
-    {
         $filesInfo = array();
-        foreach ($filenames as $filename) {
-            foreach ($this->findFiles($filename) as $file) {
-                $filesInfo[] = $this->validate($twig, file_get_contents($file), $file);
-            }
+        foreach ($this->findFiles($filename) as $file) {
+            $filesInfo[] = $this->validate($twig, file_get_contents($file), $file);
         }
 
-        return $filesInfo;
+        return $this->display($input, $output, $filesInfo);
     }
 
     protected function findFiles($filename)
@@ -177,7 +162,7 @@ EOF
             if ($info['valid'] && $output->isVerbose()) {
                 $output->writeln('<info>OK</info>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
             } elseif (!$info['valid']) {
-                ++$errors;
+                $errors++;
                 $this->renderException($output, $info['template'], $info['exception'], $info['file']);
             }
         }
@@ -197,7 +182,7 @@ EOF
             if (!$v['valid']) {
                 $v['message'] = $v['exception']->getMessage();
                 unset($v['exception']);
-                ++$errors;
+                $errors++;
             }
         });
 
@@ -208,7 +193,7 @@ EOF
 
     private function renderException(OutputInterface $output, $template, \Twig_Error $exception, $file = null)
     {
-        $line = $exception->getTemplateLine();
+        $line =  $exception->getTemplateLine();
 
         if ($file) {
             $output->writeln(sprintf('<error>KO</error> in %s (line %s)', $file, $line));
@@ -239,7 +224,7 @@ EOF
         $result = array();
         while ($position < $max) {
             $result[$position + 1] = $lines[$position];
-            ++$position;
+            $position++;
         }
 
         return $result;

@@ -46,12 +46,4 @@ class ScalarNode extends VariableNode
             throw $ex;
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function isValueEmpty($value)
-    {
-        return null === $value || '' === $value;
-    }
 }

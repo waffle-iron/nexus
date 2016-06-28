@@ -41,8 +41,8 @@ class FileProfilerStorage implements ProfilerStorageInterface
         }
         $this->folder = substr($dsn, 5);
 
-        if (!is_dir($this->folder) && false === @mkdir($this->folder, 0777, true) && !is_dir($this->folder)) {
-            throw new \RuntimeException(sprintf('Unable to create the storage directory (%s).', $this->folder));
+        if (!is_dir($this->folder)) {
+            mkdir($this->folder, 0777, true);
         }
     }
 
@@ -62,9 +62,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
         $result = array();
         while (count($result) < $limit && $line = $this->readLineFromFile($file)) {
-            $values = str_getcsv($line);
-            list($csvToken, $csvIp, $csvMethod, $csvUrl, $csvTime, $csvParent) = $values;
-            $csvStatusCode = isset($values[6]) ? $values[6] : null;
+            list($csvToken, $csvIp, $csvMethod, $csvUrl, $csvTime, $csvParent) = str_getcsv($line);
 
             $csvTime = (int) $csvTime;
 
@@ -87,7 +85,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
                 'url' => $csvUrl,
                 'time' => $csvTime,
                 'parent' => $csvParent,
-                'status_code' => $csvStatusCode,
             );
         }
 
@@ -128,8 +125,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \RuntimeException
      */
     public function write(Profile $profile)
     {
@@ -139,8 +134,8 @@ class FileProfilerStorage implements ProfilerStorageInterface
         if (!$profileIndexed) {
             // Create directory
             $dir = dirname($file);
-            if (!is_dir($dir) && false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
-                throw new \RuntimeException(sprintf('Unable to create the storage directory (%s).', $dir));
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
             }
         }
 
@@ -173,7 +168,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
                 $profile->getUrl(),
                 $profile->getTime(),
                 $profile->getParentToken(),
-                $profile->getStatusCode(),
             ));
             fclose($file);
         }

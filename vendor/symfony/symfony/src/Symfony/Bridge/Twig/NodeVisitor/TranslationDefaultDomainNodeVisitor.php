@@ -19,7 +19,7 @@ use Symfony\Bridge\Twig\Node\TransDefaultDomainNode;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslationDefaultDomainNodeVisitor extends \Twig_BaseNodeVisitor
+class TranslationDefaultDomainNodeVisitor implements \Twig_NodeVisitorInterface
 {
     /**
      * @var Scope
@@ -37,7 +37,7 @@ class TranslationDefaultDomainNodeVisitor extends \Twig_BaseNodeVisitor
     /**
      * {@inheritdoc}
      */
-    protected function doEnterNode(\Twig_Node $node, \Twig_Environment $env)
+    public function enterNode(\Twig_NodeInterface $node, \Twig_Environment $env)
     {
         if ($node instanceof \Twig_Node_Block || $node instanceof \Twig_Node_Module) {
             $this->scope = $this->scope->enter();
@@ -89,7 +89,7 @@ class TranslationDefaultDomainNodeVisitor extends \Twig_BaseNodeVisitor
     /**
      * {@inheritdoc}
      */
-    protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env)
+    public function leaveNode(\Twig_NodeInterface $node, \Twig_Environment $env)
     {
         if ($node instanceof TransDefaultDomainNode) {
             return false;

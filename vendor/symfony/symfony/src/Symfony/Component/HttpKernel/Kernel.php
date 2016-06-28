@@ -40,6 +40,8 @@ use Symfony\Component\ClassLoader\ClassCollectionLoader;
  * It manages an environment made of bundles.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @api
  */
 abstract class Kernel implements KernelInterface, TerminableInterface
 {
@@ -58,21 +60,20 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     protected $startTime;
     protected $loadClassCache;
 
-    const VERSION = '2.7.13';
-    const VERSION_ID = 20713;
-    const MAJOR_VERSION = 2;
-    const MINOR_VERSION = 7;
-    const RELEASE_VERSION = 13;
+    const VERSION = '2.6.13';
+    const VERSION_ID = '20613';
+    const MAJOR_VERSION = '2';
+    const MINOR_VERSION = '6';
+    const RELEASE_VERSION = '13';
     const EXTRA_VERSION = '';
-
-    const END_OF_MAINTENANCE = '05/2018';
-    const END_OF_LIFE = '05/2019';
 
     /**
      * Constructor.
      *
      * @param string $environment The environment
      * @param bool   $debug       Whether to enable debugging or not
+     *
+     * @api
      */
     public function __construct($environment, $debug)
     {
@@ -85,21 +86,14 @@ abstract class Kernel implements KernelInterface, TerminableInterface
             $this->startTime = microtime(true);
         }
 
-        $defClass = new \ReflectionMethod($this, 'init');
-        $defClass = $defClass->getDeclaringClass()->name;
-
-        if (__CLASS__ !== $defClass) {
-            @trigger_error(sprintf('Calling the %s::init() method is deprecated since version 2.3 and will be removed in 3.0. Move your logic to the constructor method instead.', $defClass), E_USER_DEPRECATED);
-            $this->init();
-        }
+        $this->init();
     }
 
     /**
-     * @deprecated since version 2.3, to be removed in 3.0. Move your logic in the constructor instead.
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Move your logic in the constructor instead.
      */
     public function init()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 3.0. Move your logic to the constructor method instead.', E_USER_DEPRECATED);
     }
 
     public function __clone()
@@ -114,6 +108,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * Boots the current kernel.
+     *
+     * @api
      */
     public function boot()
     {
@@ -141,6 +137,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function terminate(Request $request, Response $response)
     {
@@ -155,6 +153,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function shutdown()
     {
@@ -174,6 +174,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
@@ -196,6 +198,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getBundles()
     {
@@ -205,12 +209,12 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated since version 2.6, to be removed in 3.0.
+     * @api
+     *
+     * @deprecated Deprecated since version 2.6, to be removed in 3.0.
      */
     public function isClassInActiveBundle($class)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in version 3.0.', E_USER_DEPRECATED);
-
         foreach ($this->getBundles() as $bundle) {
             if (0 === strpos($class, $bundle->getNamespace())) {
                 return true;
@@ -222,6 +226,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getBundle($name, $first = true)
     {
@@ -297,6 +303,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getName()
     {
@@ -309,6 +317,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getEnvironment()
     {
@@ -317,6 +327,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function isDebug()
     {
@@ -325,12 +337,14 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getRootDir()
     {
         if (null === $this->rootDir) {
             $r = new \ReflectionObject($this);
-            $this->rootDir = dirname($r->getFileName());
+            $this->rootDir = str_replace('\\', '/', dirname($r->getFileName()));
         }
 
         return $this->rootDir;
@@ -338,6 +352,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getContainer()
     {
@@ -371,6 +387,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getStartTime()
     {
@@ -379,6 +397,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getCacheDir()
     {
@@ -387,6 +407,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getLogDir()
     {
@@ -395,6 +417,8 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @api
      */
     public function getCharset()
     {
@@ -513,7 +537,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
             $fresh = false;
         }
 
-        require_once $cache->getPath();
+        require_once $cache;
 
         $this->container = new $class();
         $this->container->set('kernel', $this);
@@ -659,10 +683,13 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $dumper = new PhpDumper($container);
 
         if (class_exists('ProxyManager\Configuration') && class_exists('Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper')) {
-            $dumper->setProxyDumper(new ProxyDumper(md5($cache->getPath())));
+            $dumper->setProxyDumper(new ProxyDumper(md5((string) $cache)));
         }
 
-        $content = $dumper->dump(array('class' => $class, 'base_class' => $baseClass, 'file' => $cache->getPath(), 'debug' => $this->debug));
+        $content = $dumper->dump(array('class' => $class, 'base_class' => $baseClass, 'file' => (string) $cache));
+        if (!$this->debug) {
+            $content = static::stripComments($content);
+        }
 
         $cache->write($content, $container->getResources());
     }
@@ -708,15 +735,14 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $output = '';
         $tokens = token_get_all($source);
         $ignoreSpace = false;
-        for ($i = 0; isset($tokens[$i]); ++$i) {
-            $token = $tokens[$i];
-            if (!isset($token[1]) || 'b"' === $token) {
+        for (reset($tokens); false !== $token = current($tokens); next($tokens)) {
+            if (is_string($token)) {
                 $rawChunk .= $token;
             } elseif (T_START_HEREDOC === $token[0]) {
                 $output .= $rawChunk.$token[1];
                 do {
-                    $token = $tokens[++$i];
-                    $output .= isset($token[1]) && 'b"' !== $token ? $token[1] : $token;
+                    $token = next($tokens);
+                    $output .= $token[1];
                 } while ($token[0] !== T_END_HEREDOC);
                 $rawChunk = '';
             } elseif (T_WHITESPACE === $token[0]) {
@@ -741,12 +767,6 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         }
 
         $output .= $rawChunk;
-
-        if (PHP_VERSION_ID >= 70000) {
-            // PHP 7 memory manager will not release after token_get_all(), see https://bugs.php.net/70098
-            unset($tokens, $rawChunk);
-            gc_mem_caches();
-        }
 
         return $output;
     }

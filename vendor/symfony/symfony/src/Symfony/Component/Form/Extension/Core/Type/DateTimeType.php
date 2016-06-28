@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTra
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToRfc3339Transformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ArrayToPartsTransformer;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DateTimeType extends AbstractType
 {
@@ -200,10 +200,10 @@ class DateTimeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $compound = function (Options $options) {
-            return 'single_text' !== $options['widget'];
+            return $options['widget'] !== 'single_text';
         };
 
         // Defaults to the value of "widget"
@@ -253,30 +253,32 @@ class DateTimeType extends AbstractType
             'seconds',
         ));
 
-        $resolver->setAllowedValues('input', array(
-            'datetime',
-            'string',
-            'timestamp',
-            'array',
-        ));
-        $resolver->setAllowedValues('date_widget', array(
-            null, // inherit default from DateType
-            'single_text',
-            'text',
-            'choice',
-        ));
-        $resolver->setAllowedValues('time_widget', array(
-            null, // inherit default from TimeType
-            'single_text',
-            'text',
-            'choice',
-        ));
-        // This option will overwrite "date_widget" and "time_widget" options
-        $resolver->setAllowedValues('widget', array(
-            null, // default, don't overwrite options
-            'single_text',
-            'text',
-            'choice',
+        $resolver->setAllowedValues(array(
+            'input' => array(
+                'datetime',
+                'string',
+                'timestamp',
+                'array',
+            ),
+            'date_widget' => array(
+                null, // inherit default from DateType
+                'single_text',
+                'text',
+                'choice',
+            ),
+            'time_widget' => array(
+                null, // inherit default from TimeType
+                'single_text',
+                'text',
+                'choice',
+            ),
+            // This option will overwrite "date_widget" and "time_widget" options
+            'widget' => array(
+                null, // default, don't overwrite options
+                'single_text',
+                'text',
+                'choice',
+            ),
         ));
     }
 

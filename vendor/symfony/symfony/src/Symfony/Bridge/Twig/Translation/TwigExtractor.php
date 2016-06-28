@@ -12,8 +12,6 @@
 namespace Symfony\Bridge\Twig\Translation;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Translation\Extractor\AbstractFileExtractor;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 
@@ -23,7 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  * @author Michel Salib <michelsalib@hotmail.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TwigExtractor extends AbstractFileExtractor implements ExtractorInterface
+class TwigExtractor implements ExtractorInterface
 {
     /**
      * Default domain for found messages.
@@ -54,18 +52,16 @@ class TwigExtractor extends AbstractFileExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function extract($resource, MessageCatalogue $catalogue)
+    public function extract($directory, MessageCatalogue $catalogue)
     {
-        $files = $this->extractFiles($resource);
+        // load any existing translation files
+        $finder = new Finder();
+        $files = $finder->files()->name('*.twig')->sortByName()->in($directory);
         foreach ($files as $file) {
             try {
                 $this->extractTemplate(file_get_contents($file->getPathname()), $catalogue);
             } catch (\Twig_Error $e) {
-                if ($file instanceof SplFileInfo) {
-                    $e->setTemplateFile($file->getRelativePathname());
-                } elseif ($file instanceof \SplFileInfo) {
-                    $e->setTemplateFile($file->getRealPath());
-                }
+                $e->setTemplateFile($file->getRelativePathname());
 
                 throw $e;
             }
@@ -92,27 +88,5 @@ class TwigExtractor extends AbstractFileExtractor implements ExtractorInterface
         }
 
         $visitor->disable();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return bool
-     */
-    protected function canBeExtracted($file)
-    {
-        return $this->isFile($file) && 'twig' === pathinfo($file, PATHINFO_EXTENSION);
-    }
-
-    /**
-     * @param string|array $directory
-     *
-     * @return array
-     */
-    protected function extractFromDirectory($directory)
-    {
-        $finder = new Finder();
-
-        return $finder->files()->name('*.twig')->in($directory);
     }
 }

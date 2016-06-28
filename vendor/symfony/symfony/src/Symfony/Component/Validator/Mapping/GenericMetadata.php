@@ -24,7 +24,6 @@ use Symfony\Component\Validator\ValidationVisitorInterface;
  * This class supports serialization and cloning.
  *
  * @since  2.5
- *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class GenericMetadata implements MetadataInterface
@@ -232,11 +231,10 @@ class GenericMetadata implements MetadataInterface
      *
      * Should not be used.
      *
-     * Implemented for backward compatibility with Symfony < 2.5.
-     *
      * @throws BadMethodCallException
      *
-     * @deprecated since version 2.5, to be removed in 3.0.
+     * @deprecated Implemented for backwards compatibility with Symfony < 2.5.
+     *             Will be removed in Symfony 3.0.
      */
     public function accept(ValidationVisitorInterface $visitor, $value, $group, $propertyPath)
     {

@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-2.7.0
------
-
- * added DataCollectorTranslator for collecting the translated messages.
-
 2.6.0
 -----
 

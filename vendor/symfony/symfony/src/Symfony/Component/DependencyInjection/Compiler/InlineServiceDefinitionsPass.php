@@ -62,12 +62,6 @@ class InlineServiceDefinitionsPass implements RepeatablePassInterface
             $definition->setProperties(
                 $this->inlineArguments($container, $definition->getProperties())
             );
-
-            $configurator = $this->inlineArguments($container, array($definition->getConfigurator()));
-            $definition->setConfigurator($configurator[0]);
-
-            $factory = $this->inlineArguments($container, array($definition->getFactory()));
-            $definition->setFactory($factory[0]);
         }
     }
 
@@ -148,7 +142,7 @@ class InlineServiceDefinitionsPass implements RepeatablePassInterface
             return false;
         }
 
-        if (count($ids) > 1 && $definition->getFactoryService(false)) {
+        if (count($ids) > 1 && $definition->getFactoryService()) {
             return false;
         }
 

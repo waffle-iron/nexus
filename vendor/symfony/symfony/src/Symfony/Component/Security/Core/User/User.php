@@ -43,11 +43,6 @@ final class User implements AdvancedUserInterface
         $this->roles = $roles;
     }
 
-    public function __toString()
-    {
-        return $this->getUsername();
-    }
-
     /**
      * {@inheritdoc}
      */

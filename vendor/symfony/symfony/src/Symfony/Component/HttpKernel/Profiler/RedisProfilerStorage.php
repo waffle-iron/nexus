@@ -71,9 +71,7 @@ class RedisProfilerStorage implements ProfilerStorageInterface
                 continue;
             }
 
-            $values = explode("\t", $item, 7);
-            list($itemToken, $itemIp, $itemMethod, $itemUrl, $itemTime, $itemParent) = $values;
-            $statusCode = isset($values[6]) ? $values[6] : null;
+            list($itemToken, $itemIp, $itemMethod, $itemUrl, $itemTime, $itemParent) = explode("\t", $item, 6);
 
             $itemTime = (int) $itemTime;
 
@@ -96,7 +94,6 @@ class RedisProfilerStorage implements ProfilerStorageInterface
                 'url' => $itemUrl,
                 'time' => $itemTime,
                 'parent' => $itemParent,
-                'status_code' => $statusCode,
             );
             --$limit;
         }
@@ -185,7 +182,6 @@ class RedisProfilerStorage implements ProfilerStorageInterface
                     $profile->getUrl(),
                     $profile->getTime(),
                     $profile->getParentToken(),
-                    $profile->getStatusCode(),
                 ))."\n";
 
                 return $this->appendValue($indexName, $indexRow, $this->lifetime);

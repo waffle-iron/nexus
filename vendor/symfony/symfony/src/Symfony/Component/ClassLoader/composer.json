@@ -17,21 +17,19 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.9",
-        "symfony/polyfill-apcu": "~1.1"
+        "php": ">=5.3.3"
     },
     "require-dev": {
+        "symfony/phpunit-bridge": "~2.7",
         "symfony/finder": "~2.0,>=2.0.5"
     },
     "autoload": {
-        "psr-4": { "Symfony\\Component\\ClassLoader\\": "" },
-        "exclude-from-classmap": [
-            "/Tests/"
-        ]
+        "psr-0": { "Symfony\\Component\\ClassLoader\\": "" }
     },
+    "target-dir": "Symfony/Component/ClassLoader",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7-dev"
+            "dev-master": "2.6-dev"
         }
     }
 }

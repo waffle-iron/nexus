@@ -19,18 +19,13 @@ foreach ($dirs as $dir) {
     }
     echo "$dir\n";
 
-    $json = ltrim(file_get_contents($dir.'/composer.json'));
-    if (null === $package = json_decode($json)) {
-        passthru("composer validate $dir/composer.json");
-        exit(1);
-    }
+    $package = json_decode(file_get_contents($dir.'/composer.json'));
 
     $package->repositories = array(array(
         'type' => 'composer',
         'url' => 'file://'.__DIR__.'/',
     ));
-    $json = rtrim(json_encode(array('repositories' => $package->repositories), $flags), "\n}").','.substr($json, 1);
-    file_put_contents($dir.'/composer.json', $json);
+    file_put_contents($dir.'/composer.json', json_encode($package, $flags));
     passthru("cd $dir && tar -cf package.tar --exclude='package.tar' *");
 
     $package->version = $branch.'.x-dev';

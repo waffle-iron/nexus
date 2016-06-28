@@ -56,7 +56,7 @@ class Acl implements AuditableAclInterface, NotifyPropertyChanged
      * @param array                               $loadedSids
      * @param bool                                $entriesInheriting
      */
-    public function __construct($id, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSids, $entriesInheriting)
+    public function __construct($id, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSids = array(), $entriesInheriting)
     {
         $this->id = $id;
         $this->objectIdentity = $objectIdentity;

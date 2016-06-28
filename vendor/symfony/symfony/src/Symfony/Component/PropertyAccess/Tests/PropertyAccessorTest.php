@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\PropertyAccess\Tests;
 
-use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\Tests\Fixtures\TestClass;
 use Symfony\Component\PropertyAccess\Tests\Fixtures\TestClassMagicCall;
@@ -19,7 +18,6 @@ use Symfony\Component\PropertyAccess\Tests\Fixtures\TestClassMagicGet;
 use Symfony\Component\PropertyAccess\Tests\Fixtures\Ticket5775Object;
 use Symfony\Component\PropertyAccess\Tests\Fixtures\TestClassSetValue;
 use Symfony\Component\PropertyAccess\Tests\Fixtures\TestClassIsWritable;
-use Symfony\Component\PropertyAccess\Tests\Fixtures\TypeHinted;
 
 class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
 {
@@ -126,42 +124,10 @@ class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Bernhard', $this->propertyAccessor->getValue(new TestClassMagicGet('Bernhard'), 'magicProperty'));
     }
 
-    public function testGetValueReadsArrayWithMissingIndexForCustomPropertyPath()
-    {
-        $object = new \ArrayObject();
-        $array = array('child' => array('index' => $object));
-
-        $this->assertNull($this->propertyAccessor->getValue($array, '[child][index][foo][bar]'));
-        $this->assertSame(array(), $object->getArrayCopy());
-    }
-
     // https://github.com/symfony/symfony/pull/4450
     public function testGetValueReadsMagicGetThatReturnsConstant()
     {
         $this->assertSame('constant value', $this->propertyAccessor->getValue(new TestClassMagicGet('Bernhard'), 'constantMagicProperty'));
-    }
-
-    public function testGetValueNotModifyObject()
-    {
-        $object = new \stdClass();
-        $object->firstName = array('Bernhard');
-
-        $this->assertNull($this->propertyAccessor->getValue($object, 'firstName[1]'));
-        $this->assertSame(array('Bernhard'), $object->firstName);
-    }
-
-    public function testGetValueNotModifyObjectException()
-    {
-        $propertyAccessor = new PropertyAccessor(false, true);
-        $object = new \stdClass();
-        $object->firstName = array('Bernhard');
-
-        try {
-            $propertyAccessor->getValue($object, 'firstName[1]');
-        } catch (NoSuchIndexException $e) {
-        }
-
-        $this->assertSame(array('Bernhard'), $object->firstName);
     }
 
     /**
@@ -190,7 +156,7 @@ class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPathsWithUnexpectedType
      * @expectedException \Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage PropertyAccessor requires a graph of objects or arrays to operate on
+     * @expectedExceptionMessage Expected argument of type "object or array"
      */
     public function testGetValueThrowsExceptionIfNotObjectOrArray($objectOrArray, $path)
     {
@@ -286,7 +252,7 @@ class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPathsWithUnexpectedType
      * @expectedException \Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage PropertyAccessor requires a graph of objects or arrays to operate on
+     * @expectedExceptionMessage Expected argument of type "object or array"
      */
     public function testSetValueThrowsExceptionIfNotObjectOrArray($objectOrArray, $path)
     {
@@ -492,6 +458,7 @@ class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
             array(new TestClassSetValue(array('a' => array('b' => 'old-value'))), 'value[a][b]', 'new-value'),
             array(new \ArrayIterator(array('a' => array('b' => array('c' => 'old-value')))), '[a][b][c]', 'new-value'),
         );
+
     }
 
     /**
@@ -511,6 +478,7 @@ class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
             array(new TestClassIsWritable(new \ArrayIterator(array('a' => array('b' => 'old-value')))), 'value[a][b]', true),
             array(new TestClassIsWritable(array('a' => array('b' => array('c' => new TestClassSetValue('old-value'))))), 'value[a][b][c].value', true),
         );
+
     }
 
     /**
@@ -521,31 +489,4 @@ class PropertyAccessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $this->propertyAccessor->isWritable($object, $path));
     }
 
-    /**
-     * @expectedException \Symfony\Component\PropertyAccess\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Expected argument of type "DateTime", "string" given
-     */
-    public function testThrowTypeError()
-    {
-        $this->propertyAccessor->setValue(new TypeHinted(), 'date', 'This is a string, \DateTime expected.');
-    }
-
-    public function testSetTypeHint()
-    {
-        $date = new \DateTime();
-        $object = new TypeHinted();
-
-        $this->propertyAccessor->setValue($object, 'date', $date);
-        $this->assertSame($date, $object->getDate());
-    }
-
-    public function testArrayNotBeeingOverwritten()
-    {
-        $value = array('value1' => 'foo', 'value2' => 'bar');
-        $object = new TestClass($value);
-
-        $this->propertyAccessor->setValue($object, 'publicAccessor[value2]', 'baz');
-        $this->assertSame('baz', $this->propertyAccessor->getValue($object, 'publicAccessor[value2]'));
-        $this->assertSame(array('value1' => 'foo', 'value2' => 'baz'), $object->getPublicAccessor());
-    }
 }

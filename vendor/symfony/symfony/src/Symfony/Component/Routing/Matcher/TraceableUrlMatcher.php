@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Routing\Matcher;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -39,15 +38,6 @@ class TraceableUrlMatcher extends UrlMatcher
         }
 
         return $this->traces;
-    }
-
-    public function getTracesForRequest(Request $request)
-    {
-        $this->request = $request;
-        $traces = $this->getTraces($request->getPathInfo());
-        $this->request = null;
-
-        return $traces;
     }
 
     protected function matchCollection($pathinfo, RouteCollection $routes)
@@ -88,16 +78,16 @@ class TraceableUrlMatcher extends UrlMatcher
             }
 
             // check HTTP method requirement
-            if ($requiredMethods = $route->getMethods()) {
+            if ($req = $route->getRequirement('_method')) {
                 // HEAD and GET are equivalent as per RFC
                 if ('HEAD' === $method = $this->context->getMethod()) {
                     $method = 'GET';
                 }
 
-                if (!in_array($method, $requiredMethods)) {
-                    $this->allow = array_merge($this->allow, $requiredMethods);
+                if (!in_array($method, $req = explode('|', strtoupper($req)))) {
+                    $this->allow = array_merge($this->allow, $req);
 
-                    $this->addTrace(sprintf('Method "%s" does not match any of the required methods (%s)', $this->context->getMethod(), implode(', ', $requiredMethods)), self::ROUTE_ALMOST_MATCHES, $name, $route);
+                    $this->addTrace(sprintf('Method "%s" does not match the requirement ("%s")', $this->context->getMethod(), implode(', ', $req)), self::ROUTE_ALMOST_MATCHES, $name, $route);
 
                     continue;
                 }
@@ -117,7 +107,7 @@ class TraceableUrlMatcher extends UrlMatcher
                 $scheme = $this->context->getScheme();
 
                 if (!$route->hasScheme($scheme)) {
-                    $this->addTrace(sprintf('Scheme "%s" does not match any of the required schemes (%s); the user will be redirected to first required scheme', $scheme, implode(', ', $requiredSchemes)), self::ROUTE_ALMOST_MATCHES, $name, $route);
+                    $this->addTrace(sprintf('Scheme "%s" does not match any of the required schemes ("%s"); the user will be redirected to first required scheme', $scheme, implode(', ', $requiredSchemes)), self::ROUTE_ALMOST_MATCHES, $name, $route);
 
                     return true;
                 }

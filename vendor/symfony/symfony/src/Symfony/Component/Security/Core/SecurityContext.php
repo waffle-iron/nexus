@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Security\Core;
 
-@trigger_error('The '.__NAMESPACE__.'\SecurityContext class is deprecated since version 2.6 and will be removed in 3.0. Use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage or Symfony\Component\Security\Core\Authorization\AuthorizationChecker instead.', E_USER_DEPRECATED);
-
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,8 +26,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
- *
- * @deprecated since version 2.6, to be removed in 3.0.
+ * @deprecated Deprecated since version 2.6, to be removed in 3.0.
  */
 class SecurityContext implements SecurityContextInterface
 {
@@ -44,7 +41,7 @@ class SecurityContext implements SecurityContextInterface
     private $authorizationChecker;
 
     /**
-     * For backwards compatibility, the signature of sf <2.6 still works.
+     * For backwards compatibility, the signature of sf <2.6 still works
      *
      * @param TokenStorageInterface|AuthenticationManagerInterface         $tokenStorage
      * @param AuthorizationCheckerInterface|AccessDecisionManagerInterface $authorizationChecker
@@ -73,8 +70,6 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @deprecated since version 2.6, to be removed in 3.0. Use TokenStorageInterface::getToken() instead.
-     *
      * {@inheritdoc}
      */
     public function getToken()
@@ -83,8 +78,6 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @deprecated since version 2.6, to be removed in 3.0. Use TokenStorageInterface::setToken() instead.
-     *
      * {@inheritdoc}
      */
     public function setToken(TokenInterface $token = null)
@@ -93,8 +86,6 @@ class SecurityContext implements SecurityContextInterface
     }
 
     /**
-     * @deprecated since version 2.6, to be removed in 3.0. Use AuthorizationCheckerInterface::isGranted() instead.
-     *
      * {@inheritdoc}
      */
     public function isGranted($attributes, $object = null)

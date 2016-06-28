@@ -215,11 +215,14 @@ EOF;
         $hasTrailingSlash = false;
         $matches = false;
         $hostMatches = false;
-        $methods = $route->getMethods();
+        $methods = array();
 
-        // GET and HEAD are equivalent
-        if (in_array('GET', $methods) && !in_array('HEAD', $methods)) {
-            $methods[] = 'HEAD';
+        if ($req = $route->getRequirement('_method')) {
+            $methods = explode('|', strtoupper($req));
+            // GET and HEAD are equivalent
+            if (in_array('GET', $methods) && !in_array('HEAD', $methods)) {
+                $methods[] = 'HEAD';
+            }
         }
 
         $supportsTrailingSlash = $supportsRedirections && (!$methods || in_array('HEAD', $methods));

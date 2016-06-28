@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Encapsulates common logic of {@link FormType} and {@link ButtonType}.
@@ -107,7 +107,7 @@ abstract class BaseType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'block_name' => null,
@@ -119,6 +119,8 @@ abstract class BaseType extends AbstractType
             'auto_initialize' => true,
         ));
 
-        $resolver->setAllowedTypes('attr', 'array');
+        $resolver->setAllowedTypes(array(
+            'attr' => 'array',
+        ));
     }
 }

@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * Validator for Callback constraint.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @api
  */
 class CallbackValidator extends ConstraintValidator
 {
@@ -52,16 +54,13 @@ class CallbackValidator extends ConstraintValidator
                 $method($object, $this->context);
             } elseif (is_array($method)) {
                 if (!is_callable($method)) {
-                    if (isset($method[0]) && is_object($method[0])) {
-                        $method[0] = get_class($method[0]);
-                    }
-                    throw new ConstraintDefinitionException(sprintf('%s targeted by Callback constraint is not a valid callable', json_encode($method)));
+                    throw new ConstraintDefinitionException(sprintf('"%s::%s" targeted by Callback constraint is not a valid callable', $method[0], $method[1]));
                 }
 
                 call_user_func($method, $object, $this->context);
             } elseif (null !== $object) {
                 if (!method_exists($object, $method)) {
-                    throw new ConstraintDefinitionException(sprintf('Method "%s" targeted by Callback constraint does not exist in class %s', $method, get_class($object)));
+                    throw new ConstraintDefinitionException(sprintf('Method "%s" targeted by Callback constraint does not exist', $method));
                 }
 
                 $reflMethod = new \ReflectionMethod($object, $method);

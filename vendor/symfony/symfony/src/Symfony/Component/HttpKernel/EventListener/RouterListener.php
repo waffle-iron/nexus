@@ -67,10 +67,6 @@ class RouterListener implements EventSubscriberInterface
             throw new \InvalidArgumentException('You must either pass a RequestContext or the matcher must implement RequestContextAwareInterface.');
         }
 
-        if (!$requestStack instanceof RequestStack) {
-            @trigger_error('The '.__METHOD__.' method now requires a RequestStack instance as '.__CLASS__.'::setRequest method will not be supported anymore in 3.0.', E_USER_DEPRECATED);
-        }
-
         $this->matcher = $matcher;
         $this->context = $context ?: $matcher->getContext();
         $this->requestStack = $requestStack;
@@ -86,21 +82,13 @@ class RouterListener implements EventSubscriberInterface
      *
      * @param Request|null $request A Request instance
      *
-     * @deprecated since version 2.4, to be removed in 3.0.
+     * @deprecated Deprecated since version 2.4, to be moved to a private function in 3.0.
      */
     public function setRequest(Request $request = null)
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.4 and will be made private in 3.0.', E_USER_DEPRECATED);
-
-        $this->setCurrentRequest($request);
-    }
-
-    private function setCurrentRequest(Request $request = null)
     {
         if (null !== $request && $this->request !== $request) {
             $this->context->fromRequest($request);
         }
-
         $this->request = $request;
     }
 
@@ -110,7 +98,7 @@ class RouterListener implements EventSubscriberInterface
             return; // removed when requestStack is required
         }
 
-        $this->setCurrentRequest($this->requestStack->getParentRequest());
+        $this->setRequest($this->requestStack->getParentRequest());
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -118,11 +106,11 @@ class RouterListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         // initialize the context that is also used by the generator (assuming matcher and generator share the same context instance)
-        // we call setCurrentRequest even if most of the time, it has already been done to keep compatibility
+        // we call setRequest even if most of the time, it has already been done to keep compatibility
         // with frameworks which do not use the Symfony service container
         // when we have a RequestStack, no need to do it
         if (null !== $this->requestStack) {
-            $this->setCurrentRequest($request);
+            $this->setRequest($request);
         }
 
         if ($request->attributes->has('_controller')) {
@@ -140,10 +128,7 @@ class RouterListener implements EventSubscriberInterface
             }
 
             if (null !== $this->logger) {
-                $this->logger->info(sprintf('Matched route "%s".', isset($parameters['_route']) ? $parameters['_route'] : 'n/a'), array(
-                    'route_parameters' => $parameters,
-                    'request_uri' => $request->getUri(),
-                ));
+                $this->logger->info(sprintf('Matched route "%s" (parameters: %s)', $parameters['_route'], $this->parametersToString($parameters)));
             }
 
             $request->attributes->add($parameters);
@@ -162,6 +147,16 @@ class RouterListener implements EventSubscriberInterface
 
             throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
         }
+    }
+
+    private function parametersToString(array $parameters)
+    {
+        $pieces = array();
+        foreach ($parameters as $key => $val) {
+            $pieces[] = sprintf('"%s": "%s"', $key, (is_string($val) ? $val : json_encode($val)));
+        }
+
+        return implode(', ', $pieces);
     }
 
     public static function getSubscribedEvents()

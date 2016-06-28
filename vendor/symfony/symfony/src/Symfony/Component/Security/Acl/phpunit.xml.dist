@@ -14,7 +14,6 @@
     <php>
         <ini name="error_reporting" value="-1" />
     </php>
-
     <testsuites>
         <testsuite name="Symfony Security Component ACL Test Suite">
             <directory>./Tests/</directory>
@@ -25,9 +24,8 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
                 <directory>./vendor</directory>
+                <directory>./Tests</directory>
             </exclude>
         </whitelist>
     </filter>

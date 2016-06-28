@@ -44,15 +44,13 @@ class Isbn extends Constraint
     public $message;
 
     /**
-     * @deprecated since version 2.5, to be removed in 3.0. Use option "type" instead.
-     *
+     * @deprecated Deprecated since version 2.5, to be removed in 3.0. Use option "type" instead.
      * @var bool
      */
     public $isbn10 = false;
 
     /**
-     * @deprecated since version 2.5, to be removed in 3.0. Use option "type" instead.
-     *
+     * @deprecated Deprecated since version 2.5, to be removed in 3.0. Use option "type" instead.
      * @var bool
      */
     public $isbn13 = false;

@@ -63,7 +63,7 @@ class DOMCaster
 
     public static function castException(\DOMException $e, array $a, Stub $stub, $isNested)
     {
-        $k = Caster::PREFIX_PROTECTED.'code';
+        $k = "\0*\0code";
         if (isset($a[$k], self::$errorCodes[$a[$k]])) {
             $a[$k] = new ConstStub(self::$errorCodes[$a[$k]], $a[$k]);
         }
@@ -83,8 +83,8 @@ class DOMCaster
     public static function castImplementation($dom, array $a, Stub $stub, $isNested)
     {
         $a += array(
-            Caster::PREFIX_VIRTUAL.'Core' => '1.0',
-            Caster::PREFIX_VIRTUAL.'XML' => '2.0',
+            "\0~\0Core" => '1.0',
+            "\0~\0XML" => '2.0',
         );
 
         return $a;
@@ -130,8 +130,11 @@ class DOMCaster
         return $a;
     }
 
-    public static function castDocument(\DOMDocument $dom, array $a, Stub $stub, $isNested, $filter = 0)
+    public static function castDocument(\DOMDocument $dom, array $a, Stub $stub, $isNested)
     {
+        $formatOutput = $dom->formatOutput;
+        $dom->formatOutput = true;
+
         $a += array(
             'doctype' => $dom->doctype,
             'implementation' => $dom->implementation,
@@ -146,20 +149,16 @@ class DOMCaster
             'strictErrorChecking' => $dom->strictErrorChecking,
             'documentURI' => $dom->documentURI,
             'config' => $dom->config,
-            'formatOutput' => $dom->formatOutput,
+            'formatOutput' => $formatOutput,
             'validateOnParse' => $dom->validateOnParse,
             'resolveExternals' => $dom->resolveExternals,
             'preserveWhiteSpace' => $dom->preserveWhiteSpace,
             'recover' => $dom->recover,
             'substituteEntities' => $dom->substituteEntities,
+            "\0~\0xml" => $dom->saveXML(),
         );
 
-        if (!($filter & Caster::EXCLUDE_VERBOSE)) {
-            $formatOutput = $dom->formatOutput;
-            $dom->formatOutput = true;
-            $a += array(Caster::PREFIX_VIRTUAL.'xml' => $dom->saveXML());
-            $dom->formatOutput = $formatOutput;
-        }
+        $dom->formatOutput = $formatOutput;
 
         return $a;
     }

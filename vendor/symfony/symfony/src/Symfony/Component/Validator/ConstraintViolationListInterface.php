@@ -15,6 +15,8 @@ namespace Symfony\Component\Validator;
  * A list of constraint violations.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @api
  */
 interface ConstraintViolationListInterface extends \Traversable, \Countable, \ArrayAccess
 {
@@ -22,6 +24,8 @@ interface ConstraintViolationListInterface extends \Traversable, \Countable, \Ar
      * Adds a constraint violation to this list.
      *
      * @param ConstraintViolationInterface $violation The violation to add.
+     *
+     * @api
      */
     public function add(ConstraintViolationInterface $violation);
 
@@ -29,6 +33,8 @@ interface ConstraintViolationListInterface extends \Traversable, \Countable, \Ar
      * Merges an existing violation list into this list.
      *
      * @param ConstraintViolationListInterface $otherList The list to merge.
+     *
+     * @api
      */
     public function addAll(ConstraintViolationListInterface $otherList);
 
@@ -40,6 +46,8 @@ interface ConstraintViolationListInterface extends \Traversable, \Countable, \Ar
      * @return ConstraintViolationInterface The violation.
      *
      * @throws \OutOfBoundsException If the offset does not exist.
+     *
+     * @api
      */
     public function get($offset);
 
@@ -49,6 +57,8 @@ interface ConstraintViolationListInterface extends \Traversable, \Countable, \Ar
      * @param int $offset The violation offset.
      *
      * @return bool Whether the offset exists.
+     *
+     * @api
      */
     public function has($offset);
 
@@ -57,6 +67,8 @@ interface ConstraintViolationListInterface extends \Traversable, \Countable, \Ar
      *
      * @param int                          $offset    The violation offset.
      * @param ConstraintViolationInterface $violation The violation.
+     *
+     * @api
      */
     public function set($offset, ConstraintViolationInterface $violation);
 
@@ -64,6 +76,8 @@ interface ConstraintViolationListInterface extends \Traversable, \Countable, \Ar
      * Removes a violation at a given offset.
      *
      * @param int $offset The offset to remove.
+     *
+     * @api
      */
     public function remove($offset);
 }

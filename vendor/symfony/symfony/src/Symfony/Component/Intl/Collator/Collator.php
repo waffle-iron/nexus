@@ -70,13 +70,13 @@ class Collator
     /**
      * Constructor.
      *
-     * @param string $locale The locale code. The only currently supported locale is "en" (or null using the default locale, i.e. "en").
+     * @param string $locale The locale code. The only currently supported locale is "en".
      *
-     * @throws MethodArgumentValueNotImplementedException When $locale different than "en" or null is passed
+     * @throws MethodArgumentValueNotImplementedException When $locale different than "en" is passed
      */
     public function __construct($locale)
     {
-        if ('en' !== $locale && null !== $locale) {
+        if ('en' != $locale) {
             throw new MethodArgumentValueNotImplementedException(__METHOD__, 'locale', $locale, 'Only the locale "en" is supported');
         }
     }
@@ -84,11 +84,11 @@ class Collator
     /**
      * Static constructor.
      *
-     * @param string $locale The locale code. The only currently supported locale is "en" (or null using the default locale, i.e. "en").
+     * @param string $locale The locale code. The only currently supported locale is "en".
      *
      * @return Collator
      *
-     * @throws MethodArgumentValueNotImplementedException When $locale different than "en" or null is passed
+     * @throws MethodArgumentValueNotImplementedException When $locale different than "en" is passed
      */
     public static function create($locale)
     {

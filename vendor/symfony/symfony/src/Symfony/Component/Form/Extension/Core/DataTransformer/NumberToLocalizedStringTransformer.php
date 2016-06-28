@@ -75,34 +75,31 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Alias for {@link self::ROUND_HALF_EVEN}.
      *
-     * @deprecated since version 2.4, to be removed in 3.0.
+     * @deprecated Deprecated as of Symfony 2.4, to be removed in Symfony 3.0.
      */
-    const ROUND_HALFEVEN = \NumberFormatter::ROUND_HALFEVEN;
+    const ROUND_HALFEVEN = self::ROUND_HALF_EVEN;
 
     /**
      * Alias for {@link self::ROUND_HALF_UP}.
      *
-     * @deprecated since version 2.4, to be removed in 3.0.
+     * @deprecated Deprecated as of Symfony 2.4, to be removed in Symfony 3.0.
      */
-    const ROUND_HALFUP = \NumberFormatter::ROUND_HALFUP;
+    const ROUND_HALFUP = self::ROUND_HALF_UP;
 
     /**
      * Alias for {@link self::ROUND_HALF_DOWN}.
      *
-     * @deprecated since version 2.4, to be removed in 3.0.
+     * @deprecated Deprecated as of Symfony 2.4, to be removed in Symfony 3.0.
      */
-    const ROUND_HALFDOWN = \NumberFormatter::ROUND_HALFDOWN;
+    const ROUND_HALFDOWN = self::ROUND_HALF_DOWN;
 
-    /**
-     * @deprecated since version 2.7, will be replaced by a $scale private property in 3.0.
-     */
     protected $precision;
 
     protected $grouping;
 
     protected $roundingMode;
 
-    public function __construct($scale = null, $grouping = false, $roundingMode = self::ROUND_HALF_UP)
+    public function __construct($precision = null, $grouping = false, $roundingMode = self::ROUND_HALF_UP)
     {
         if (null === $grouping) {
             $grouping = false;
@@ -112,7 +109,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
             $roundingMode = self::ROUND_HALF_UP;
         }
 
-        $this->precision = $scale;
+        $this->precision = $precision;
         $this->grouping = $grouping;
         $this->roundingMode = $roundingMode;
     }
@@ -187,15 +184,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
             $value = str_replace(',', $decSep, $value);
         }
 
-        if (false !== strpos($value, $decSep)) {
-            $type = \NumberFormatter::TYPE_DOUBLE;
-        } else {
-            $type = PHP_INT_SIZE === 8
-                ? \NumberFormatter::TYPE_INT64
-                : \NumberFormatter::TYPE_INT32;
-        }
-
-        $result = $formatter->parse($value, $type, $position);
+        $result = $formatter->parse($value, \NumberFormatter::TYPE_DOUBLE, $position);
 
         if (intl_is_failure($formatter->getErrorCode())) {
             throw new TransformationFailedException($formatter->getErrorMessage());
@@ -205,11 +194,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
             throw new TransformationFailedException('I don\'t have a clear idea what infinity looks like');
         }
 
-        if (is_int($result) && $result === (int) $float = (float) $result) {
-            $result = $float;
-        }
-
-        if (function_exists('mb_detect_encoding') && false !== $encoding = mb_detect_encoding($value, null, true)) {
+        if (function_exists('mb_detect_encoding') && false !== $encoding = mb_detect_encoding($value)) {
             $length = mb_strlen($value, $encoding);
             $remainder = mb_substr($value, $position, $length, $encoding);
         } else {
@@ -255,7 +240,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     }
 
     /**
-     * Rounds a number according to the configured scale and rounding mode.
+     * Rounds a number according to the configured precision and rounding mode.
      *
      * @param int|float $number A number.
      *
@@ -264,7 +249,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     private function round($number)
     {
         if (null !== $this->precision && null !== $this->roundingMode) {
-            // shift number to maintain the correct scale during rounding
+            // shift number to maintain the correct precision during rounding
             $roundingCoef = pow(10, $this->precision);
             $number *= $roundingCoef;
 

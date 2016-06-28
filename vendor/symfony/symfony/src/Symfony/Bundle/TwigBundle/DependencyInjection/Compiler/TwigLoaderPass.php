@@ -40,24 +40,9 @@ class TwigLoaderPass implements CompilerPassInterface
             $container->setAlias('twig.loader', key($loaderIds));
         } else {
             $chainLoader = $container->getDefinition('twig.loader.chain');
-
-            $prioritizedLoaders = array();
-
-            foreach ($loaderIds as $id => $tags) {
-                foreach ($tags as $tag) {
-                    $priority = isset($tag['priority']) ? $tag['priority'] : 0;
-                    $prioritizedLoaders[$priority][] = $id;
-                }
+            foreach (array_keys($loaderIds) as $id) {
+                $chainLoader->addMethodCall('addLoader', array(new Reference($id)));
             }
-
-            krsort($prioritizedLoaders);
-
-            foreach ($prioritizedLoaders as $loaders) {
-                foreach ($loaders as $loader) {
-                    $chainLoader->addMethodCall('addLoader', array(new Reference($loader)));
-                }
-            }
-
             $container->setAlias('twig.loader', 'twig.loader.chain');
         }
     }

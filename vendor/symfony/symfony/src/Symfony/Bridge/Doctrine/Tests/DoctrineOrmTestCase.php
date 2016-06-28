@@ -11,21 +11,18 @@
 
 namespace Symfony\Bridge\Doctrine\Tests;
 
-@trigger_error('The '.__NAMESPACE__.'\DoctrineOrmTestCase class is deprecated since version 2.4 and will be removed in 3.0. Use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper class instead.', E_USER_DEPRECATED);
-
-use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 
 /**
  * Class DoctrineOrmTestCase.
  *
- * @deprecated since version 2.4, to be removed in 3.0.
+ * @deprecated Deprecated as of Symfony 2.3, to be removed in Symfony 3.0.
  *             Use {@link DoctrineTestHelper} instead.
  */
 abstract class DoctrineOrmTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return EntityManager
+     * @return \Doctrine\ORM\EntityManager
      */
     public static function createTestEntityManager()
     {

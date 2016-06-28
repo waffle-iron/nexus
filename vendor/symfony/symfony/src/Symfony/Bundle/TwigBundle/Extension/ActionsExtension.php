@@ -12,38 +12,28 @@
 namespace Symfony\Bundle\TwigBundle\Extension;
 
 use Symfony\Bundle\TwigBundle\TokenParser\RenderTokenParser;
+use Symfony\Bundle\FrameworkBundle\Templating\Helper\ActionsHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 /**
  * Twig extension for Symfony actions helper.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @deprecated since version 2.2, to be removed in 3.0.
+ * @deprecated Deprecated in 2.2, to be removed in 3.0.
  */
 class ActionsExtension extends \Twig_Extension
 {
-    private $handler;
+    private $container;
 
     /**
-     * @param FragmentHandler|ContainerInterface $handler
+     * Constructor.
      *
-     * @deprecated Passing a ContainerInterface as a first argument is deprecated since 2.7 and will be removed in 3.0.
+     * @param ContainerInterface $container The service container
      */
-    public function __construct($handler)
+    public function __construct(ContainerInterface $container)
     {
-        if ($handler instanceof FragmentHandler) {
-            $this->handler = $handler;
-        } elseif ($handler instanceof ContainerInterface) {
-            @trigger_error('The ability to pass a ContainerInterface instance as a first argument to '.__METHOD__.' method is deprecated since version 2.7 and will be removed in 3.0. Pass a FragmentHandler instance instead.', E_USER_DEPRECATED);
-
-            $this->handler = $handler->get('fragment.handler');
-        } else {
-            throw new \BadFunctionCallException(sprintf('%s takes a FragmentHandler or a ContainerInterface object as its first argument.', __METHOD__));
-        }
-
-        $this->handler = $handler;
+        $this->container = $container;
     }
 
     /**
@@ -52,16 +42,11 @@ class ActionsExtension extends \Twig_Extension
      * @param string $uri     A URI
      * @param array  $options An array of options
      *
-     * @see FragmentHandler::render()
+     * @see ActionsHelper::render()
      */
     public function renderUri($uri, array $options = array())
     {
-        @trigger_error('The Twig render tag was deprecated in version 2.2 and will be removed in version 3.0. Use the Twig render function instead.', E_USER_DEPRECATED);
-
-        $strategy = isset($options['strategy']) ? $options['strategy'] : 'inline';
-        unset($options['strategy']);
-
-        return $this->handler->render($uri, $strategy, $options);
+        return $this->container->get('templating.helper.actions')->render($uri, $options);
     }
 
     /**

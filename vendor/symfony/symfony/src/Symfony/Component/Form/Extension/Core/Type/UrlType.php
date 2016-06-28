@@ -14,7 +14,7 @@ namespace Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\EventListener\FixUrlProtocolListener;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UrlType extends AbstractType
 {
@@ -31,11 +31,15 @@ class UrlType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefault('default_protocol', 'http');
+        $resolver->setDefaults(array(
+            'default_protocol' => 'http',
+        ));
 
-        $resolver->setAllowedTypes('default_protocol', array('null', 'string'));
+        $resolver->setAllowedTypes(array(
+            'default_protocol' => array('null', 'string'),
+        ));
     }
 
     /**

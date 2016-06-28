@@ -1,12 +1,6 @@
 CHANGELOG
 =========
 
-2.7.0
------
-
- * added `ConfigCacheInterface`, `ConfigCacheFactoryInterface` and a basic `ConfigCacheFactory`
-   implementation to delegate creation of ConfigCache instances
-   
 2.2.0
 -----
 

@@ -34,17 +34,6 @@ class BinaryFileResponseTest extends ResponseTestCase
         $this->assertEquals('inline; filename="README.md"', $response->headers->get('Content-Disposition'));
     }
 
-    public function testConstructWithNonAsciiFilename()
-    {
-        touch(sys_get_temp_dir().'/fööö.html');
-
-        $response = new BinaryFileResponse(sys_get_temp_dir().'/fööö.html', 200, array(), true, 'attachment');
-
-        @unlink(sys_get_temp_dir().'/fööö.html');
-
-        $this->assertSame('fööö.html', $response->getFile()->getFilename());
-    }
-
     /**
      * @expectedException \LogicException
      */
@@ -60,20 +49,12 @@ class BinaryFileResponseTest extends ResponseTestCase
         $this->assertFalse($response->getContent());
     }
 
-    public function testSetContentDispositionGeneratesSafeFallbackFilename()
-    {
-        $response = new BinaryFileResponse(__FILE__);
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'föö.html');
-
-        $this->assertSame('attachment; filename="f__.html"; filename*=utf-8\'\'f%C3%B6%C3%B6.html', $response->headers->get('Content-Disposition'));
-    }
-
     /**
      * @dataProvider provideRanges
      */
     public function testRequests($requestRange, $offset, $length, $responseRange)
     {
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'))->setAutoEtag();
+        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif')->setAutoEtag();
 
         // do a request to get the ETag
         $request = Request::create('/');
@@ -83,37 +64,6 @@ class BinaryFileResponseTest extends ResponseTestCase
         // prepare a request for a range of the testing file
         $request = Request::create('/');
         $request->headers->set('If-Range', $etag);
-        $request->headers->set('Range', $requestRange);
-
-        $file = fopen(__DIR__.'/File/Fixtures/test.gif', 'r');
-        fseek($file, $offset);
-        $data = fread($file, $length);
-        fclose($file);
-
-        $this->expectOutputString($data);
-        $response = clone $response;
-        $response->prepare($request);
-        $response->sendContent();
-
-        $this->assertEquals(206, $response->getStatusCode());
-        $this->assertEquals($responseRange, $response->headers->get('Content-Range'));
-    }
-
-    /**
-     * @dataProvider provideRanges
-     */
-    public function testRequestsWithoutEtag($requestRange, $offset, $length, $responseRange)
-    {
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'));
-
-        // do a request to get the LastModified
-        $request = Request::create('/');
-        $response->prepare($request);
-        $lastModified = $response->headers->get('Last-Modified');
-
-        // prepare a request for a range of the testing file
-        $request = Request::create('/');
-        $request->headers->set('If-Range', $lastModified);
         $request->headers->set('Range', $requestRange);
 
         $file = fopen(__DIR__.'/File/Fixtures/test.gif', 'r');
@@ -141,31 +91,12 @@ class BinaryFileResponseTest extends ResponseTestCase
         );
     }
 
-    public function testRangeRequestsWithoutLastModifiedDate()
-    {
-        // prevent auto last modified
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'), true, null, false, false);
-
-        // prepare a request for a range of the testing file
-        $request = Request::create('/');
-        $request->headers->set('If-Range', date('D, d M Y H:i:s').' GMT');
-        $request->headers->set('Range', 'bytes=1-4');
-
-        $this->expectOutputString(file_get_contents(__DIR__.'/File/Fixtures/test.gif'));
-        $response = clone $response;
-        $response->prepare($request);
-        $response->sendContent();
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertNull($response->headers->get('Content-Range'));
-    }
-
     /**
      * @dataProvider provideFullFileRanges
      */
     public function testFullFileRequests($requestRange)
     {
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'))->setAutoEtag();
+        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif')->setAutoEtag();
 
         // prepare a request for a range of the testing file
         $request = Request::create('/');
@@ -200,7 +131,7 @@ class BinaryFileResponseTest extends ResponseTestCase
      */
     public function testInvalidRequests($requestRange)
     {
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'))->setAutoEtag();
+        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif')->setAutoEtag();
 
         // prepare a request for a range of the testing file
         $request = Request::create('/');
@@ -211,7 +142,7 @@ class BinaryFileResponseTest extends ResponseTestCase
         $response->sendContent();
 
         $this->assertEquals(416, $response->getStatusCode());
-        $this->assertEquals('bytes */35', $response->headers->get('Content-Range'));
+        #$this->assertEquals('', $response->headers->get('Content-Range'));
     }
 
     public function provideInvalidRanges()
@@ -222,30 +153,19 @@ class BinaryFileResponseTest extends ResponseTestCase
         );
     }
 
-    /**
-     * @dataProvider provideXSendfileFiles
-     */
-    public function testXSendfile($file)
+    public function testXSendfile()
     {
         $request = Request::create('/');
         $request->headers->set('X-Sendfile-Type', 'X-Sendfile');
 
         BinaryFileResponse::trustXSendfileTypeHeader();
-        $response = BinaryFileResponse::create($file, 200, array('Content-Type' => 'application/octet-stream'));
+        $response = BinaryFileResponse::create(__DIR__.'/../README.md');
         $response->prepare($request);
 
         $this->expectOutputString('');
         $response->sendContent();
 
         $this->assertContains('README.md', $response->headers->get('X-Sendfile'));
-    }
-
-    public function provideXSendfileFiles()
-    {
-        return array(
-            array(__DIR__.'/../README.md'),
-            array('file://'.__DIR__.'/../README.md'),
-        );
     }
 
     /**
@@ -260,7 +180,7 @@ class BinaryFileResponseTest extends ResponseTestCase
         $file = new FakeFile($realpath, __DIR__.'/File/Fixtures/test');
 
         BinaryFileResponse::trustXSendfileTypeHeader();
-        $response = new BinaryFileResponse($file, 200, array('Content-Type' => 'application/octet-stream'));
+        $response = new BinaryFileResponse($file);
         $reflection = new \ReflectionObject($response);
         $property = $reflection->getProperty('file');
         $property->setAccessible(true);
@@ -279,7 +199,7 @@ class BinaryFileResponseTest extends ResponseTestCase
         $realPath = realpath($path);
         $this->assertFileExists($realPath);
 
-        $response = new BinaryFileResponse($realPath, 200, array('Content-Type' => 'application/octet-stream'));
+        $response = new BinaryFileResponse($realPath);
         $response->deleteFileAfterSend(true);
 
         $response->prepare($request);
@@ -291,7 +211,7 @@ class BinaryFileResponseTest extends ResponseTestCase
     public function testAcceptRangeOnUnsafeMethods()
     {
         $request = Request::create('/', 'POST');
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'));
+        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif');
         $response->prepare($request);
 
         $this->assertEquals('none', $response->headers->get('Accept-Ranges'));
@@ -300,7 +220,7 @@ class BinaryFileResponseTest extends ResponseTestCase
     public function testAcceptRangeNotOverriden()
     {
         $request = Request::create('/', 'POST');
-        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif', 200, array('Content-Type' => 'application/octet-stream'));
+        $response = BinaryFileResponse::create(__DIR__.'/File/Fixtures/test.gif');
         $response->headers->set('Accept-Ranges', 'foo');
         $response->prepare($request);
 
@@ -317,7 +237,7 @@ class BinaryFileResponseTest extends ResponseTestCase
 
     protected function provideResponse()
     {
-        return new BinaryFileResponse(__DIR__.'/../README.md', 200, array('Content-Type' => 'application/octet-stream'));
+        return new BinaryFileResponse(__DIR__.'/../README.md');
     }
 
     public static function tearDownAfterClass()

@@ -22,7 +22,7 @@ class SplCaster
 {
     public static function castArrayObject(\ArrayObject $c, array $a, Stub $stub, $isNested)
     {
-        $prefix = Caster::PREFIX_VIRTUAL;
+        $prefix = "\0~\0";
         $class = $stub->class;
         $flags = $c->getFlags();
 
@@ -38,7 +38,17 @@ class SplCaster
         } else {
             if (!($flags & \ArrayObject::STD_PROP_LIST)) {
                 $c->setFlags(\ArrayObject::STD_PROP_LIST);
-                $a = Caster::castObject($c, new \ReflectionClass($class));
+
+                if ($a = (array) $c) {
+                    $class = new \ReflectionClass($class);
+                    foreach ($a as $k => $p) {
+                        if (!isset($k[0]) || ("\0" !== $k[0] && !$class->hasProperty($k))) {
+                            unset($a[$k]);
+                            $a["\0+\0".$k] = $p;
+                        }
+                    }
+                }
+
                 $c->setFlags($flags);
             }
 
@@ -51,7 +61,7 @@ class SplCaster
     public static function castHeap(\Iterator $c, array $a, Stub $stub, $isNested)
     {
         $a += array(
-            Caster::PREFIX_VIRTUAL.'heap' => iterator_to_array(clone $c),
+            "\0~\0heap" => iterator_to_array(clone $c),
         );
 
         return $a;
@@ -59,7 +69,7 @@ class SplCaster
 
     public static function castDoublyLinkedList(\SplDoublyLinkedList $c, array $a, Stub $stub, $isNested)
     {
-        $prefix = Caster::PREFIX_VIRTUAL;
+        $prefix = "\0~\0";
         $mode = $c->getIteratorMode();
         $c->setIteratorMode(\SplDoublyLinkedList::IT_MODE_KEEP | $mode & ~\SplDoublyLinkedList::IT_MODE_DELETE);
 
@@ -75,7 +85,7 @@ class SplCaster
     public static function castFixedArray(\SplFixedArray $c, array $a, Stub $stub, $isNested)
     {
         $a += array(
-            Caster::PREFIX_VIRTUAL.'storage' => $c->toArray(),
+            "\0~\0storage" => $c->toArray(),
         );
 
         return $a;
@@ -84,7 +94,7 @@ class SplCaster
     public static function castObjectStorage(\SplObjectStorage $c, array $a, Stub $stub, $isNested)
     {
         $storage = array();
-        unset($a[Caster::PREFIX_DYNAMIC."\0gcdata"]); // Don't hit https://bugs.php.net/65967
+        unset($a["\0+\0\0gcdata"]); // Don't hit https://bugs.php.net/65967
 
         foreach ($c as $obj) {
             $storage[spl_object_hash($obj)] = array(
@@ -94,7 +104,7 @@ class SplCaster
         }
 
         $a += array(
-            Caster::PREFIX_VIRTUAL.'storage' => $storage,
+            "\0~\0storage" => $storage,
         );
 
         return $a;

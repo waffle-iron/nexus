@@ -18,7 +18,8 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @deprecated since version 2.6, to be removed in 3.0. Use {@link OptionsResolver} instead.
+ * @deprecated Deprecated since Symfony 2.6, to be removed in Symfony 3.0.
+ *             Use {@link OptionsResolver} instead.
  */
 interface OptionsResolverInterface
 {

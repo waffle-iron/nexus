@@ -21,6 +21,8 @@ class LegacyResolveParameterPlaceHoldersPassTest extends \PHPUnit_Framework_Test
 {
     public function testFactoryClassParametersShouldBeResolved()
     {
+        $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
+
         $compilerPass = new ResolveParameterPlaceHoldersPass();
 
         $container = new ContainerBuilder();

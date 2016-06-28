@@ -43,13 +43,11 @@ final class PropertyAccess
      *
      * @return PropertyAccessor The new property accessor
      *
-     * @deprecated since version 2.3, to be removed in 3.0.
-     *             Use {@link createPropertyAccessor()} instead.
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use
+     *             {@link createPropertyAccessor()} instead.
      */
     public static function getPropertyAccessor()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 3.0. Use the createPropertyAccessor() method instead.', E_USER_DEPRECATED);
-
         return self::createPropertyAccessor();
     }
 

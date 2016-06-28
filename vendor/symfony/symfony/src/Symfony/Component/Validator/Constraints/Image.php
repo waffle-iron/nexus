@@ -17,6 +17,8 @@ namespace Symfony\Component\Validator\Constraints;
  *
  * @author Benjamin Dulau <benjamin.dulau@gmail.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @api
  */
 class Image extends File
 {

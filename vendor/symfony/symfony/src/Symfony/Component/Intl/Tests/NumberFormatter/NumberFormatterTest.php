@@ -13,6 +13,7 @@ namespace Symfony\Component\Intl\Tests\NumberFormatter;
 
 use Symfony\Component\Intl\Globals\IntlGlobals;
 use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
+use Symfony\Component\Intl\Util\IntlTestHelper;
 
 /**
  * Note that there are some values written like -2147483647 - 1. This is the lower 32bit int max and is a known
@@ -20,6 +21,13 @@ use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
  */
 class NumberFormatterTest extends AbstractNumberFormatterTest
 {
+    protected function setUp()
+    {
+        IntlTestHelper::requireIntl($this);
+
+        parent::setUp();
+    }
+
     /**
      * @expectedException \Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException
      */
@@ -60,14 +68,6 @@ class NumberFormatterTest extends AbstractNumberFormatterTest
     {
         $formatter = $this->getNumberFormatter('en', NumberFormatter::DECIMAL);
         $formatter->setAttribute(NumberFormatter::ROUNDING_MODE, null);
-    }
-
-    public function testConstructWithoutLocale()
-    {
-        $this->assertInstanceOf(
-            '\Symfony\Component\Intl\NumberFormatter\NumberFormatter',
-            $this->getNumberFormatter(null, NumberFormatter::DECIMAL)
-        );
     }
 
     public function testCreate()

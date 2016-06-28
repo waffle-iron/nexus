@@ -100,6 +100,7 @@ class SecurityExtension extends Extension
         // add some required classes for compilation
         $this->addClassesToCompile(array(
             'Symfony\\Component\\Security\\Http\\Firewall',
+            'Symfony\\Component\\Security\\Core\\SecurityContext',
             'Symfony\\Component\\Security\\Core\\User\\UserProviderInterface',
             'Symfony\\Component\\Security\\Core\\Authentication\\AuthenticationProviderManager',
             'Symfony\\Component\\Security\\Core\\Authentication\\Token\\Storage\\TokenStorage',
@@ -336,9 +337,9 @@ class SecurityExtension extends Extension
                 $listener->addMethodCall('addHandler', array(new Reference($handlerId)));
             }
 
-            // register with LogoutUrlGenerator
+            // register with LogoutUrlHelper
             $container
-                ->getDefinition('security.logout_url_generator')
+                ->getDefinition('templating.helper.logout_url')
                 ->addMethodCall('registerListener', array(
                     $id,
                     $firewall['logout']['path'],
@@ -366,7 +367,7 @@ class SecurityExtension extends Extension
         $listeners[] = new Reference('security.access_listener');
 
         // Exception listener
-        $exceptionListener = new Reference($this->createExceptionListener($container, $firewall, $id, $configuredEntryPoint ?: $defaultEntryPoint, $firewall['stateless']));
+        $exceptionListener = new Reference($this->createExceptionListener($container, $firewall, $id, $configuredEntryPoint ?: $defaultEntryPoint));
 
         return array($matcher, $listeners, $exceptionListener);
     }
@@ -551,13 +552,12 @@ class SecurityExtension extends Extension
         return 'security.user.provider.concrete.'.$name;
     }
 
-    private function createExceptionListener($container, $config, $id, $defaultEntryPoint, $stateless)
+    private function createExceptionListener($container, $config, $id, $defaultEntryPoint)
     {
         $exceptionListenerId = 'security.exception_listener.'.$id;
         $listener = $container->setDefinition($exceptionListenerId, new DefinitionDecorator('security.exception_listener'));
         $listener->replaceArgument(3, $id);
         $listener->replaceArgument(4, null === $defaultEntryPoint ? null : new Reference($defaultEntryPoint));
-        $listener->replaceArgument(8, $stateless);
 
         // access denied handler setup
         if (isset($config['access_denied_handler'])) {

@@ -12,7 +12,7 @@
 namespace Symfony\Bridge\Twig\Extension;
 
 use Symfony\Component\Security\Acl\Voter\FieldVote;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * SecurityExtension exposes security context features.
@@ -21,16 +21,16 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class SecurityExtension extends \Twig_Extension
 {
-    private $securityChecker;
+    private $context;
 
-    public function __construct(AuthorizationCheckerInterface $securityChecker = null)
+    public function __construct(SecurityContextInterface $context = null)
     {
-        $this->securityChecker = $securityChecker;
+        $this->context = $context;
     }
 
     public function isGranted($role, $object = null, $field = null)
     {
-        if (null === $this->securityChecker) {
+        if (null === $this->context) {
             return false;
         }
 
@@ -38,7 +38,7 @@ class SecurityExtension extends \Twig_Extension
             $object = new FieldVote($object, $field);
         }
 
-        return $this->securityChecker->isGranted($role, $object);
+        return $this->context->isGranted($role, $object);
     }
 
     /**

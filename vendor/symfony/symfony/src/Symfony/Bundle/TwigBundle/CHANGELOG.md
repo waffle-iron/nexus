@@ -1,13 +1,6 @@
 CHANGELOG
 =========
 
-2.7.0
------
-
- * made it possible to configure the default formats for both the `date` and the `number_format` filter
- * added support for the new Asset component (from Twig bridge)
- * deprecated the assets extension (use the one from the Twig bridge instead)
-
 2.6.0
 -----
 

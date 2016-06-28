@@ -22,6 +22,8 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Joseph Bielawski <stloyd@gmail.com>
+ *
+ * @api
  */
 class Ip extends Constraint
 {

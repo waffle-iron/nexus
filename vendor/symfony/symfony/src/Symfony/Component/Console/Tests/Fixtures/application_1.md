@@ -8,9 +8,8 @@ help
 ----
 
 * Description: Displays help for a command
-* Usage:
-
-  * `help [--xml] [--format FORMAT] [--raw] [--] [<command_name>]`
+* Usage: `help [--xml] [--format="..."] [--raw] [command_name]`
+* Aliases: <none>
 
 The <info>help</info> command displays help for a given command:
 
@@ -51,7 +50,7 @@ To display the list of available commands, please use the <info>list</info> comm
 * Accept value: yes
 * Is value required: yes
 * Is multiple: no
-* Description: The output format (txt, xml, json, or md)
+* Description: To output help in other formats
 * Default: `'txt'`
 
 **raw:**
@@ -138,9 +137,8 @@ list
 ----
 
 * Description: Lists commands
-* Usage:
-
-  * `list [--xml] [--raw] [--format FORMAT] [--] [<namespace>]`
+* Usage: `list [--xml] [--raw] [--format="..."] [namespace]`
+* Aliases: <none>
 
 The <info>list</info> command lists all commands:
 
@@ -197,5 +195,5 @@ It's also possible to get raw list of commands (useful for embedding command run
 * Accept value: yes
 * Is value required: yes
 * Is multiple: no
-* Description: The output format (txt, xml, json, or md)
+* Description: To output list in other formats
 * Default: `'txt'`

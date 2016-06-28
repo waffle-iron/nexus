@@ -2,4 +2,4 @@ _assetic:
     resource: .
     type: assetic
 _app:
-    resource: /usr/local/var/www/gae-symfony/app/config/routing_dev.yml
+    resource: /usr/local/var/www/nexus/app/config/routing_dev.yml

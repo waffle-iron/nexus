@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  * Data collector for {@link FormInterface} instances.
  *
  * @since  2.4
- *
  * @author Robert Schönthal <robert.schoenthal@gmail.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -217,7 +216,7 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
         return $this->data;
     }
 
-    private function recursiveBuildPreliminaryFormTree(FormInterface $form, &$output, array &$outputByHash)
+    private function recursiveBuildPreliminaryFormTree(FormInterface $form, &$output = null, array &$outputByHash)
     {
         $hash = spl_object_hash($form);
 
@@ -236,7 +235,7 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
         }
     }
 
-    private function recursiveBuildFinalFormTree(FormInterface $form = null, FormView $view, &$output, array &$outputByHash)
+    private function recursiveBuildFinalFormTree(FormInterface $form = null, FormView $view, &$output = null, array &$outputByHash)
     {
         $viewHash = spl_object_hash($view);
         $formHash = null;

@@ -38,7 +38,7 @@ class ExceptionHandler
 
     public function __construct($debug = true, $charset = null, $fileLinkFormat = null)
     {
-        if (false !== strpos($charset, '%')) {
+        if (false !== strpos($charset, '%') xor false === strpos($fileLinkFormat, '%')) {
             // Swap $charset and $fileLinkFormat for BC reasons
             $pivot = $fileLinkFormat;
             $fileLinkFormat = $charset;
@@ -153,22 +153,19 @@ class ExceptionHandler
      * it will fallback to plain PHP functions.
      *
      * @param \Exception $exception An \Exception instance
+     *
+     * @see sendPhpResponse()
+     * @see createResponse()
      */
     private function failSafeHandle(\Exception $exception)
     {
-        if (class_exists('Symfony\Component\HttpFoundation\Response', false)
-            && __CLASS__ !== get_class($this)
-            && ($reflector = new \ReflectionMethod($this, 'createResponse'))
-            && __CLASS__ !== $reflector->class
-        ) {
+        if (class_exists('Symfony\Component\HttpFoundation\Response', false)) {
             $response = $this->createResponse($exception);
             $response->sendHeaders();
             $response->sendContent();
-
-            return;
+        } else {
+            $this->sendPhpResponse($exception);
         }
-
-        $this->sendPhpResponse($exception);
     }
 
     /**
@@ -238,7 +235,7 @@ class ExceptionHandler
                     $ind = $count - $position + 1;
                     $class = $this->formatClass($e['class']);
                     $message = nl2br($this->escapeHtml($e['message']));
-                    $content .= sprintf(<<<'EOF'
+                    $content .= sprintf(<<<EOF
                         <h2 class="block_exception clear_fix">
                             <span class="exception_counter">%d/%d</span>
                             <span class="exception_title">%s%s:</span>
@@ -289,7 +286,7 @@ EOF;
      */
     public function getStylesheet(FlattenException $exception)
     {
-        return <<<'EOF'
+        return <<<EOF
             .sf-reset { font: 11px Verdana, Arial, sans-serif; color: #333 }
             .sf-reset .clear { clear:both; height:0; font-size:0; line-height:0; }
             .sf-reset .clear_fix:after { display:block; height:0; clear:both; visibility:hidden; }
@@ -426,12 +423,19 @@ EOF;
 
     /**
      * Returns an UTF-8 and HTML encoded string.
-     *
-     * @deprecated since version 2.7, to be removed in 3.0.
      */
     protected static function utf8Htmlize($str)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.7 and will be removed in 3.0.', E_USER_DEPRECATED);
+        if (!preg_match('//u', $str) && function_exists('iconv')) {
+            set_error_handler('var_dump', 0);
+            $charset = ini_get('default_charset');
+            if ('UTF-8' === $charset || $str !== @iconv($charset, $charset, $str)) {
+                $charset = 'CP1252';
+            }
+            restore_error_handler();
+
+            $str = iconv($charset, 'UTF-8', $str);
+        }
 
         return htmlspecialchars($str, ENT_QUOTES | (PHP_VERSION_ID >= 50400 ? ENT_SUBSTITUTE : 0), 'UTF-8');
     }

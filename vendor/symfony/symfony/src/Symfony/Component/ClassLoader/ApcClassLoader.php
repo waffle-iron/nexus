@@ -44,6 +44,8 @@ namespace Symfony\Component\ClassLoader;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Kris Wallsmith <kris@symfony.com>
+ *
+ * @api
  */
 class ApcClassLoader
 {
@@ -64,11 +66,13 @@ class ApcClassLoader
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @api
      */
     public function __construct($prefix, $decorated)
     {
-        if (!function_exists('apcu_fetch')) {
-            throw new \RuntimeException('Unable to use ApcClassLoader as APC is not installed.');
+        if (!extension_loaded('apc')) {
+            throw new \RuntimeException('Unable to use ApcClassLoader as APC is not enabled.');
         }
 
         if (!method_exists($decorated, 'findFile')) {
@@ -122,10 +126,8 @@ class ApcClassLoader
      */
     public function findFile($class)
     {
-        $file = apcu_fetch($this->prefix.$class, $success);
-
-        if (!$success) {
-            apcu_store($this->prefix.$class, $file = $this->decorated->findFile($class) ?: null);
+        if (false === $file = apc_fetch($this->prefix.$class)) {
+            apc_store($this->prefix.$class, $file = $this->decorated->findFile($class));
         }
 
         return $file;

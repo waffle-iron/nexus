@@ -17,7 +17,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Maps arrays/objects to/from forms using property paths.
+ * A data mapper using property paths to read/write data.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -31,7 +31,7 @@ class PropertyPathMapper implements DataMapperInterface
     /**
      * Creates a new property path mapper.
      *
-     * @param PropertyAccessorInterface $propertyAccessor The property accessor
+     * @param PropertyAccessorInterface $propertyAccessor
      */
     public function __construct(PropertyAccessorInterface $propertyAccessor = null)
     {
