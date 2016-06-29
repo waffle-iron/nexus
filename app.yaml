@@ -40,6 +40,12 @@ handlers:
 - url: /assets/images/*
   static_dir: web/assets/images/
 
+# mime types
+- url: /(.*\.md)
+  static_files: \1
+  upload: (.*\.md)
+  mime_type: text/markdown
+
 # the symfony front controller
 - url: /.*
   script: web/app.php
