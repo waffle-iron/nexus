@@ -1,4 +1,5 @@
 # Copyright 2015 Google Inc. All Rights Reserved.
+application: nexus-ga
 runtime: php55
 api_version: 1
 threadsafe: true
