@@ -1,5 +1,6 @@
 # Copyright 2015 Google Inc. All Rights Reserved.
 application: nexus-ga
+version: alpha-110
 runtime: php55
 api_version: 1
 threadsafe: true
@@ -38,6 +39,12 @@ handlers:
 
 - url: /assets/images/*
   static_dir: web/assets/images/
+
+# mime types
+- url: /(.*\.md)
+  static_files: \1
+  upload: (.*\.md)
+  mime_type: text/markdown
 
 # the symfony front controller
 - url: /.*
