@@ -23,6 +23,21 @@ handlers:
   static_files: web/favicon.ico
   upload: web/favicon.ico
 
+- url: /assets/vendor/*
+  static_dir: web/assets/vendor/
+
+# NON Bower Components
+# Somehow need to get these loaded dynamically
+# Also includes custom css and js files
+- url: /assets/css/*
+  static_dir: web/assets/css/
+
+- url: /assets/js/*
+  static_dir: web/assets/js/
+
+- url: /assets/images/*
+  static_dir: web/assets/images/
+
 # the symfony front controller
 - url: /.*
   script: web/app.php
