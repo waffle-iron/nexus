@@ -16,4 +16,4 @@
 /web/bundles/
 /app/cache/*
 /bower_components
-/node_module
+/node_modules
