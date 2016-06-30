@@ -4,6 +4,7 @@ version: alpha-110
 runtime: php55
 api_version: 1
 threadsafe: true
+default_expiration: "30d"
 
 # [START clear_cache]
 handlers:
@@ -25,20 +26,8 @@ handlers:
   static_files: web/favicon.ico
   upload: web/favicon.ico
 
-- url: /assets/vendor/*
-  static_dir: web/assets/vendor/
-
-# NON Bower Components
-# Somehow need to get these loaded dynamically
-# Also includes custom css and js files
-- url: /assets/css/*
-  static_dir: web/assets/css/
-
-- url: /assets/js/*
-  static_dir: web/assets/js/
-
-- url: /assets/images/*
-  static_dir: web/assets/images/
+- url: /assets/*
+  static_dir: web/assets/
 
 # mime types
 - url: /(.*\.md)
@@ -59,3 +48,13 @@ skip_files:
   - (.*/)?Tests\/Fixtures\/(.*)
   - ^app\/cache\/(.*)
   - ^app\/logs\/(.*)
+  - ^bower_components\/(.*)
+  - ^node_modules\/(.*)
+  - ^(.*/)?#.*#$
+  - ^(.*/)?.*~$
+  - ^(.*/)?.*\.py[co]$
+  - ^(.*/)?.*/RCS/.*$
+  - ^(.*/)?\..*$
+  - ^(.*/)?\.bak$
+  - ^(.*/)?\.sh$
+  - ^(.*/)?\.md$

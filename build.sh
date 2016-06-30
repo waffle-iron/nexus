@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+gulp;
 rm -rf ./app/cache;
 composer clear-cache;
 composer dump-autoload;

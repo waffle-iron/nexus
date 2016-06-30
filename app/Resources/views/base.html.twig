@@ -9,39 +9,14 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/font-awesome/css/font-awesome.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/iCheck/skins/flat/green.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/jvectormap/jquery-jvectormap.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/bundles/vendors/vendors.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/custom/css/custom.css') }}" />
     </head>
     <body class="nav-md">
         {% block body %}{% endblock %}
-        <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/fastclick/lib/fastclick.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/nprogress/nprogress.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/Chart.js/dist/Chart.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/gauge.js/dist/gauge.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/iCheck/icheck.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/skycons/skycons.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/Flot/jquery.flot.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/Flot/jquery.flot.pie.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/Flot/jquery.flot.time.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/Flot/jquery.flot.stack.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/Flot/jquery.flot.resize.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/flot.orderbars/js/jquery.flot.orderBars.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/date.js/build/date.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/flot-spline/js/jquery.flot.spline.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/flot.curvedlines/curvedLines.js') }}" ></script>
-        {#<script src="{{ asset('assets/vendor/jvectormap/jquery-jvectormap.js') }}" ></script>#}
-        <script src="{{ asset('assets/js/jquery-jvectormap-2.0.3.min.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/moment/moment.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/bootstrap-daterangepicker/daterangepicker.js') }}" ></script>
-
-        <script src="{{ asset('assets/js/custom.js') }}" ></script>
+        <script src="{{ asset('assets/bundles/vendors/vendors.js') }}" ></script>
+        <script src="{{ asset('assets/custom/js/jquery-jvectormap-2.0.3.min.js') }}" ></script>
+        <script src="{{ asset('assets/custom/js/custom.js') }}" ></script>
 
         <!-- Flot -->
         <script>
@@ -117,12 +92,12 @@
                 }
             });
         </script>
-        <!-- /Flot -->
+        {#<!-- /Flot -->#}
 
-        <!-- jVectorMap -->
-        <script src="{{ asset('assets/vendor/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js') }}" ></script>
-        <script src="{{ asset('assets/vendor/jvectormap/tests/assets/jquery-jvectormap-us-aea-en.js') }}" ></script>
-        <script src="{{ asset('assets/js/maps/gdp-data.js') }}" ></script>
+        {#<!-- jVectorMap -->#}
+        <script src="{{ asset('assets/custom/js/jquery-jvectormap-world-mill-en.js') }}" ></script>
+        <script src="{{ asset('assets/custom/js/jquery-jvectormap-us-aea-en.js') }}" ></script>
+        <script src="{{ asset('assets/custom/js/gdp-data.js') }}" ></script>
         <script>
             $(document).ready(function(){
                 $('#world-map-gdp').vectorMap({
