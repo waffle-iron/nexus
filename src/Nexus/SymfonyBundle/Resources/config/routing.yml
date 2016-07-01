@@ -1,0 +1,3 @@
+nexus_symfony_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: NexusSymfonyBundle:Default:index }

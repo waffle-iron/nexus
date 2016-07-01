@@ -1,3 +1,11 @@
+nexus_gentelella:
+    resource: "@NexusGentelellaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+nexus_symfony:
+    resource: "@NexusSymfonyBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: @AppEngineHelloWorldBundle/Controller/
     type:     annotation
