@@ -1,3 +1,0 @@
-nexus_gentelella_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: NexusGentelellaBundle:Default:index }
