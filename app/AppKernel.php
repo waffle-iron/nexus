@@ -126,7 +126,7 @@ class AppKernel extends Kernel
 
     private function getGcsBucketName()
     {
-        if ($this->gcsBucketName && $this->gcsBucketName != 'YOUR_GCS_BUCKET_NAME') {
+        if ($this->gcsBucketName && $this->gcsBucketName != 'nexus-ga-default-bucket') {
             return $this->gcsBucketName;
         }
     }

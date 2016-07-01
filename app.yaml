@@ -1,6 +1,6 @@
 # Copyright 2015 Google Inc. All Rights Reserved.
 application: nexus-ga
-version: alpha-110
+version: alpha
 runtime: php55
 api_version: 1
 threadsafe: true
@@ -38,10 +38,11 @@ handlers:
 # the symfony front controller
 - url: /.*
   script: web/app.php
+  login: required
 
 # [START env_vars]
 env_variables:
-  GCS_BUCKET_NAME: "YOUR_GCS_BUCKET_NAME"
+  GCS_BUCKET_NAME: "nexus-ga-default-bucket"
 # [END env_vars]
 
 skip_files:
@@ -55,8 +56,10 @@ skip_files:
   - ^(.*/)?.*\.py[co]$
   - ^(.*/)?.*/RCS/.*$
   - ^(.*/)?\..*$app
-  - ^(.*/)?\.bak8
+  - ^(.*/)?\.bak*
+  - ^(.*/)?\.DS_Store*
   - ^(.*/)?\.sh*
   - ^(.*/)?\.md*
   - ^(.git/.*)
-  - ^(.git/.*)
+  - ^(.idea/.*)
+  - ^(bower_components/.*)

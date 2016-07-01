@@ -9,14 +9,14 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/bundles/vendors/vendors.css') }}" />
-        <link rel="stylesheet" href="{{ asset('assets/custom/css/custom.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/vendors/vendors.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
     </head>
     <body class="nav-md">
         {% block body %}{% endblock %}
-        <script src="{{ asset('assets/bundles/vendors/vendors.js') }}" ></script>
-        <script src="{{ asset('assets/custom/js/jquery-jvectormap-2.0.3.min.js') }}" ></script>
-        <script src="{{ asset('assets/custom/js/custom.js') }}" ></script>
+        <script src="{{ asset('bundles/vendors/vendors.js') }}" ></script>
+        <script src="{{ asset('assets/js/jquery-jvectormap-2.0.3.min.js') }}" ></script>
+        <script src="{{ asset('assets/js/custom.js') }}" ></script>
 
         <!-- Flot -->
         <script>
@@ -95,9 +95,9 @@
         {#<!-- /Flot -->#}
 
         {#<!-- jVectorMap -->#}
-        <script src="{{ asset('assets/custom/js/jquery-jvectormap-world-mill-en.js') }}" ></script>
-        <script src="{{ asset('assets/custom/js/jquery-jvectormap-us-aea-en.js') }}" ></script>
-        <script src="{{ asset('assets/custom/js/gdp-data.js') }}" ></script>
+        <script src="{{ asset('assets/js/jquery-jvectormap-world-mill-en.js') }}" ></script>
+        <script src="{{ asset('assets/js/jquery-jvectormap-us-aea-en.js') }}" ></script>
+        <script src="{{ asset('assets/js/gdp-data.js') }}" ></script>
         <script>
             $(document).ready(function(){
                 $('#world-map-gdp').vectorMap({

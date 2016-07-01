@@ -20,14 +20,34 @@ namespace AppEngine\HelloWorldBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use google\appengine\api\users\UserService;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction()
-    {
+    public function indexAction(){
+
+        $user = UserService::getCurrentUser();
+        //var_dump($user);
+
+        if($user){
+//            $_SESSION["user"]["logout_url"] = UserService::createLogoutUrl('/');
+
+            $session = $this->get('session');
+            $session->set('user',array(
+                'nickname'  => $user->getNickname(),
+                'email'     => $user->getEmail()
+            ));
+        }
+        else{
+            $session = $this->get('session');
+            $session->set('user',array(
+                'nickname' => 'Guest'
+            ));
+        }
+
         return $this->render('default/index.html.twig');
     }
 }
