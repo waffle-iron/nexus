@@ -1,3 +1,0 @@
-nexus_symfony_homepage:
-    path:     /
-    defaults: { _controller: NexusSymfonyBundle:Default:index }

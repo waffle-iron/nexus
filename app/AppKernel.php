@@ -95,8 +95,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppEngine\HelloWorldBundle\AppEngineHelloWorldBundle(),
-            new Nexus\SymfonyBundle\NexusSymfonyBundle(),
             new Nexus\GentelellaBundle\NexusGentelellaBundle(),
+            new Nexus\GoogleAppEngineBundle\NexusGoogleAppEngineBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

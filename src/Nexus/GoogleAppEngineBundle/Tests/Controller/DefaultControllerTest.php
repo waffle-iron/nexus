@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\SymfonyBundle\Tests\Controller;
+namespace Nexus\GoogleAppEngineBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

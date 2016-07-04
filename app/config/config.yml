@@ -33,7 +33,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-      user: { nickname: "Andros Townsend"}
+      user: "%user%"
 
 # Assetic Configuration
 assetic:

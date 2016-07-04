@@ -1,5 +1,5 @@
-nexus_symfony:
-    resource: "@NexusSymfonyBundle/Resources/config/routing.yml"
+nexus_google_app_engine:
+    resource: "@NexusGoogleAppEngineBundle/Resources/config/routing.yml"
     prefix:   /
 
 nexus_gentelella:
