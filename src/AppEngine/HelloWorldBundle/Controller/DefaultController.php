@@ -20,14 +20,14 @@ namespace AppEngine\HelloWorldBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use google\appengine\api\users\UserService;
 
-class DefaultController extends Controller{
+class DefaultController extends Controller
+{
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(){
-
+    public function indexAction()
+    {
         return $this->render('default/index.html.twig');
     }
 }

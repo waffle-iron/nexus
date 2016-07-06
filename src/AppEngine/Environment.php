@@ -45,7 +45,7 @@ final class Environment
         }
 
         if (self::onAppEngine() || self::onDevAppServer()) {
-            self::checkBucketName();
+            // self::checkBucketName();
         }
     }
 

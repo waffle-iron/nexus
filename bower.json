@@ -2,8 +2,10 @@
   "name": "nexus-ga",
   "version": "0.0.1",
   "homepage": "https://github.com/craigiswayne/nexus#readme",
-  "authors": ["Craig Wayne Govender"],
-  "description": "Symfony PHP Framework meets Google App Engine",
+  "authors": [
+    "Craig Wayne Govender"
+  ],
+  "description": "Symfony and GAE meet",
   "keywords": [
     "css",
     "js",

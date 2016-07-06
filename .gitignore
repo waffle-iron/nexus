@@ -8,5 +8,5 @@
 /vendor/
 /web/bundles/
 /phpunit.xml
-client_secret.json
+
 composer.lock

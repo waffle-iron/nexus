@@ -9,17 +9,16 @@ var gulp = require('gulp'),
     gulpCopy = require('gulp-copy'),
     clean = require('gulp-clean');
 
-var directories = {};
-directories.bundles = './web/bundles';
-directories.fonts  = './web/bundles/fonts';
-directories.images = './web/bundles/vendors';
-
-
 gulp.task('bundle', function() {
     return gulp.src('./bundle.config.js')
         .pipe(bundle())
-        .pipe(gulp.dest(directories.bundles+'/vendors'));
+        .pipe(gulp.dest('./web/assets/bundles/vendors'));
 });
+
+var directories = {};
+directories.fonts  = './web/assets/bundles/fonts';
+directories.images = './web/assets/bundles/vendors';
+
 
 gulp.task('clean-images',function(){
     gulp.src(directories.images + '/*.{png,jpeg,jpg}',{read:false})
@@ -31,19 +30,23 @@ var bower_images = [
 ]
 
 gulp.task('copy-images', function() {
+    // gulp.src('./bower_components/**/*.{png,jpeg,jpg}')
+    //     .pipe(rename({dirname:''}))
+    //     .pipe(gulp.dest(directories.images));
+
     gulp.src(bower_images)
         .pipe(rename({dirname:''}))
         .pipe(gulp.dest(directories.images));
 });
 
 gulp.task('clean-fonts',function(){
-    gulp.src(directories.fonts+'/*.{ttf,woff,woff2,eof,svg}',{read:false})
+    gulp.src(directories.fonts+'/*.{png,jpeg,jpg}',{read:false})
         .pipe(clean());
 });
 
 gulp.task('copy-fonts', function() {
 
-    gulp.src('./bower_components/**/*.{ttf,woff,woff2,eof,svg}')
+    gulp.src('./bower_components/**/*.{ttf,woff,woff2,eof,svg}',{read:false})
         .pipe(rename({dirname:''}))
         .pipe(gulp.dest(directories.fonts));
 });
