@@ -17,3 +17,7 @@
 /app/cache/*
 /bower_components
 /node_modules
+client_secret.json
+composer.lock
+
+composer.lock
