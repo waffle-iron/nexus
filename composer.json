@@ -1,5 +1,5 @@
 {
-    "name": "google/appengine-symfony-starter-project",
+    "name": "nexus-ga",
     "license": "MIT",
     "type": "project",
     "description": "A Symfony hello world for App Engine",

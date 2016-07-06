@@ -42,7 +42,7 @@ handlers:
 
 # [START env_vars]
 env_variables:
-  GCS_BUCKET_NAME: "nexus-ga-default-bucket"
+  GCS_BUCKET_NAME: "nexus-ga.appspot.com"
 # [END env_vars]
 
 skip_files:
