@@ -7,14 +7,16 @@
  */
 
 namespace Nexus\GoogleAppEngineBundle;
-
-
 use google\appengine\api\users\UserService;
 
 class UserManagement{
 
+    public function getUserId(){
+        return UserService::getCurrentUser()->getUserId();
+    }
+
     public function getNickname(){
-        return UserService::getCurrentUser()->getNickname();;
+        return UserService::getCurrentUser()->getNickname();
     }
 
     public function getEmail(){
@@ -23,5 +25,9 @@ class UserManagement{
 
     public function getLogoutUrl(){
         return UserService::createLogoutUrl('/');
+    }
+
+    public function getProfileUrl(){
+        return "https://aboutme.google.com/u/".self::getEmail();
     }
 }

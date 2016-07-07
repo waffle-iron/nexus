@@ -1,12 +1,1 @@
-/app/cache/*
-/app/config/parameters.yml
-/bower_components
-/build/
-/node_modules
-/storage
-/var/*
-/vendor/
-/web/bundles/
-/phpunit.xml
-
-composer.lock
+client_secrets.json
