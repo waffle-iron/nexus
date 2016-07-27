@@ -4,7 +4,7 @@
     <parameter key="kernel.root_dir">/usr/local/var/www/nexus/app</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.name">ap_</parameter>
+    <parameter key="kernel.name">app</parameter>
     <parameter key="kernel.cache_dir">/usr/local/var/www/nexus/app/cache/dev</parameter>
     <parameter key="kernel.logs_dir">/usr/local/var/www/nexus/app/logs</parameter>
     <parameter key="kernel.bundles" type="collection">
@@ -19,6 +19,7 @@
       <parameter key="AppEngineHelloWorldBundle">AppEngine\HelloWorldBundle\AppEngineHelloWorldBundle</parameter>
       <parameter key="NexusGentelellaBundle">Nexus\GentelellaBundle\NexusGentelellaBundle</parameter>
       <parameter key="NexusGoogleAppEngineBundle">Nexus\GoogleAppEngineBundle\NexusGoogleAppEngineBundle</parameter>
+      <parameter key="NexusGoogleDriveBundle">Nexus\GoogleDriveBundle\NexusGoogleDriveBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -586,7 +587,6 @@
         <argument key="expiretime">null</argument>
       </argument>
     </service>
-    <service id="user" class="Nexus\GoogleAppEngineBundle\UserManagement"/>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -1685,7 +1685,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>577e550285a078.93012780</argument>
+            <argument>57880faa809b65.22382183</argument>
           </service>
         </argument>
       </argument>
@@ -1804,7 +1804,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>577e550285a078.93012780</argument>
+            <argument>57880faa809b65.22382183</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -2013,6 +2013,10 @@
         <argument>user</argument>
         <argument type="service" id="user"/>
       </call>
+      <call method="addGlobal">
+        <argument>api</argument>
+        <argument type="service" id="api"/>
+      </call>
     </service>
     <service id="twig.translation.extractor" class="Symfony\Bridge\Twig\Translation\TwigExtractor">
       <tag name="translation.extractor" alias="twig"/>
@@ -2177,6 +2181,10 @@
       <argument type="service" id="security.role_hierarchy" on-invalid="null"/>
       <argument type="service" id="security.token_storage" on-invalid="null"/>
       <argument type="service" id="security.authorization_checker" on-invalid="null"/>
+    </service>
+    <service id="user" class="Nexus\GoogleAppEngineBundle\DependencyInjection\UserManagement"/>
+    <service id="api" class="Nexus\GoogleAppEngineBundle\DependencyInjection\API">
+      <argument type="service" id="twig"/>
     </service>
     <service id="data_collector.dump" class="Symfony\Component\HttpKernel\DataCollector\DumpDataCollector">
       <tag name="data_collector" id="dump" template="@Debug/Profiler/dump.html.twig"/>
@@ -2497,6 +2505,10 @@
       <call method="addPath">
         <argument>/usr/local/var/www/nexus/src/Nexus/GoogleAppEngineBundle/Resources/views</argument>
         <argument>NexusGoogleAppEngine</argument>
+      </call>
+      <call method="addPath">
+        <argument>/usr/local/var/www/nexus/src/Nexus/GoogleDriveBundle/Resources/views</argument>
+        <argument>NexusGoogleDrive</argument>
       </call>
       <call method="addPath">
         <argument>/usr/local/var/www/nexus/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>

@@ -1,0 +1,3 @@
+nexus_google_drive_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: NexusGoogleDriveBundle:Default:index }

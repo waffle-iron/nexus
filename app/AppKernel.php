@@ -97,6 +97,8 @@ class AppKernel extends Kernel
             new AppEngine\HelloWorldBundle\AppEngineHelloWorldBundle(),
             new Nexus\GentelellaBundle\NexusGentelellaBundle(),
             new Nexus\GoogleAppEngineBundle\NexusGoogleAppEngineBundle(),
+            new Nexus\GoogleDriveBundle\NexusGoogleDriveBundle(),
+            new Nexus\GMailBundle\NexusGMailBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -11,9 +11,9 @@ class ComposerStaticInit805aeb9e06deadeabe62b3fb8e8230dc
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
-        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '3fad0ebbff9928a94a9d8941fb314bd8' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/functions.php',
     );
 
@@ -41,6 +41,10 @@ class ComposerStaticInit805aeb9e06deadeabe62b3fb8e8230dc
         'I' => 
         array (
             'Incenteev\\ParameterHandler\\' => 27,
+        ),
+        'H' => 
+        array (
+            'HappyR\\Google\\ApiBundle\\' => 24,
         ),
         'G' => 
         array (
@@ -99,6 +103,10 @@ class ComposerStaticInit805aeb9e06deadeabe62b3fb8e8230dc
         'Incenteev\\ParameterHandler\\' => 
         array (
             0 => __DIR__ . '/..' . '/incenteev/composer-parameter-handler',
+        ),
+        'HappyR\\Google\\ApiBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/happyr/google-api-bundle',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

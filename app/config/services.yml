@@ -12,6 +12,3 @@ services:
         arguments:
             - "@memcache"
             - { prefix: ~, expiretime: ~ }
-
-    user:
-        class: Nexus\GoogleAppEngineBundle\UserManagement

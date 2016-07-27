@@ -44,7 +44,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                     <div class=\"profile_pic\">
                         <img src=\"";
         // line 18
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/nexusgentelella/images/img.jpg"), "html", null, true);
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "avatar", array()), "html", null, true);
         echo "\" alt=\"...\" class=\"img-circle profile_img\">
                     </div>
                     <div class=\"profile_info\">
@@ -52,8 +52,6 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                         <h2>";
         // line 22
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "nickname", array()), "html", null, true);
-        echo " ";
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "test", array()), "html", null, true);
         echo "</h2>
                     </div>
                 </div>
@@ -197,7 +195,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                             <a href=\"javascript:;\" class=\"user-profile dropdown-toggle\" data-toggle=\"dropdown\" aria-expanded=\"false\">
                                 <img src=\"";
         // line 163
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/nexusgentelella/images/img.jpg"), "html", null, true);
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "avatar", array()), "html", null, true);
         echo "\" alt=\"";
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "nickname", array()), "html", null, true);
         echo "\">";
@@ -206,21 +204,20 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                                 <span class=\" fa fa-angle-down\"></span>
                             </a>
                             <ul class=\"dropdown-menu dropdown-usermenu pull-right\">
-                                <li><a href=\"";
-        // line 167
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "profileurl", array()), "html", null, true);
-        echo "\" target=\"_blank\">Profile</a></li>
+                                <li><a href=\"javascript:;\"> Profile</a></li>
                                 <li>
                                     <a href=\"javascript:;\">
                                         <span class=\"badge bg-red pull-right\">50%</span>
                                         <span>Settings</span>
                                     </a>
                                 </li>
+                                <li><a target=\"_blank\" href=\"";
+        // line 174
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "permissionsurl", array()), "html", null, true);
+        echo "\">Permissions</a></li>
                                 <li><a href=\"javascript:;\">Help</a></li>
-                                <li><a href=\"";
-        // line 175
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "logouturl", array()), "html", null, true);
-        echo "\"><i class=\"fa fa-sign-out pull-right\"></i>Log Out</a></li>
+                                <li><a href=\"login.html\"><i class=\"fa fa-sign-out pull-right\"></i> Log Out</a></li>
+
                             </ul>
                         </li>
 
@@ -233,8 +230,8 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                                 <li>
                                     <a>
                                         <span class=\"image\"><img src=\"";
-        // line 187
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/nexusgentelella/images/img.jpg"), "html", null, true);
+        // line 189
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "avatar", array()), "html", null, true);
         echo "\" alt=\"Profile Image\" /></span>
                         <span>
                           <span>John Smith</span>
@@ -248,8 +245,8 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                                 <li>
                                     <a>
                                         <span class=\"image\"><img src=\"";
-        // line 199
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/nexusgentelella/images/img.jpg"), "html", null, true);
+        // line 201
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "avatar", array()), "html", null, true);
         echo "\" alt=\"Profile Image\" /></span>
                         <span>
                           <span>John Smith</span>
@@ -263,8 +260,8 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                                 <li>
                                     <a>
                                         <span class=\"image\"><img src=\"";
-        // line 211
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/nexusgentelella/images/img.jpg"), "html", null, true);
+        // line 213
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "avatar", array()), "html", null, true);
         echo "\" alt=\"Profile Image\" /></span>
                         <span>
                           <span>John Smith</span>
@@ -278,8 +275,8 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
                                 <li>
                                     <a>
                                         <span class=\"image\"><img src=\"";
-        // line 223
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bundles/nexusgentelella/images/img.jpg"), "html", null, true);
+        // line 225
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["user"]) ? $context["user"] : $this->getContext($context, "user")), "avatar", array()), "html", null, true);
         echo "\" alt=\"Profile Image\" /></span>
                         <span>
                           <span>John Smith</span>
@@ -1028,7 +1025,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 
     public function getDebugInfo()
     {
-        return array (  282 => 223,  267 => 211,  252 => 199,  237 => 187,  222 => 175,  211 => 167,  200 => 163,  54 => 22,  47 => 18,  31 => 4,  28 => 3,  11 => 1,);
+        return array (  279 => 225,  264 => 213,  249 => 201,  234 => 189,  216 => 174,  198 => 163,  54 => 22,  47 => 18,  31 => 4,  28 => 3,  11 => 1,);
     }
 }
 /* {% extends '@NexusGentelella/base.html.twig' %}*/
@@ -1048,11 +1045,11 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 /*                 <!-- menu profile quick info -->*/
 /*                 <div class="profile">*/
 /*                     <div class="profile_pic">*/
-/*                         <img src="{{ asset('bundles/nexusgentelella/images/img.jpg') }}" alt="..." class="img-circle profile_img">*/
+/*                         <img src="{{ user.avatar }}" alt="..." class="img-circle profile_img">*/
 /*                     </div>*/
 /*                     <div class="profile_info">*/
 /*                         <span>Welcome,</span>*/
-/*                         <h2>{{ user.nickname }} {{ user.test }}</h2>*/
+/*                         <h2>{{ user.nickname }}</h2>*/
 /*                     </div>*/
 /*                 </div>*/
 /*                 <!-- /menu profile quick info -->*/
@@ -1193,19 +1190,21 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 /*                     <ul class="nav navbar-nav navbar-right">*/
 /*                         <li class="">*/
 /*                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">*/
-/*                                 <img src="{{ asset('bundles/nexusgentelella/images/img.jpg') }}" alt="{{ user.nickname }}">{{ user.nickname }}*/
+/*                                 <img src="{{ user.avatar }}" alt="{{ user.nickname }}">{{ user.nickname }}*/
 /*                                 <span class=" fa fa-angle-down"></span>*/
 /*                             </a>*/
 /*                             <ul class="dropdown-menu dropdown-usermenu pull-right">*/
-/*                                 <li><a href="{{ user.profileurl }}" target="_blank">Profile</a></li>*/
+/*                                 <li><a href="javascript:;"> Profile</a></li>*/
 /*                                 <li>*/
 /*                                     <a href="javascript:;">*/
 /*                                         <span class="badge bg-red pull-right">50%</span>*/
 /*                                         <span>Settings</span>*/
 /*                                     </a>*/
 /*                                 </li>*/
+/*                                 <li><a target="_blank" href="{{ user.permissionsurl }}">Permissions</a></li>*/
 /*                                 <li><a href="javascript:;">Help</a></li>*/
-/*                                 <li><a href="{{ user.logouturl }}"><i class="fa fa-sign-out pull-right"></i>Log Out</a></li>*/
+/*                                 <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>*/
+/* */
 /*                             </ul>*/
 /*                         </li>*/
 /* */
@@ -1217,7 +1216,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 /*                             <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">*/
 /*                                 <li>*/
 /*                                     <a>*/
-/*                                         <span class="image"><img src="{{ asset('bundles/nexusgentelella/images/img.jpg') }}" alt="Profile Image" /></span>*/
+/*                                         <span class="image"><img src="{{ user.avatar }}" alt="Profile Image" /></span>*/
 /*                         <span>*/
 /*                           <span>John Smith</span>*/
 /*                           <span class="time">3 mins ago</span>*/
@@ -1229,7 +1228,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 /*                                 </li>*/
 /*                                 <li>*/
 /*                                     <a>*/
-/*                                         <span class="image"><img src="{{ asset('bundles/nexusgentelella/images/img.jpg') }}" alt="Profile Image" /></span>*/
+/*                                         <span class="image"><img src="{{ user.avatar }}" alt="Profile Image" /></span>*/
 /*                         <span>*/
 /*                           <span>John Smith</span>*/
 /*                           <span class="time">3 mins ago</span>*/
@@ -1241,7 +1240,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 /*                                 </li>*/
 /*                                 <li>*/
 /*                                     <a>*/
-/*                                         <span class="image"><img src="{{ asset('bundles/nexusgentelella/images/img.jpg') }}" alt="Profile Image" /></span>*/
+/*                                         <span class="image"><img src="{{ user.avatar }}" alt="Profile Image" /></span>*/
 /*                         <span>*/
 /*                           <span>John Smith</span>*/
 /*                           <span class="time">3 mins ago</span>*/
@@ -1253,7 +1252,7 @@ class __TwigTemplate_5cca672f4b622fc1e804da22858547ccb7a973e34fba2895ea752dc097b
 /*                                 </li>*/
 /*                                 <li>*/
 /*                                     <a>*/
-/*                                         <span class="image"><img src="{{ asset('bundles/nexusgentelella/images/img.jpg') }}" alt="Profile Image" /></span>*/
+/*                                         <span class="image"><img src="{{ user.avatar }}" alt="Profile Image" /></span>*/
 /*                         <span>*/
 /*                           <span>John Smith</span>*/
 /*                           <span class="time">3 mins ago</span>*/

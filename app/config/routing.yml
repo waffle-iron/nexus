@@ -1,3 +1,11 @@
+nexus_g_mail:
+    resource: "@NexusGMailBundle/Resources/config/routing.yml"
+    prefix:   /
+
+nexus_google_drive:
+    resource: "@NexusGoogleDriveBundle/Resources/config/routing.yml"
+    prefix:   /
+
 nexus_google_app_engine:
     resource: "@NexusGoogleAppEngineBundle/Resources/config/routing.yml"
     prefix:   /
