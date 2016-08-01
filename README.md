@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/craigiswayne/nexus.png?label=ready&title=Ready)](https://waffle.io/craigiswayne/nexus)
 Nexus ERP Enabler
 ================================
 
